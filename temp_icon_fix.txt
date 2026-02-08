@@ -1,0 +1,11 @@
+OLD (line 652):
+<div className={`w-10 h-10 rounded-[1rem] shrink-0 flex items-center justify-center text-sm font-bold mr-3.5 transition-all duration-700 ${expandedModuleId === module.id ? 'scale-110 shadow-lg shadow-violet-200 rotate-6 bg-gradient-to-br ' + module.image + ' text-white' : 'text-slate-700 group-hover:text-violet-600'}`}> {module.locked ? <Unlock size={18} className=\"rotate-45 opacity-70\" /> : <Icon size={40} />} </div>
+
+NEW:
+<div className={`w-10 h-10 rounded-[1rem] shrink-0 flex items-center justify-center mr-3.5 transition-all duration-700 relative ${
+  expandedModuleId === module.id 
+    ? 'scale-110 before:absolute before:inset-[-8px] before:rounded-[1.5rem] before:bg-gradient-to-br before:from-pink-100/80 before:via-violet-100/80 before:to-fuchsia-100/80 before:shadow-[0_0_20px_rgba(236,72,153,0.3),0_0_40px_rgba(139,92,246,0.2)] after:absolute after:inset-[-8px] after:rounded-[1.5rem] after:bg-gradient-to-br after:from-amber-200/40 after:via-transparent after:to-yellow-300/40 after:blur-md after:animate-pulse before:z-[-1] after:z-[-2]' 
+    : 'text-slate-700 group-hover:text-violet-600'
+}`}> 
+  {module.locked ? <Unlock size={18} className="rotate-45 opacity-70 relative z-10" /> : <Icon size={40} className="relative z-10" />} 
+</div>

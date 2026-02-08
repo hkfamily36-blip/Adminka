@@ -1,0 +1,48 @@
+            {!collapsed ? (
+              <div className="space-y-4 pb-4">
+                {MODULES.map(module => {
+                  const Icon = module.icon;
+                  return (
+                  <div key={module.id} className={`rounded-[2rem] transition-all duration-500`}>
+                    <button onClick={() => !module.locked && toggleModule(module.id)} disabled={module.locked} className={`w-full flex items-center py-2.5 px-3 transition-all duration-300 text-left group ${
+                      module.locked 
+                        ? 'opacity-40 cursor-not-allowed' 
+                        : 'cursor-pointer rounded-2xl hover:bg-white/30'
+                    }`}>
+                      <div className={`w-10 h-10 shrink-0 flex items-center justify-center mr-3.5 transition-all duration-700 relative ${
+                        expandedModuleId === module.id 
+                          ? 'scale-110 rounded-full bg-gradient-to-br from-pink-100/80 via-violet-100/80 to-fuchsia-100/80 shadow-[0_0_20px_rgba(236,72,153,0.4),0_0_40px_rgba(139,92,246,0.3)] before:absolute before:inset-0 before:rounded-full before:bg-gradient-to-br before:from-amber-200/50 before:via-transparent before:to-yellow-300/50 before:blur-md before:animate-pulse' 
+                          : 'group-hover:text-violet-600'
+                      }`}> 
+                        <div className="relative z-10">
+                          {module.locked ? <Unlock size={18} className="rotate-45 opacity-70" /> : <Icon size={40} />}
+                        </div>
+                      </div>
+                      <div className="flex-1 overflow-hidden"> <span className={`block text-base font-bold truncate transition-colors ${expandedModuleId === module.id ? 'text-[#2E1065]' : 'text-slate-700 group-hover:text-[#2E1065]'}`}>{module.title}</span> </div>
+                      {!module.locked && (<div className={`text-slate-300 transition-transform duration-500 ${expandedModuleId === module.id ? 'rotate-180 text-violet-500' : 'group-hover:text-slate-400'}`}> <ChevronDown size={18} /> </div>)}
+                    </button>
+                    <div className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${expandedModuleId === module.id ? 'max-h-[600px] opacity-100 pt-3 pb-2' : 'max-h-0 opacity-0'}`}>
+                      <div className="pl-8 border-l-2 border-slate-100 ml-[35px] pr-2 space-y-2 relative">
+                        {module.lessons && module.lessons.length > 0 ? (
+                          module.lessons.map((lesson: any) => {
+                            const isAccessible = checkAccess(USER_DATA.tariff, lesson.tariff);
+                            return (
+                              <button key={lesson.id} onClick={() => handleLessonClick(lesson, module)} className={`w-full flex items-center py-2 text-sm transition-all text-left relative z-10 ${!isAccessible ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:text-[#2E1065]/70'} ${activeLesson?.id === lesson.id ? 'text-[#2E1065]' : 'text-slate-500'}`}>
+                                <div className={`-ml-[41px] w-4 h-4 rounded-sm flex items-center justify-center mr-3 shrink-0 transition-all ${lesson.completed ? 'bg-emerald-500 border-emerald-500' : 'bg-white border-2 border-slate-200'}`}> 
+                                  {lesson.completed && (
+                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                  )}
+                                </div>
+                                <span className="truncate flex-1">{lesson.title}</span>
+                              </button>
+                            );
+                          })
+                        ) : ( <div className="pl-6 p-3 text-[10px] text-slate-300 uppercase tracking-wider">Скоро</div> )}
+                      </div>
+                    </div>
+                  </div>
+                )})}
+              </div>
+            ) : (

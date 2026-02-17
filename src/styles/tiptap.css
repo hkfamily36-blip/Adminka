@@ -1,0 +1,241 @@
+/* TipTap Editor Styles */
+
+.prose-editor .tiptap {
+  min-height: 200px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.prose-editor .tiptap:focus {
+  outline: none;
+}
+
+/* Placeholder */
+.prose-editor .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #94a3b8;
+  pointer-events: none;
+  height: 0;
+}
+
+/* Headings */
+.prose-editor .tiptap h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+  color: #1e293b;
+}
+
+.prose-editor .tiptap h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+  color: #1e293b;
+}
+
+.prose-editor .tiptap h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.4;
+  color: #1e293b;
+}
+
+/* Paragraphs */
+.prose-editor .tiptap p {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+  line-height: 1.7;
+  color: #334155;
+}
+
+/* Lists */
+.prose-editor .tiptap ul,
+.prose-editor .tiptap ol {
+  padding-left: 1.5em;
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.prose-editor .tiptap ul li,
+.prose-editor .tiptap ol li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.prose-editor .tiptap ul {
+  list-style-type: disc;
+}
+
+.prose-editor .tiptap ol {
+  list-style-type: decimal;
+}
+
+/* Blockquote */
+.prose-editor .tiptap blockquote {
+  border-left: 4px solid #8b5cf6;
+  padding-left: 1em;
+  margin-left: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  color: #64748b;
+  font-style: italic;
+  background: #f8f7ff;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+/* Code Block */
+.prose-editor .tiptap pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 1em;
+  border-radius: 0.5em;
+  overflow-x: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.prose-editor .tiptap pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.9em;
+  line-height: 1.5;
+}
+
+.prose-editor .tiptap code {
+  background: #f1f5f9;
+  color: #8b5cf6;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+  font-size: 0.9em;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Links */
+.prose-editor .tiptap a {
+  color: #8b5cf6;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.prose-editor .tiptap a:hover {
+  color: #7c3aed;
+}
+
+/* Images */
+.prose-editor .tiptap img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+/* YouTube */
+.prose-editor .tiptap .youtube-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
+.prose-editor .tiptap .youtube-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5em;
+}
+
+/* Tables */
+.prose-editor .tiptap table {
+  border-collapse: collapse;
+  margin: 1em 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.prose-editor .tiptap table td,
+.prose-editor .tiptap table th {
+  border: 1px solid #cbd5e1;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 0.5em;
+  position: relative;
+  vertical-align: top;
+}
+
+.prose-editor .tiptap table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  text-align: left;
+}
+
+.prose-editor .tiptap table .selectedCell {
+  background: #e0e7ff;
+}
+
+.prose-editor .tiptap table .column-resize-handle {
+  background-color: #8b5cf6;
+  bottom: -2px;
+  position: absolute;
+  right: -2px;
+  pointer-events: none;
+  top: 0;
+  width: 4px;
+}
+
+/* Highlight */
+.prose-editor .tiptap mark {
+  background-color: #fef3c7;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+}
+
+/* Horizontal Rule */
+.prose-editor .tiptap hr {
+  border: none;
+  border-top: 2px solid #e2e8f0;
+  margin: 2em 0;
+}
+
+/* Selection */
+.prose-editor .tiptap ::selection {
+  background: #c4b5fd;
+}
+
+/* Scrollbar */
+.prose-editor .tiptap::-webkit-scrollbar {
+  width: 8px;
+}
+
+.prose-editor .tiptap::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.prose-editor .tiptap::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.prose-editor .tiptap::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}

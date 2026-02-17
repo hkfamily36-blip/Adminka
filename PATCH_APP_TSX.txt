@@ -1,0 +1,20 @@
+PATCH FOR APP.TSX
+
+=== СТРОКА 159 ===
+БЫЛО: case 'text': return { icon: AlignLeft, label: 'Инстр��кция' };
+НАДО: case 'text': return { icon: AlignLeft, label: 'Инструкция' };
+
+=== СТРОКА 208 ===
+БЫЛО: { id: 4, title: "4. Воронка продаж", desc: "Сист������мное привлечение.", 
+НАДО: { id: 4, title: "4. Воронка продаж", desc: "Системное привлечение.", 
+
+=== ГОТОВАЯ ФУНКЦИЯ getLessonTypeConfig ===
+const getLessonTypeConfig = (type: string) => {
+  switch(type) {
+    case 'video': return { icon: Video, label: 'Видео' };
+    case 'audio': return { icon: Headphones, label: 'Аудио' };
+    case 'test': return { icon: ClipboardList, label: 'Тест' };
+    case 'text': return { icon: AlignLeft, label: 'Инструкция' };
+    default: return { icon: FileText, label: 'Урок' };
+  }
+};

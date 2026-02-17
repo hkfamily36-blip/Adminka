@@ -114,7 +114,7 @@ export function Footer() {
             <div className="relative text-center">
               {/* Логотип с эффектом парения */}
               <motion.div
-                className="inline-block"
+                className="inline-block relative"
                 animate={{
                   y: [0, -8, 0],
                   rotate: [-1, 1, -1],
@@ -125,7 +125,11 @@ export function Footer() {
                   ease: 'easeInOut',
                 }}
               >
-                <Logo />
+                {/* Светлый островок под логотипом - Steve Jobs style */}
+                <div className="absolute inset-0 -m-8 bg-white/10 backdrop-blur-xl rounded-[3rem] border border-white/20 shadow-2xl"></div>
+                <div className="relative p-8">
+                  <Logo />
+                </div>
                 
                 {/* Звездная пыль вокруг логотипа */}
                 {[...Array(12)].map((_, i) => {

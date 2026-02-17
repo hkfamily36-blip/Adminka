@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { 
   PlayCircle, 
@@ -27,6 +27,8 @@ import {
   Circle,
   CheckCircle2 
 } from 'lucide-react';
+import { TARIFFS, getTariffLabel, checkAccess } from './config/tariffs';
+import type { TariffKey } from './config/tariffs';
 
 // Импорт волшебных космических иконок (Финальные - по твоему референсу!)
 import {
@@ -62,6 +64,16 @@ import { Icon3DShowcase } from './components/Icon3DShowcase';
 
 // Импорт футера
 import { Footer } from './components/Footer';
+
+// Импорт админ-панели
+import { AdminDashboard } from './components/admin/AdminDashboard';
+
+// Импорт AuthProvider и BrowserRouter
+import { AuthProvider } from './contexts/AuthContext';
+import { BrowserRouter } from 'react-router';
+
+// Импорт компонента для космических эффектов
+import { CosmicIconWrapper } from './components/CosmicIconWrapper';
 
 // --- LOGO COMPONENT ---
 export const Logo = () => (
@@ -138,20 +150,16 @@ export const Logo = () => (
 );
 
 // --- CONFIG & DATA ---
-const TARIFFS = {
-  standard: { level: 1, label: 'Стандарт' },
-  curator: { level: 2, label: 'С Куратором' },
-  mentor: { level: 3, label: 'Наставничество' }
-};
+// TARIFFS импортируются из ./config/tariffs.ts
 
-const USER_DATA = { name: "Алексей Смирнов", avatar: "https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBidXNpbmVzcyUyMG1hbiUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MDE1MTg3N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", tariff: 'curator' };
+const USER_DATA = { name: "Алексей Смирнов", avatar: "https://images.unsplash.com/photo-1629507208649-70919ca33793?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBidXNpbmVzcyUyMG1hbiUyMHBvcnRyYWl0fGVufDF8fHx8MTc3MDE1MTg3N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral", tariff: 'curator' as TariffKey };
 
 const getLessonTypeConfig = (type: string) => {
   switch(type) {
     case 'video': return { icon: Video, label: 'Видео' };
     case 'audio': return { icon: Headphones, label: 'Аудио' };
     case 'test': return { icon: ClipboardList, label: 'Тест' };
-    case 'text': return { icon: AlignLeft, label: 'Инструкция' };
+    case 'text': return { icon: AlignLeft, label: 'Инстр��кция' };
     default: return { icon: FileText, label: 'Урок' };
   }
 };
@@ -197,7 +205,7 @@ const MODULES = [
   { id: 3, title: "3. Продукты и Метод", desc: "Визуальная упаковка.", 
     detailedDesc: `<h3>Глава 3. Продукт — это не то, что вы продаёте</h3>
     <p>Продукт — это трансформация, которую получает клиент. Не ваши часы работы, не количество уроков или встреч. А изменение, которое происходит в жизни человека после работы с вами.</p>
-    <p>В этом модуле мы упаковываем ваш опыт и экспертизу в понятный, структурированный продукт. Создаём метод, который можно тиражировать. И делаем это так, чтобы клиенты сразу понимали ценность.</p>
+    <p>В этом модуле мы упаковываем ваш опыт и экспертизу в понятный, структуриро��анный продукт. Создаём метод, который можно тиражировать. И делаем это так, чтобы клиенты сразу понимали ценность.</p>
     <p>Хороший продукт продаёт себя сам. Потому что он решает реальную проблему и делает это лучше, чем альтернативы.</p>`,
     locked: false, progress: 0, icon: ProductIcon, image: "from-[#701a75] to-[#c026d3]", lessons: [] },
   { id: 4, title: "4. Воронка продаж", desc: "Сист������мное привлечение.", 
@@ -273,7 +281,7 @@ const MOCK_LESSON_CONTENT = {
   resources: [ { type: "pdf", title: "Рабочая тетрадь: Распаковка", size: "2.4 MB" }, { type: "link", title: "Miro шаблон матрицы", url: "#" } ]
 };
 
-const checkAccess = (userTariff: string, lessonTariff: string) => TARIFFS[userTariff as keyof typeof TARIFFS].level >= TARIFFS[lessonTariff as keyof typeof TARIFFS].level;
+// checkAccess импортируется из ./config/tariffs.ts
 
 const UpgradeModal = ({ tariffKey, onClose }: { tariffKey: string | null; onClose: () => void }) => {
   if (!tariffKey) return null;
@@ -285,7 +293,7 @@ const UpgradeModal = ({ tariffKey, onClose }: { tariffKey: string | null; onClos
         <div className="text-center">
            <div className="w-20 h-20 mx-auto bg-gradient-to-br from-amber-100 to-amber-50 rounded-full flex items-center justify-center mb-6 shadow-inner"> <Crown size={40} className="text-amber-500 fill-amber-500/20" /> </div>
            <h3 className="text-2xl font-bold text-slate-800 mb-3">Доступ закрыт</h3>
-           <p className="text-slate-500 mb-8 leading-relaxed">Этот урок содержит продвинутые техники и доступен только на тарифе <br/><span className="font-bold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-lg">{TARIFFS[tariffKey as keyof typeof TARIFFS].label}</span></p>
+           <p className="text-slate-500 mb-8 leading-relaxed">Этот урок содержит продвинутые техники и доступен только на тарифе <br/><span className="font-bold text-violet-600 bg-violet-50 px-2 py-0.5 rounded-lg">{getTariffLabel(tariffKey as TariffKey)}</span></p>
            <button className="w-full py-4 bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-bold rounded-2xl shadow-xl shadow-fuchsia-200 hover:shadow-2xl hover:-translate-y-1 transition-all">Улучшить тариф</button>
            <button onClick={onClose} className="mt-4 text-sm font-bold text-slate-400 hover:text-slate-600 transition-colors">Понятно, вернусь позже</button>
         </div>
@@ -295,7 +303,7 @@ const UpgradeModal = ({ tariffKey, onClose }: { tariffKey: string | null; onClos
 };
 
 const SystemPanorama = ({ onModuleSelect }: { onModuleSelect: (module: any) => void }) => (
-  <div className="mb-16 p-10 bg-white/60 backdrop-blur-xl rounded-[3rem] border border-white/60 relative overflow-hidden shadow-sm">
+  <div className="mb-16 p-10 bg-white/60 backdrop-blur-xl rounded-[2.5rem] border border-white/60 relative overflow-hidden shadow-sm">
      <div className="absolute inset-0 bg-gradient-to-r from-violet-50/50 via-white to-fuchsia-50/50 pointer-events-none"></div>
      <div className="relative z-10">
         <div className="flex justify-between items-end mb-12 px-2">
@@ -330,22 +338,23 @@ const SystemPanorama = ({ onModuleSelect }: { onModuleSelect: (module: any) => v
                   
                   return (
                   <div key={m.id} onClick={() => !m.locked && onModuleSelect(m)} className={`relative group flex flex-col items-center ${!m.locked ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
-                      {/* Иконка */}
+                      {/* Иконка с космическими эффектами */}
                       <div className={`w-16 h-16 rounded-full flex items-center justify-center border-4 border-white transition-all duration-500 relative ${
                         m.locked 
                           ? 'bg-slate-200 text-slate-400 scale-90 shadow-lg' 
                           : isNotStarted
-                            ? 'bg-slate-300 text-slate-600 scale-100 hover:scale-110 hover:bg-slate-400 hover:text-slate-700 shadow-lg'
+                            ? 'bg-transparent text-slate-600 scale-100 hover:scale-110 shadow-lg'
                             : isCompleted
-                              ? 'bg-gradient-to-br ' + m.image + ' text-white scale-110 hover:scale-125 shadow-[0_0_25px_rgba(251,191,36,1),0_0_50px_rgba(251,191,36,0.7),0_0_75px_rgba(251,191,36,0.4)]'
-                              : 'bg-gradient-to-br ' + m.image + ' text-white scale-110 shadow-lg shadow-violet-300 hover:scale-125'
+                              ? 'bg-transparent text-white scale-110 hover:scale-125 shadow-[0_0_25px_rgba(251,191,36,1),0_0_50px_rgba(251,191,36,0.7),0_0_75px_rgba(251,191,36,0.4)]'
+                              : 'bg-transparent text-white scale-110 shadow-lg hover:scale-125'
                       } ${isActive ? 'ring-4 ring-violet-200' : ''} ${isCompleted ? 'ring-4 ring-amber-400/60' : ''}`}>
-                          {m.locked 
-                            ? <Unlock size={20} className="rotate-45 opacity-50" /> 
-                            : isNotStarted && GrayIcon
-                              ? <GrayIcon size={48} />
-                              : <Icon size={48} />
-                          }
+                          {m.locked ? (
+                            <Unlock size={20} className="rotate-45 opacity-50" />
+                          ) : (
+                            <CosmicIconWrapper isCompleted={isCompleted} size="medium">
+                              {isNotStarted && GrayIcon ? <GrayIcon size={48} /> : <Icon size={48} />}
+                            </CosmicIconWrapper>
+                          )}
                           {isActive && (<div className="absolute inset-0 bg-violet-400 rounded-full animate-ping opacity-30"></div>)}
                       </div>
                       
@@ -391,8 +400,14 @@ const ModuleCard = ({ module, onClick }: { module: any; onClick: (module: any) =
     )}
     <div className={`absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br ${module.image} rounded-full blur-3xl opacity-10 transition-transform duration-1000 group-hover:scale-150 group-hover:opacity-20`}></div>
     <div className={`flex justify-between items-start mb-8 relative z-10 ${module.locked ? 'opacity-50 blur-[1px]' : ''}`}>
-      <div className={`w-14 h-14 rounded-[1.2rem] flex items-center justify-center text-white shadow-xl shadow-indigo-500/20 bg-gradient-to-br ${module.image} transform group-hover:rotate-6 transition-all duration-500 text-lg font-bold`}>
-        {module.locked ? <Unlock size={28} className="rotate-45 opacity-70" /> : <Icon size={40} />}
+      <div className={`w-14 h-14 rounded-[1.2rem] flex items-center justify-center text-white shadow-xl shadow-indigo-500/20 bg-transparent transform group-hover:rotate-6 transition-all duration-500 text-lg font-bold`}>
+        {module.locked ? (
+          <Unlock size={28} className="rotate-45 opacity-70" />
+        ) : (
+          <CosmicIconWrapper isCompleted={module.progress === 100} size="small">
+            <Icon size={40} />
+          </CosmicIconWrapper>
+        )}
       </div>
       {module.progress > 0 && (
         <div className="flex flex-col items-end">
@@ -541,7 +556,7 @@ const LessonPlayer = ({ lesson, module, onBack, onModuleClick }: { lesson: any; 
              <button className="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center text-white hover:scale-105 transition-transform"> <PlayCircle size={24} /> </button>
           </div>
         )}
-        <div className="bg-white/80 backdrop-blur-2xl rounded-[3rem] p-14 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-white/60 relative overflow-hidden mt-6"> 
+        <div className="bg-white/80 backdrop-blur-2xl rounded-[2.5rem] p-14 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.05)] border border-white/60 relative overflow-hidden mt-6"> 
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-fuchsia-100/40 rounded-full blur-[100px] -mr-40 -mt-40 pointer-events-none"></div>
           <div className="mb-14 relative z-10"> 
             <h3 className="font-bold text-slate-800 mb-8 px-1 text-xs uppercase tracking-widest flex items-center opacity-70"> <div className="w-1.5 h-1.5 bg-violet-500 rounded-full mr-3 shadow-[0_0_5px_rgba(139,92,246,0.8)]"></div> Материалы к уроку </h3>
@@ -573,13 +588,14 @@ const LessonPlayer = ({ lesson, module, onBack, onModuleClick }: { lesson: any; 
   );
 };
 
-export default function App() {
+function AppContent() {
   const [collapsed, setCollapsed] = useState(false);
   const [activeModule, setActiveModule] = useState<any>(null); 
   const [activeLesson, setActiveLesson] = useState<any>(null);
   const [activeLessonModule, setActiveLessonModule] = useState<any>(null);
   const [expandedModuleId, setExpandedModuleId] = useState<number | null>(null);
   const [upgradeModalData, setUpgradeModalData] = useState<{ tariff: string } | null>(null);
+  const [isAdminMode, setIsAdminMode] = useState(false);
 
   const handleLessonClick = (lesson: any, module?: any) => {
     if (!checkAccess(USER_DATA.tariff, lesson.tariff)) { setUpgradeModalData({ tariff: lesson.tariff }); return; }
@@ -606,6 +622,14 @@ export default function App() {
     );
   };
 
+  // Render admin dashboard if in admin mode
+  if (isAdminMode) {
+    return (
+      <AdminDashboard onExit={() => setIsAdminMode(false)} />
+    );
+  }
+
+  // Regular user interface
   return (
     <div className="flex h-screen bg-[#F3F4F7] font-sans selection:bg-fuchsia-200 overflow-hidden flex-col">
       <style>{`
@@ -629,7 +653,7 @@ export default function App() {
         <div className="absolute top-[20%] left-[20%] w-[40vw] h-[40vw] bg-white/40 rounded-full blur-[100px] opacity-60"></div>
       </div>
       <div className="flex-1 flex min-h-0 relative">
-        <aside className={`relative z-30 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col mb-4 ml-4 mt-4 bg-white/60 backdrop-blur-2xl border border-white/60 shadow-[0_8px_40px_rgba(0,0,0,0.04)] ${collapsed ? 'w-28 rounded-[3rem]' : 'w-80 rounded-[3rem]'}`}>
+        <aside className={`relative z-30 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col mb-4 ml-4 mt-4 bg-white/60 backdrop-blur-2xl border border-white/60 shadow-[0_8px_40px_rgba(0,0,0,0.04)] ${collapsed ? 'w-28 rounded-[2.5rem]' : 'w-80 rounded-[2.5rem]'}`}>
           <button onClick={() => setCollapsed(!collapsed)} className="absolute -right-3 top-9 z-50 w-6 h-6 bg-white rounded-full shadow-sm border border-slate-100 flex items-center justify-center text-slate-400 hover:text-violet-600 transition-colors hover:scale-110"> {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />} </button>
           <div className={`px-5 pt-6 pb-2 shrink-0 ${collapsed ? 'flex flex-col items-center' : ''}`}>
              <div onClick={goHome} className={`w-full flex items-center py-2.5 px-4 transition-all duration-300 text-left group cursor-pointer rounded-2xl text-slate-600 hover:text-[#2E1065] hover:-translate-y-0.5 ${collapsed ? 'justify-center px-0' : ''}`}>
@@ -655,8 +679,8 @@ export default function App() {
                           ? 'scale-110' 
                           : 'text-slate-700 group-hover:text-violet-600'
                       }`}> 
-                        {/* ВСЕГДА: Микро-блестки вокруг иконки (как у сундука и подарка) */}
-                        {!module.locked && [...Array(30)].map((_, i) => {
+                        {/* Микро-блестки ТОЛЬКО у активного раскрытого модуля */}
+                        {!module.locked && expandedModuleId === module.id && [...Array(30)].map((_, i) => {
                           const angle = (i * 12 * Math.PI) / 180;
                           const distance = 14 + Math.random() * 6;
                           const x = Math.cos(angle) * distance;
@@ -689,8 +713,8 @@ export default function App() {
                           );
                         })}
                         
-                        {/* ВСЕГДА: Мерцающее свечение */}
-                        {!module.locked && (
+                        {/* Мерцающее свечение ТОЛЬКО у активного раскрытого модуля */}
+                        {!module.locked && expandedModuleId === module.id && (
                           <motion.div
                             className="absolute w-7 h-7 rounded-full"
                             style={{
@@ -711,55 +735,19 @@ export default function App() {
                           />
                         )}
                         
-                        {/* ПРИ КЛИКЕ: Облачко + крупные звездочки */}
+                        {/* Облачко ТОЛЬКО у активного раскрытого модуля */}
                         {expandedModuleId === module.id && (
                           <>
                             {/* Облачко под иконкой */}
                             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-12 bg-gradient-to-br from-pink-200/90 via-violet-200/90 to-fuchsia-200/90 rounded-[2rem] blur-xl animate-pulse z-[-1]"></div>
                             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-14 bg-gradient-to-br from-amber-200/50 via-yellow-200/50 to-amber-300/50 rounded-[2.5rem] blur-2xl z-[-2]"></div>
-                            
-                            {/* Крупные звездочки */}
-                            {[...Array(6)].map((_, i) => {
-                              const angle = (i * 60 * Math.PI) / 180;
-                              const distance = 24;
-                              const x = Math.cos(angle) * distance;
-                              const y = Math.sin(angle) * distance;
-                              
-                              return (
-                                <motion.div
-                                  key={`spark${i}`}
-                                  className="absolute w-4 h-4"
-                                  style={{
-                                    left: `calc(50% + ${x}px)`,
-                                    top: `calc(50% + ${y}px)`,
-                                  }}
-                                  animate={{
-                                    opacity: [0, 1, 0],
-                                    scale: [0, 1.8, 0],
-                                    rotate: [0, 180, 360],
-                                  }}
-                                  transition={{
-                                    duration: 1.5,
-                                    delay: i * 0.1,
-                                    ease: 'easeOut',
-                                  }}
-                                >
-                                  <svg width="100%" height="100%" viewBox="0 0 10 10">
-                                    <path
-                                      d="M5 0 L5.5 4.5 L10 5 L5.5 5.5 L5 10 L4.5 5.5 L0 5 L4.5 4.5 Z"
-                                      fill={i % 2 === 0 ? '#f9a8d4' : '#ec4899'}
-                                    />
-                                  </svg>
-                                </motion.div>
-                              );
-                            })}
                           </>
                         )}
                         
-                        {/* ВСЕГДА: Floating анимация для иконки */}
+                        {/* Floating анимация ТОЛЬКО у активного раскрытого модуля */}
                         <motion.div
                           className="relative z-10"
-                          animate={!module.locked ? {
+                          animate={!module.locked && expandedModuleId === module.id ? {
                             y: [0, -3, 0],
                             rotate: [-1, 1, -1],
                           } : {}}
@@ -809,7 +797,23 @@ export default function App() {
               </div>
             )}
           </div>
-          <div className="p-6 shrink-0">
+          <div className="p-6 shrink-0 space-y-3">
+            {/* Admin Mode Toggle Button (Only for Admins) */}
+            <motion.button
+              onClick={() => setIsAdminMode(!isAdminMode)}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all ${
+                isAdminMode
+                  ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg'
+                  : 'bg-white/40 hover:bg-white/60 text-slate-700'
+              } ${collapsed ? 'justify-center' : ''}`}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              title="Админ-панель"
+            >
+              <Shield size={20} />
+              {!collapsed && <span className="text-sm">{isAdminMode ? 'Выйти из админки' : 'Админ-панель'}</span>}
+            </motion.button>
+            
             <div className={`flex items-center p-2 rounded-[2rem] bg-white/40 backdrop-blur-md border border-white/40 shadow-sm ${collapsed ? 'justify-center w-14 h-14 p-0 mx-auto' : ''}`}>
               <img src={USER_DATA.avatar} className="w-10 h-10 rounded-full bg-indigo-100 object-cover border-2 border-white" alt="User" />
               {!collapsed && ( <div className="ml-3 overflow-hidden"> <div className="text-sm font-bold text-slate-800 truncate">{USER_DATA.name}</div> <div className="text-[10px] font-bold text-violet-600 uppercase tracking-wider">Архитектор</div> </div> )}
@@ -871,5 +875,19 @@ export default function App() {
         </main>
       </div>
     </div>
+  );
+}
+
+// Export AppContent for use within RouterProvider (e.g., HomePage)
+export { AppContent };
+
+// Wrapper with AuthProvider and BrowserRouter for cases where App is rendered outside RouterProvider (preview mode)
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

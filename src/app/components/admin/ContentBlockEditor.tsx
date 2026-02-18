@@ -7,12 +7,19 @@ import {
   FileText, 
   Image as ImageIcon, 
   Headphones,
+  Type,
+  MousePointer,
+  Columns,
+  FileImage,
+  Smile,
+  ChevronDown,
 } from 'lucide-react';
 import { DraggableBlock } from './DraggableBlock';
+import { motion, AnimatePresence } from 'motion/react';
 
 export interface ContentBlock {
   id: string;
-  type: 'text' | 'video' | 'audio' | 'image';
+  type: 'text' | 'video' | 'audio' | 'image' | 'heading' | 'button' | 'columns' | 'text-image' | 'icon';
   content: string;
   order: number;
 }
@@ -20,10 +27,12 @@ export interface ContentBlock {
 interface ContentBlockEditorProps {
   blocks: ContentBlock[];
   onChange: (blocks: ContentBlock[]) => void;
+  deviceType?: 'desktop' | 'tablet' | 'mobile';
 }
 
-export function ContentBlockEditor({ blocks, onChange }: ContentBlockEditorProps) {
+export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }: ContentBlockEditorProps) {
   const [localBlocks, setLocalBlocks] = useState<ContentBlock[]>(blocks);
+  const [showElementMenu, setShowElementMenu] = useState(false);
 
   useEffect(() => {
     onChange(localBlocks);
@@ -37,6 +46,7 @@ export function ContentBlockEditor({ blocks, onChange }: ContentBlockEditorProps
       order: localBlocks.length,
     };
     setLocalBlocks([...localBlocks, newBlock]);
+    setShowElementMenu(false);
   };
 
   const updateBlock = (id: string, content: string) => {
@@ -96,47 +106,82 @@ export function ContentBlockEditor({ blocks, onChange }: ContentBlockEditorProps
     setLocalBlocks(newBlocks);
   };
 
+  // Массив доступных элементов
+  const elementTypes = [
+    { type: 'text' as const, label: 'Текст', icon: FileText, color: 'text-slate-700' },
+    { type: 'heading' as const, label: 'Заголовок', icon: Type, color: 'text-slate-700' },
+    { type: 'button' as const, label: 'Кнопка', icon: MousePointer, color: 'text-slate-700' },
+    { type: 'columns' as const, label: 'Колонки', icon: Columns, color: 'text-slate-700' },
+    { type: 'image' as const, label: 'Картинка', icon: ImageIcon, color: 'text-slate-700' },
+    { type: 'text-image' as const, label: 'Текст + Картинка', icon: FileImage, color: 'text-slate-700' },
+    { type: 'icon' as const, label: 'Иконка', icon: Smile, color: 'text-slate-700' },
+    { type: 'video' as const, label: 'Видео', icon: Video, color: 'text-slate-700' },
+    { type: 'audio' as const, label: 'Аудио', icon: Headphones, color: 'text-slate-700' },
+  ];
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="space-y-4">
         {/* Добавление блоков */}
         <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex gap-2 flex-wrap">
+          <div className="relative">
             <button
               type="button"
-              onClick={() => addBlock('text')}
-              className="flex items-center gap-2 px-4 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-lg transition-colors font-semibold"
+              onClick={() => setShowElementMenu(!showElementMenu)}
+              className={`flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all ${
+                deviceType === 'mobile' ? 'text-sm px-4 py-2' : ''
+              }`}
             >
-              <FileText size={18} />
-              Добавить текст
+              <Plus size={deviceType === 'mobile' ? 16 : 20} />
+              {deviceType === 'mobile' ? 'Добавить' : 'Добавить элемент'}
+              <ChevronDown size={deviceType === 'mobile' ? 14 : 18} className={`transition-transform ${showElementMenu ? 'rotate-180' : ''}`} />
             </button>
-            <button
-              type="button"
-              onClick={() => addBlock('video')}
-              className="flex items-center gap-2 px-4 py-2 bg-fuchsia-100 hover:bg-fuchsia-200 text-fuchsia-700 rounded-lg transition-colors font-semibold"
-            >
-              <Video size={18} />
-              Добавить видео
-            </button>
-            <button
-              type="button"
-              onClick={() => addBlock('audio')}
-              className="flex items-center gap-2 px-4 py-2 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 rounded-lg transition-colors font-semibold"
-            >
-              <Headphones size={18} />
-              Добавить аудио
-            </button>
-            <button
-              type="button"
-              onClick={() => addBlock('image')}
-              className="flex items-center gap-2 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg transition-colors font-semibold"
-            >
-              <ImageIcon size={18} />
-              Добавить изображение
-            </button>
+
+            {/* Выпадающее меню элементов */}
+            <AnimatePresence>
+              {showElementMenu && (
+                <>
+                  {/* Overlay для закрытия меню */}
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowElementMenu(false)}
+                  />
+                  
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className={`absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-50 max-h-96 overflow-y-auto ${
+                      deviceType === 'mobile' ? 'w-64' : 'w-80'
+                    }`}
+                  >
+                    {elementTypes.map((element) => {
+                      const Icon = element.icon;
+                      return (
+                        <button
+                          key={element.type}
+                          type="button"
+                          onClick={() => addBlock(element.type)}
+                          className={`w-full flex items-center gap-3 hover:bg-blue-50 transition-colors text-left border-b border-dashed border-slate-200 last:border-b-0 ${
+                            deviceType === 'mobile' ? 'px-3 py-2' : 'px-4 py-3'
+                          }`}
+                        >
+                          <Icon size={deviceType === 'mobile' ? 16 : 20} className={element.color} />
+                          <span className={`text-slate-700 font-medium ${deviceType === 'mobile' ? 'text-sm' : ''}`}>{element.label}</span>
+                        </button>
+                      );
+                    })}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
+
           {localBlocks.length > 0 && (
-            <div className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-semibold text-sm">
+            <div className={`px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-semibold ${
+              deviceType === 'mobile' ? 'text-xs' : 'text-sm'
+            }`}>
               📦 Блоков: {localBlocks.length}
             </div>
           )}
@@ -151,22 +196,32 @@ export function ContentBlockEditor({ blocks, onChange }: ContentBlockEditorProps
               <p className="text-slate-500 text-sm">Добавьте первый блок контента выше 👆</p>
             </div>
           ) : (
-            localBlocks.map((block, index) => (
-              <DraggableBlock
-                key={block.id}
-                block={block}
-                index={index}
-                moveBlock={moveBlockDnd}
-                updateBlock={updateBlock}
-                deleteBlock={deleteBlock}
-                copyBlock={copyBlock}
-                moveBlockByButton={moveBlock}
-                isFirst={index === 0}
-                isLast={index === localBlocks.length - 1}
-                quillModules={{}}
-                quillFormats={[]}
-              />
-            ))
+            <AnimatePresence>
+              {localBlocks.map((block, index) => (
+                <motion.div
+                  key={block.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <DraggableBlock
+                    key={block.id}
+                    block={block}
+                    index={index}
+                    moveBlock={moveBlockDnd}
+                    updateBlock={updateBlock}
+                    deleteBlock={deleteBlock}
+                    copyBlock={copyBlock}
+                    moveBlockByButton={moveBlock}
+                    isFirst={index === 0}
+                    isLast={index === localBlocks.length - 1}
+                    quillModules={{}}
+                    quillFormats={[]}
+                    deviceType={deviceType}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           )}
         </div>
       </div>

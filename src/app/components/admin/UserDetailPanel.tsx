@@ -26,12 +26,17 @@ import {
   BookOpen,
   Lock,
   Unlock,
-  Search
+  Search,
+  Eye,
+  Send,
+  AlertCircle
 } from 'lucide-react';
 import { getTariffLabel } from '../../config/tariffs';
 import type { TariffKey } from '../../config/tariffs';
 import { ChatWindow } from './ChatWindow';
+import { USER_ACTIVITIES } from '../../data/mockActivityData';
 import { toast } from 'sonner';
+import { EmailComposerModal, type EmailLogEntry } from './EmailComposerModal';
 
 interface User {
   id: string;
@@ -65,7 +70,11 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
   const [showSubscriptions, setShowSubscriptions] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [showEmailComposer, setShowEmailComposer] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [emailLogs, setEmailLogs] = useState<EmailLogEntry[]>([]);
   const [isManager, setIsManager] = useState(user?.role === 'manager');
+  const [activityTab, setActivityTab] = useState<'log' | 'checklist'>('log');
 
   // Состояния для редактируемых полей
   const [firstName, setFirstName] = useState(user?.name.split(' ')[0] || '');
@@ -120,7 +129,7 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
         { id: 'lesson-3-1', title: 'Урок 3.1: Структура бизнес-системы', minTariff: 'standard' },
         { id: 'lesson-3-2', title: 'Урок 3.2: Автоматизация процессов', minTariff: 'standard' },
         { id: 'lesson-3-3', title: 'Урок 3.3: Разбор вашей системы с куратором', minTariff: 'curator' },
-        { id: 'lesson-3-4', title: 'Урок 3.4: Оптимиза��ия бизнес-процессов', minTariff: 'curator' },
+        { id: 'lesson-3-4', title: 'Урок 3.4: Оптимизация бизнес-процессов', minTariff: 'curator' },
         { id: 'lesson-3-5', title: 'Урок 3.5: Индивидуальная бизнес-система', minTariff: 'mentor' },
         { id: 'lesson-3-6', title: 'Урок 3.6: Стратегия роста с наставником', minTariff: 'mentor' },
       ],
@@ -194,7 +203,6 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
 
     if (currentLevel > prevLevel) {
       // АПГРЕЙД: Добавляем только НОВЫЕ уроки
-      // АПГРЕЙД: Добавля��м только НОВЫЕ уроки
       const newLessons = currentAvailableLessons.filter(id => !prevAvailableLessons.includes(id));
       
       if (newLessons.length > 0 && accessType === 'lessons') {
@@ -256,6 +264,11 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
       onUpdate(user.id, updatedData);
     }
 
+    // Показываем уведомление об успешном сохранении
+    toast.success('Изменения сохранены', {
+      description: `Профиль пользователя ${firstName} ${lastName} успешно обновлён`,
+    });
+
     setIsEditing(false);
 
   };
@@ -270,54 +283,92 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
     setShowActionsMenu(false);
   };
 
-  // История активности
-  const activityHistory = [
-    {
-      id: '1',
-      type: 'lesson',
-      title: 'Завершил урок "Основы аутентичного маркетинга"',
-      date: '2026-02-09 14:30',
-      icon: CheckCircle,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-    },
-    {
-      id: '2',
-      type: 'payment',
-      title: `Оплата тарифа "${getTariffLabel(user.tariff)}"`,
-      date: '2026-02-05 10:15',
-      icon: DollarSign,
-      color: 'text-violet-600',
-      bgColor: 'bg-violet-50',
-    },
-    {
-      id: '3',
-      type: 'login',
-      title: 'Вход в систему',
-      date: '2026-02-08 09:45',
-      icon: LogIn,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-    },
-    {
-      id: '4',
-      type: 'lesson',
-      title: 'Начал модуль "AI-агенты в бизнесе"',
-      date: '2026-02-07 16:20',
-      icon: Activity,
-      color: 'text-cyan-600',
-      bgColor: 'bg-cyan-50',
-    },
-    {
-      id: '5',
-      type: 'registration',
-      title: 'Регистрация на платформе',
-      date: user.registeredAt + ' 12:00',
-      icon: Users,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-    },
-  ];
+  // История активности - сортируем от новых к старым
+  const userActivities = (USER_ACTIVITIES[user?.id as keyof typeof USER_ACTIVITIES] || [])
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'lesson_complete':
+        return { Icon: CheckCircle, color: 'text-green-600', bgColor: 'bg-green-50' };
+      case 'lesson_view':
+        return { Icon: Eye, color: 'text-blue-600', bgColor: 'bg-blue-50' };
+      case 'payment':
+        return { Icon: DollarSign, color: 'text-purple-600', bgColor: 'bg-purple-50' };
+      case 'login':
+        return { Icon: LogIn, color: 'text-indigo-600', bgColor: 'bg-indigo-50' };
+      case 'module_start':
+        return { Icon: Activity, color: 'text-cyan-600', bgColor: 'bg-cyan-50' };
+      case 'registration':
+        return { Icon: Users, color: 'text-violet-600', bgColor: 'bg-violet-50' };
+      default:
+        return { Icon: Activity, color: 'text-slate-600', bgColor: 'bg-slate-50' };
+    }
+  };
+
+  const formatActivityTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('ru-RU', { 
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit', 
+      minute: '2-digit'
+    });
+  };
+
+  const formatDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins} мин ${secs} сек`;
+  };
+
+  const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('ru-RU', { 
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  };
+
+  const formatTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('ru-RU', { 
+      hour: '2-digit', 
+      minute: '2-digit'
+    });
+  };
+
+  // Создание чек-листа прогресса
+  const createLessonsChecklist = () => {
+    // Получаем все lesson_view активности (когда урок был открыт)
+    const viewedLessons = userActivities
+      .filter(activity => activity.type === 'lesson_view')
+      .map(activity => activity.resource);
+    
+    // Получаем все lesson_complete активности
+    const completedLessons = userActivities
+      .filter(activity => activity.type === 'lesson_complete')
+      .map(activity => activity.resource);
+
+    // Создаем список всех уроков из модулей
+    const allLessons = modulesData.flatMap(module => 
+      module.lessons.map(lesson => ({
+        moduleTitle: module.title,
+        lessonTitle: lesson.title,
+        status: completedLessons.includes(lesson.title) ? 'completed' : 
+                viewedLessons.includes(lesson.title) ? 'started' : 'not-started'
+      }))
+    );
+
+    return allLessons;
+  };
+
+  const lessonsChecklist = createLessonsChecklist();
+  const completedCount = lessonsChecklist.filter(l => l.status === 'completed').length;
+  const startedCount = lessonsChecklist.filter(l => l.status === 'started').length;
+  const notStartedCount = lessonsChecklist.filter(l => l.status === 'not-started').length;
 
   return (
     <>
@@ -393,22 +444,13 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleAction('Отправить письмо на почту');
+                            setShowEmailComposer(true);
+                            setShowActionsMenu(false);
                           }}
                           className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left"
                         >
                           <Mail size={18} className="text-green-600" />
                           <span className="text-sm text-slate-700">Отправить письмо на почту</span>
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleAction('Отправить письмо повторно');
-                          }}
-                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left"
-                        >
-                          <Mail size={18} className="text-emerald-600" />
-                          <span className="text-sm text-slate-700">Отправить письмо повторно</span>
                         </button>
                         <button
                           onClick={(e) => {
@@ -423,7 +465,8 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleAction('Изменить пароль');
+                            setShowPasswordModal(true);
+                            setShowActionsMenu(false);
                           }}
                           className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left"
                         >
@@ -924,38 +967,224 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
               )}
 
               {/* История активности */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-slate-800 mb-6">История активности</h3>
-                
-                <div className="space-y-3">
-                  {activityHistory.map((activity, idx) => {
-                    const Icon = activity.icon;
-                    return (
-                      <motion.div
-                        key={activity.id}
-                        className="bg-slate-50 rounded-xl p-4 hover:shadow-md transition-shadow"
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.05 }}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 rounded-xl ${activity.bgColor}`}>
-                            <Icon size={20} className={activity.color} />
-                          </div>
-                          <div className="flex-1">
-                            <p className="text-sm font-semibold text-slate-800">{activity.title}</p>
-                            <p className="text-xs text-slate-500 mt-1">{activity.date}</p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                {/* Tabs */}
+                <div className="flex border-b border-slate-200">
+                  <button
+                    onClick={() => setActivityTab('log')}
+                    className={`flex-1 px-6 py-3 font-medium text-sm transition-all ${
+                      activityTab === 'log'
+                        ? 'text-violet-600 border-b-2 border-violet-600 bg-violet-50/30'
+                        : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                    }`}
+                  >
+                    Лог активности
+                  </button>
+                  <button
+                    onClick={() => setActivityTab('checklist')}
+                    className={`flex-1 px-6 py-3 font-medium text-sm transition-all ${
+                      activityTab === 'checklist'
+                        ? 'text-violet-600 border-b-2 border-violet-600 bg-violet-50/30'
+                        : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                    }`}
+                  >
+                    Чек-лист прогресса
+                  </button>
                 </div>
 
-                {activityHistory.length === 0 && (
+                <div className="p-6">
+                  {/* Лог активности */}
+                  {activityTab === 'log' && (
+                    <div className="space-y-2">
+                      {userActivities.map((activity, idx) => {
+                        const { Icon, color, bgColor } = getActivityIcon(activity.type);
+                        return (
+                          <motion.div
+                            key={activity.id}
+                            className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors"
+                            initial={{ opacity: 0, y: -5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: idx * 0.02 }}
+                          >
+                            <div className={`p-2 rounded-lg ${bgColor} flex-shrink-0`}>
+                              <Icon size={16} className={color} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-slate-800">
+                                {activity.action}
+                              </p>
+                              <p className="text-xs text-slate-600">
+                                {activity.resource}
+                                {activity.duration && ` • ${formatDuration(activity.duration)}`}
+                              </p>
+                            </div>
+                            <div className="text-right flex-shrink-0">
+                              <p className="text-xs text-slate-500">
+                                {formatDate(activity.timestamp)}
+                              </p>
+                              <p className="text-xs text-slate-600 font-medium">
+                                {formatTime(activity.timestamp)}
+                              </p>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
+
+                      {userActivities.length === 0 && (
+                        <div className="text-center py-12">
+                          <Activity size={48} className="mx-auto text-slate-300 mb-3" />
+                          <p className="text-slate-500">История активности пуста</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Чек-лист прогресса */}
+                  {activityTab === 'checklist' && (
+                    <div className="space-y-4">
+                      {/* Статистика */}
+                      <div className="grid grid-cols-3 gap-3 mb-6">
+                        <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                          <p className="text-xs text-green-600 mb-1">Завершено</p>
+                          <p className="text-2xl font-bold text-green-700">{completedCount}</p>
+                        </div>
+                        <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                          <p className="text-xs text-blue-600 mb-1">Начато</p>
+                          <p className="text-2xl font-bold text-blue-700">{startedCount}</p>
+                        </div>
+                        <div className="p-3 bg-slate-50 rounded-lg border border-slate-200">
+                          <p className="text-xs text-slate-600 mb-1">Не начато</p>
+                          <p className="text-2xl font-bold text-slate-700">{notStartedCount}</p>
+                        </div>
+                      </div>
+
+                      {/* Список уроков */}
+                      <div className="space-y-3">
+                        {modulesData.map((module, moduleIdx) => {
+                          const moduleLessons = lessonsChecklist.filter(
+                            l => l.moduleTitle === module.title
+                          );
+                          
+                          return (
+                            <div key={moduleIdx} className="border border-slate-200 rounded-lg overflow-hidden">
+                              <div className="bg-slate-50 px-4 py-2 border-b border-slate-200">
+                                <h4 className="text-sm font-semibold text-slate-800">{module.title}</h4>
+                              </div>
+                              <div className="p-3 space-y-2">
+                                {moduleLessons.map((lesson, lessonIdx) => (
+                                  <div
+                                    key={lessonIdx}
+                                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 transition-colors"
+                                  >
+                                    {lesson.status === 'completed' ? (
+                                      <CheckCircle size={18} className="text-green-600 flex-shrink-0" />
+                                    ) : lesson.status === 'started' ? (
+                                      <div className="w-[18px] h-[18px] rounded-full border-2 border-blue-600 flex items-center justify-center flex-shrink-0">
+                                        <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+                                      </div>
+                                    ) : (
+                                      <div className="w-[18px] h-[18px] rounded-full border-2 border-slate-300 flex-shrink-0"></div>
+                                    )}
+                                    <span className={`text-sm flex-1 ${
+                                      lesson.status === 'completed' ? 'text-slate-500 line-through' :
+                                      lesson.status === 'started' ? 'text-slate-800 font-medium' :
+                                      'text-slate-600'
+                                    }`}>
+                                      {lesson.lessonTitle}
+                                    </span>
+                                    {lesson.status === 'completed' && (
+                                      <span className="text-xs text-green-600 font-medium">Завершено</span>
+                                    )}
+                                    {lesson.status === 'started' && (
+                                      <span className="text-xs text-blue-600 font-medium">В процессе</span>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* История Email */}
+              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-slate-800">История Email</h3>
+                  <button
+                    onClick={() => setShowEmailComposer(true)}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-lg text-sm font-semibold transition-colors"
+                  >
+                    <Send size={16} />
+                    Написать
+                  </button>
+                </div>
+                
+                <div className="space-y-3">
+                  {emailLogs.map((email, idx) => (
+                    <motion.div
+                      key={email.id}
+                      className="rounded-xl p-4 border border-slate-200 bg-slate-50/30 hover:bg-slate-50 transition-all"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`p-2 rounded-lg flex-shrink-0 ${
+                          email.status === 'delivered' ? 'bg-green-100' :
+                          email.status === 'sent' ? 'bg-blue-100' :
+                          email.status === 'queued' ? 'bg-yellow-100' :
+                          'bg-red-100'
+                        }`}>
+                          <Mail size={18} className={
+                            email.status === 'delivered' ? 'text-green-600' :
+                            email.status === 'sent' ? 'text-blue-600' :
+                            email.status === 'queued' ? 'text-yellow-600' :
+                            'text-red-600'
+                          } />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-semibold text-sm text-slate-800 truncate">{email.subject}</h4>
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ${
+                              email.status === 'delivered' ? 'bg-green-100 text-green-700' :
+                              email.status === 'sent' ? 'bg-blue-100 text-blue-700' :
+                              email.status === 'queued' ? 'bg-yellow-100 text-yellow-700' :
+                              'bg-red-100 text-red-700'
+                            }`}>
+                              {email.status === 'delivered' ? 'Доставлено' :
+                               email.status === 'sent' ? 'Отправлено' :
+                               email.status === 'queued' ? 'В очереди' :
+                               'Ошибка'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500 mb-2">
+                            Кому: {email.to} • {formatActivityTime(email.sentAt)}
+                          </p>
+                          <div 
+                            className="text-xs text-slate-600 line-clamp-2" 
+                            dangerouslySetInnerHTML={{ __html: email.body }}
+                          />
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {emailLogs.length === 0 && (
                   <div className="text-center py-12">
-                    <Activity size={48} className="mx-auto text-slate-300 mb-3" />
-                    <p className="text-slate-500">История активности пуста</p>
+                    <Mail size={48} className="mx-auto text-slate-300 mb-3" />
+                    <p className="text-slate-500 mb-4">Email-переписка не начата</p>
+                    <button
+                      onClick={() => setShowEmailComposer(true)}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-sm font-semibold transition-colors"
+                    >
+                      <Send size={16} />
+                      Отправить первое письмо
+                    </button>
                   </div>
                 )}
               </div>
@@ -1223,6 +1452,34 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
         )}
       </AnimatePresence>
 
+      {/* Email Composer Modal */}
+      <EmailComposerModal
+        isOpen={showEmailComposer}
+        onClose={() => setShowEmailComposer(false)}
+        recipientEmail={user.email}
+        recipientName={user.name}
+        userId={user.id}
+        onEmailSent={(emailData) => {
+          setEmailLogs((prev) => [emailData, ...prev]);
+          toast.success('Email отправлен', {
+            description: 'Письмо успешно добавлено в очередь отправки',
+          });
+        }}
+      />
+
+      {/* Password Change Modal */}
+      <PasswordChangeModal
+        isOpen={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+        user={user}
+        onPasswordChanged={(newPassword) => {
+          toast.success('Пароль изменён', {
+            description: `Новый пароль для ${user.name}: ${newPassword}`,
+            duration: 5000,
+          });
+        }}
+      />
+
       {/* Chat Window - Outside main AnimatePresence to avoid conflicts */}
       <AnimatePresence mode="wait">
         {showChat && (
@@ -1233,5 +1490,238 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+// Password Change Modal Component
+interface PasswordChangeModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  user: User;
+  onPasswordChanged: (newPassword: string) => void;
+}
+
+function PasswordChangeModal({ isOpen, onClose, user, onPasswordChanged }: PasswordChangeModalProps) {
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [sendEmail, setSendEmail] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const generatePassword = () => {
+    setIsGenerating(true);
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%&*';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setNewPassword(password);
+    setConfirmPassword(password);
+    setTimeout(() => setIsGenerating(false), 300);
+  };
+
+  const handleSubmit = () => {
+    if (!newPassword) {
+      toast.error('Введите новый пароль');
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.error('Пароль должен содержать минимум 6 символов');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error('Пароли не совпадают');
+      return;
+    }
+
+    onPasswordChanged(newPassword);
+    
+    if (sendEmail) {
+      toast.info('Email с новым паролем отправлен', {
+        description: `Письмо отправлено на ${user.email}`,
+      });
+    }
+
+    setNewPassword('');
+    setConfirmPassword('');
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9998] flex items-center justify-center p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <motion.div
+          className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden"
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.9, y: 20 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-purple-600 to-violet-600 px-6 py-4 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-2 left-4 w-1 h-1 bg-white rounded-full animate-pulse"></div>
+              <div className="absolute top-6 right-8 w-1 h-1 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <div className="absolute bottom-3 left-12 w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            </div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Key size={20} className="text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-white">Изменить пароль</h2>
+                  <p className="text-sm text-purple-100">{user.name}</p>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              >
+                <X size={20} className="text-white" />
+              </button>
+            </div>
+          </div>
+
+          {/* Body */}
+          <div className="p-6 space-y-4">
+            {/* User Info */}
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+              <div className="flex items-center gap-3">
+                <Mail size={16} className="text-slate-400" />
+                <div>
+                  <p className="text-xs text-slate-500">Email пользователя</p>
+                  <p className="text-sm font-medium text-slate-700">{user.email}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* New Password */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Новый пароль
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Введите новый пароль"
+                  className="w-full px-4 py-3 pr-24 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-400"
+                >
+                  {showPassword ? '👁️' : '👁️‍🗨️'}
+                </button>
+              </div>
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Подтвердите пароль
+              </label>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Повторите пароль"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 text-sm"
+              />
+            </div>
+
+            {/* Generate Password Button */}
+            <motion.button
+              type="button"
+              onClick={generatePassword}
+              disabled={isGenerating}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors text-sm font-medium text-slate-700"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <motion.div
+                animate={isGenerating ? { rotate: 360 } : {}}
+                transition={{ duration: 0.5, ease: 'linear' }}
+              >
+                🎲
+              </motion.div>
+              {isGenerating ? 'Генерация...' : 'Сгенерировать случайный пароль'}
+            </motion.button>
+
+            {/* Send Email Checkbox */}
+            <label className="flex items-start gap-3 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={sendEmail}
+                  onChange={(e) => setSendEmail(e.target.checked)}
+                  className="w-5 h-5 rounded border-2 border-slate-300 checked:bg-purple-600 checked:border-purple-600 cursor-pointer"
+                />
+                {sendEmail && (
+                  <CheckCircle size={14} className="absolute text-white pointer-events-none" />
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-700 group-hover:text-purple-600 transition-colors">
+                  Отправить новый пароль на email
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Пользователь получит письмо с новым паролем на {user.email}
+                </p>
+              </div>
+            </label>
+
+            {/* Warning */}
+            {newPassword && newPassword.length < 6 && (
+              <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 flex items-start gap-2">
+                <AlertCircle size={16} className="text-orange-600 mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-orange-700">
+                  Пароль должен содержать минимум 6 символов
+                </p>
+              </div>
+            )}
+
+            {newPassword && confirmPassword && newPassword !== confirmPassword && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-3 flex items-start gap-2">
+                <X size={16} className="text-red-600 mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-red-700">
+                  Пароли не совпадают
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex gap-3">
+            <button
+              onClick={onClose}
+              className="flex-1 px-4 py-3 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-colors text-sm font-medium text-slate-700"
+            >
+              Отмена
+            </button>
+            <motion.button
+              onClick={handleSubmit}
+              disabled={!newPassword || newPassword !== confirmPassword || newPassword.length < 6}
+              className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 disabled:from-slate-300 disabled:to-slate-400 rounded-xl transition-all text-sm font-medium text-white shadow-lg disabled:shadow-none"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              Изменить пароль
+            </motion.button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 }

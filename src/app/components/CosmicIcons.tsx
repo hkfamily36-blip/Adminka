@@ -143,7 +143,7 @@ export const FunnelIcon = ({ size = 24, className = "" }: { size?: number; class
       strokeLinejoin="round"
     />
     
-    {/* Горизо��тальные уровни (этапы воронки) */}
+    {/* Горизонтальные уровни (этапы воронки) */}
     <path d="M5 6 L19 6" stroke="currentColor" strokeWidth="1" opacity="0.4" />
     <path d="M8 9 L16 9" stroke="currentColor" strokeWidth="1" opacity="0.4" />
     <path d="M10 12 L14 12" stroke="currentColor" strokeWidth="1" opacity="0.4" />

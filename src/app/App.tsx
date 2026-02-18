@@ -159,7 +159,7 @@ const getLessonTypeConfig = (type: string) => {
     case 'video': return { icon: Video, label: 'Видео' };
     case 'audio': return { icon: Headphones, label: 'Аудио' };
     case 'test': return { icon: ClipboardList, label: 'Тест' };
-    case 'text': return { icon: AlignLeft, label: 'Инстр��кция' };
+    case 'text': return { icon: AlignLeft, label: 'Инструкция' };
     default: return { icon: FileText, label: 'Урок' };
   }
 };
@@ -205,10 +205,10 @@ const MODULES = [
   { id: 3, title: "3. Продукты и Метод", desc: "Визуальная упаковка.", 
     detailedDesc: `<h3>Глава 3. Продукт — это не то, что вы продаёте</h3>
     <p>Продукт — это трансформация, которую получает клиент. Не ваши часы работы, не количество уроков или встреч. А изменение, которое происходит в жизни человека после работы с вами.</p>
-    <p>В этом модуле мы упаковываем ваш опыт и экспертизу в понятный, структуриро��анный продукт. Создаём метод, который можно тиражировать. И делаем это так, чтобы клиенты сразу понимали ценность.</p>
+    <p>В этом модуле мы упаковываем ваш опыт и экспертизу в понятный, структурированный продукт. Создаём ме��од, который можно тиражировать. И делаем это так, чтобы клиенты сразу понимали ценность.</p>
     <p>Хороший продукт продаёт себя сам. Потому что он решает реальную проблему и делает это лучше, чем альтернативы.</p>`,
     locked: false, progress: 0, icon: ProductIcon, image: "from-[#701a75] to-[#c026d3]", lessons: [] },
-  { id: 4, title: "4. Воронка продаж", desc: "Сист������мное привлечение.", 
+  { id: 4, title: "4. Воронка продаж", desc: "Системное привлечение.", 
     detailedDesc: `<h3>Глава 4. Воронка — система, а не случайность</h3>
     <p>Многие надеются на «сарафанное радио» и случайные рекомендации. Но когда хочешь роста, нужна система. Воронка продаж — это именно она.</p>
     <p>Воронка — это путь, который проходит человек от момента «я о вас ничего не знаю» до «я хочу с вами работать и готов платить». И этот путь можно и нужно проектировать.</p>
@@ -623,9 +623,12 @@ function AppContent() {
   };
 
   // Render admin dashboard if in admin mode
+  // Admin dashboard is wrapped with AuthProvider for authentication context
   if (isAdminMode) {
     return (
-      <AdminDashboard onExit={() => setIsAdminMode(false)} />
+      <AuthProvider>
+        <AdminDashboard onExit={() => setIsAdminMode(false)} />
+      </AuthProvider>
     );
   }
 

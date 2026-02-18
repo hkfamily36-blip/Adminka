@@ -51,9 +51,151 @@ export interface Question {
 interface TestBuilderProps {
   questions: Question[];
   onChange: (questions: Question[]) => void;
+  deviceType?: 'desktop' | 'tablet' | 'mobile';
 }
 
-const ITEM_TYPE = 'TEST_QUESTION';
+export function TestBuilder({ questions, onChange, deviceType = 'desktop' }: TestBuilderProps) {
+  const [localQuestions, setLocalQuestions] = useState<Question[]>(questions);
+
+  useEffect(() => {
+    onChange(localQuestions);
+  }, [localQuestions]);
+
+  const addQuestion = (type: QuestionType) => {
+    const newQuestion: Question = {
+      id: `question-${Date.now()}`,
+      type,
+      title: '',
+      required: false,
+      order: localQuestions.length,
+      options: (type === 'single-choice' || type === 'multiple-choice' || type === 'dropdown') 
+        ? [{ id: `option-${Date.now()}`, text: '' }] 
+        : undefined,
+      scaleMin: type === 'scale' ? 1 : undefined,
+      scaleMax: type === 'scale' ? 5 : undefined,
+    };
+    setLocalQuestions([...localQuestions, newQuestion]);
+  };
+
+  const updateQuestion = (id: string, updates: Partial<Question>) => {
+    setLocalQuestions(localQuestions.map(q => 
+      q.id === id ? { ...q, ...updates } : q
+    ));
+  };
+
+  const deleteQuestion = (id: string) => {
+    setLocalQuestions(localQuestions.filter(q => q.id !== id));
+  };
+
+  const copyQuestion = (id: string) => {
+    const questionToCopy = localQuestions.find(q => q.id === id);
+    if (!questionToCopy) return;
+
+    const newQuestion: Question = {
+      ...questionToCopy,
+      id: `question-${Date.now()}`,
+      order: localQuestions.length,
+      options: questionToCopy.options?.map(opt => ({
+        ...opt,
+        id: `option-${Date.now()}-${Math.random()}`,
+      })),
+    };
+    setLocalQuestions([...localQuestions, newQuestion]);
+  };
+
+  const moveQuestion = (dragIndex: number, hoverIndex: number) => {
+    const newQuestions = [...localQuestions];
+    const draggedQuestion = newQuestions[dragIndex];
+    newQuestions.splice(dragIndex, 1);
+    newQuestions.splice(hoverIndex, 0, draggedQuestion);
+    
+    newQuestions.forEach((q, idx) => {
+      q.order = idx;
+    });
+    
+    setLocalQuestions(newQuestions);
+  };
+
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <div className="space-y-4">
+        {/* Кнопки добавления вопросов */}
+        <div className="flex gap-2 flex-wrap items-center">
+          <button
+            type="button"
+            onClick={() => addQuestion('single-choice')}
+            className="flex items-center gap-2 px-4 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-lg transition-colors font-semibold text-sm"
+          >
+            <Circle size={16} />
+            Один вариант
+          </button>
+          <button
+            type="button"
+            onClick={() => addQuestion('multiple-choice')}
+            className="flex items-center gap-2 px-4 py-2 bg-fuchsia-100 hover:bg-fuchsia-200 text-fuchsia-700 rounded-lg transition-colors font-semibold text-sm"
+          >
+            <Square size={16} />
+            Несколько вариантов
+          </button>
+          <button
+            type="button"
+            onClick={() => addQuestion('short-answer')}
+            className="flex items-center gap-2 px-4 py-2 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 rounded-lg transition-colors font-semibold text-sm"
+          >
+            <AlignLeft size={16} />
+            Короткий ответ
+          </button>
+          <button
+            type="button"
+            onClick={() => addQuestion('dropdown')}
+            className="flex items-center gap-2 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg transition-colors font-semibold text-sm"
+          >
+            <List size={16} />
+            Список
+          </button>
+          <button
+            type="button"
+            onClick={() => addQuestion('scale')}
+            className="flex items-center gap-2 px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition-colors font-semibold text-sm"
+          >
+            <Star size={16} />
+            Шкала
+          </button>
+          {localQuestions.length > 0 && (
+            <div className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-semibold text-sm ml-auto">
+              📝 Вопросов: {localQuestions.length}
+            </div>
+          )}
+        </div>
+
+        {/* Список вопросов */}
+        <div className="space-y-4">
+          {localQuestions.length === 0 ? (
+            <div className="text-center py-12 bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl border-2 border-dashed border-violet-200">
+              <List size={48} className="mx-auto mb-3 text-violet-400" />
+              <p className="text-violet-700 font-semibold mb-1">Создайте первый вопрос</p>
+              <p className="text-slate-500 text-sm">Выберите тип вопроса выше 👆</p>
+            </div>
+          ) : (
+            localQuestions.map((question, index) => (
+              <DraggableQuestion
+                key={question.id}
+                question={question}
+                index={index}
+                moveQuestion={moveQuestion}
+                updateQuestion={updateQuestion}
+                deleteQuestion={deleteQuestion}
+                copyQuestion={copyQuestion}
+                isFirst={index === 0}
+                isLast={index === localQuestions.length - 1}
+              />
+            ))
+          )}
+        </div>
+      </div>
+    </DndProvider>
+  );
+}
 
 function DraggableQuestion({
   question,
@@ -370,145 +512,4 @@ function DraggableQuestion({
   );
 }
 
-export function TestBuilder({ questions, onChange }: TestBuilderProps) {
-  const [localQuestions, setLocalQuestions] = useState<Question[]>(questions);
-
-  useEffect(() => {
-    onChange(localQuestions);
-  }, [localQuestions]);
-
-  const addQuestion = (type: QuestionType) => {
-    const newQuestion: Question = {
-      id: `question-${Date.now()}`,
-      type,
-      title: '',
-      required: false,
-      order: localQuestions.length,
-      options: (type === 'single-choice' || type === 'multiple-choice' || type === 'dropdown') 
-        ? [{ id: `option-${Date.now()}`, text: '' }] 
-        : undefined,
-      scaleMin: type === 'scale' ? 1 : undefined,
-      scaleMax: type === 'scale' ? 5 : undefined,
-    };
-    setLocalQuestions([...localQuestions, newQuestion]);
-  };
-
-  const updateQuestion = (id: string, updates: Partial<Question>) => {
-    setLocalQuestions(localQuestions.map(q => 
-      q.id === id ? { ...q, ...updates } : q
-    ));
-  };
-
-  const deleteQuestion = (id: string) => {
-    setLocalQuestions(localQuestions.filter(q => q.id !== id));
-  };
-
-  const copyQuestion = (id: string) => {
-    const questionToCopy = localQuestions.find(q => q.id === id);
-    if (!questionToCopy) return;
-
-    const newQuestion: Question = {
-      ...questionToCopy,
-      id: `question-${Date.now()}`,
-      order: localQuestions.length,
-      options: questionToCopy.options?.map(opt => ({
-        ...opt,
-        id: `option-${Date.now()}-${Math.random()}`,
-      })),
-    };
-    setLocalQuestions([...localQuestions, newQuestion]);
-  };
-
-  const moveQuestion = (dragIndex: number, hoverIndex: number) => {
-    const newQuestions = [...localQuestions];
-    const draggedQuestion = newQuestions[dragIndex];
-    newQuestions.splice(dragIndex, 1);
-    newQuestions.splice(hoverIndex, 0, draggedQuestion);
-    
-    newQuestions.forEach((q, idx) => {
-      q.order = idx;
-    });
-    
-    setLocalQuestions(newQuestions);
-  };
-
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="space-y-4">
-        {/* Кнопки добавления вопросов */}
-        <div className="flex gap-2 flex-wrap items-center">
-          <button
-            type="button"
-            onClick={() => addQuestion('single-choice')}
-            className="flex items-center gap-2 px-4 py-2 bg-violet-100 hover:bg-violet-200 text-violet-700 rounded-lg transition-colors font-semibold text-sm"
-          >
-            <Circle size={16} />
-            Один вариант
-          </button>
-          <button
-            type="button"
-            onClick={() => addQuestion('multiple-choice')}
-            className="flex items-center gap-2 px-4 py-2 bg-fuchsia-100 hover:bg-fuchsia-200 text-fuchsia-700 rounded-lg transition-colors font-semibold text-sm"
-          >
-            <Square size={16} />
-            Несколько вариантов
-          </button>
-          <button
-            type="button"
-            onClick={() => addQuestion('short-answer')}
-            className="flex items-center gap-2 px-4 py-2 bg-cyan-100 hover:bg-cyan-200 text-cyan-700 rounded-lg transition-colors font-semibold text-sm"
-          >
-            <AlignLeft size={16} />
-            Короткий ответ
-          </button>
-          <button
-            type="button"
-            onClick={() => addQuestion('dropdown')}
-            className="flex items-center gap-2 px-4 py-2 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-lg transition-colors font-semibold text-sm"
-          >
-            <List size={16} />
-            Список
-          </button>
-          <button
-            type="button"
-            onClick={() => addQuestion('scale')}
-            className="flex items-center gap-2 px-4 py-2 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition-colors font-semibold text-sm"
-          >
-            <Star size={16} />
-            Шкала
-          </button>
-          {localQuestions.length > 0 && (
-            <div className="px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-semibold text-sm ml-auto">
-              📝 Вопросов: {localQuestions.length}
-            </div>
-          )}
-        </div>
-
-        {/* Список вопросов */}
-        <div className="space-y-4">
-          {localQuestions.length === 0 ? (
-            <div className="text-center py-12 bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl border-2 border-dashed border-violet-200">
-              <List size={48} className="mx-auto mb-3 text-violet-400" />
-              <p className="text-violet-700 font-semibold mb-1">Создайте первый вопрос</p>
-              <p className="text-slate-500 text-sm">Выберите тип вопроса выше 👆</p>
-            </div>
-          ) : (
-            localQuestions.map((question, index) => (
-              <DraggableQuestion
-                key={question.id}
-                question={question}
-                index={index}
-                moveQuestion={moveQuestion}
-                updateQuestion={updateQuestion}
-                deleteQuestion={deleteQuestion}
-                copyQuestion={copyQuestion}
-                isFirst={index === 0}
-                isLast={index === localQuestions.length - 1}
-              />
-            ))
-          )}
-        </div>
-      </div>
-    </DndProvider>
-  );
-}
+const ITEM_TYPE = 'TEST_QUESTION';

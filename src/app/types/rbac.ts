@@ -1,6 +1,10 @@
 // RBAC Types and Permissions
 import type { TariffKey } from '../config/tariffs';
 
+// Роли для административной панели
+export type AdminRole = 'architect' | 'admin' | 'curator';
+
+// Роли для студентов (старая система)
 export type Role = 'super_admin' | 'manager' | 'user';
 
 export interface User {
@@ -21,6 +25,17 @@ export interface User {
   manager?: string;
   profession?: string;
   telegramNick?: string;
+}
+
+// Пользователь админ-панели
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: AdminRole;
+  addedAt: string;
+  lastActive: string;
 }
 
 export interface Permission {

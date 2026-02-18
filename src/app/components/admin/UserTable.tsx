@@ -20,11 +20,13 @@ import {
   Briefcase,
   Download,
   Upload,
-  FileSpreadsheet
+  FileSpreadsheet,
+  Activity
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { UserDetailPanel } from './UserDetailPanel';
 import { UserAvatar } from './UserAvatar';
+import { UserActivityModal } from './UserActivityModal';
 import type { User } from '../../types/rbac';
 import { getTariffLabel } from '../../config/tariffs';
 import type { TariffKey } from '../../config/tariffs';

@@ -243,7 +243,7 @@ export const AuthenticityIcon = ({ size = 24, className = "" }: IconProps) => (
       <ellipse cx="10.5" cy="6" rx="2.5" ry="1.8" fill="white" opacity="0.7" />
     </motion.g>
     
-    {/* ��ветовые лучи от граней */}
+    {/* Световые лучи от граней */}
     {[0, 60, 120, 180, 240, 300].map((angle, i) => {
       const rad = (angle * Math.PI) / 180;
       return (

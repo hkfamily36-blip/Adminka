@@ -37,7 +37,7 @@ import {
   Table as TableIcon,
   Palette,
 } from 'lucide-react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 interface TiptapEditorProps {
   content: string;
@@ -112,6 +112,20 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
       },
     },
   });
+
+  // Обновляем контент редактора когда prop content меняется извне
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
+
+  // Уничтожаем редактор при размонтировании компонента
+  useEffect(() => {
+    return () => {
+      editor?.destroy();
+    };
+  }, [editor]);
 
   const setLink = useCallback(() => {
     if (linkUrl === '') {

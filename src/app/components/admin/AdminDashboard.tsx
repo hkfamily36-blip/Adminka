@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useLocation, useNavigate } from 'react-router';
 import {
@@ -16,19 +16,45 @@ import {
   UserCheck,
   Clock,
   AlertCircle,
-  MessageCircle
+  MessageCircle,
+  GraduationCap,
+  Tag,
+  ChevronDown
 } from 'lucide-react';
+
+// Auth context import
 import { useAuth } from '../../contexts/AuthContext';
+
+// Component imports
 import { UserTable } from './UserTable';
 import { ContentManager } from './ContentManager';
+import { TariffConstructor } from './TariffConstructor';
 import { ActivityLogs } from './ActivityLogs';
 import { FinanceDashboard } from './FinanceDashboard';
 import { EmailManagement } from './EmailManagement';
 import { Helpdesk } from './Helpdesk';
+import { SettingsPage } from './SettingsPage';
 import { CreateLessonPage } from '../../pages/CreateLessonPage';
 import { EditLessonPage } from '../../pages/EditLessonPage';
 
-type AdminPage = 'overview' | 'users' | 'content' | 'logs' | 'finance' | 'emails' | 'helpdesk' | 'settings';
+type AdminPage = 
+  | 'overview' 
+  | 'users' 
+  | 'learning' 
+  | 'tariffs' 
+  | 'logs' 
+  | 'finance' 
+  | 'emails' 
+  | 'helpdesk' 
+  | 'team';
+
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: any;
+  show: boolean;
+  children?: MenuItem[];
+}
 
 export function AdminDashboard({ onExit }: { onExit: () => void }) {
   const { currentUser, isSuperAdmin } = useAuth();
@@ -37,6 +63,9 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
   const [activePage, setActivePage] = useState<AdminPage>('overview');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    'learning-tariffs': true, // По умолчанию раскрыта
+  });
 
   console.log('=== ADMIN DASHBOARD DEBUG ===');
   console.log('Current location:', location.pathname);
@@ -49,16 +78,60 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
     console.log('Detected lesson editor route, rendering appropriate page');
   }
 
-  const menuItems = [
+  // Если пользователь не на странице редактора урока, но URL начинается с /admin/lessons,
+  // это означает, что он случайно попал сюда (например, через историю браузера)
+  // В этом случае перенаправляем на главную страницу
+  useEffect(() => {
+    // Только если мы НЕ в процессе создания или редактирования урока
+    // и URL содержит /admin/lessons, очищаем его
+    if (!isLessonEditorRoute && location.pathname !== '/' && !location.pathname.startsWith('/admin')) {
+      console.log('Clearing invalid lesson editor URL, redirecting to home');
+      navigate('/', { replace: true });
+    }
+  }, []);
+
+  const menuItems: MenuItem[] = [
     { id: 'overview', label: 'Обзор', icon: LayoutDashboard, show: true },
     { id: 'users', label: 'Пользователи', icon: Users, show: true },
-    { id: 'content', label: 'Контент', icon: BookOpen, show: true },
+    { 
+      id: 'learning-tariffs', 
+      label: 'Обучение и тарифы', 
+      icon: BookOpen, 
+      show: true,
+      children: [
+        { id: 'learning', label: 'Обучение', icon: GraduationCap, show: true },
+        { id: 'tariffs', label: 'Тарифы', icon: Tag, show: true },
+      ]
+    },
     { id: 'logs', label: 'Логи', icon: Activity, show: true },
     { id: 'finance', label: 'Финансы', icon: DollarSign, show: isSuperAdmin },
     { id: 'emails', label: 'Email-шаблоны', icon: Mail, show: isSuperAdmin },
     { id: 'helpdesk', label: 'Поддержка', icon: MessageCircle, show: isSuperAdmin },
-    { id: 'settings', label: 'Настройки', icon: Settings, show: isSuperAdmin },
+    { 
+      id: 'settings-category', 
+      label: 'Настройки', 
+      icon: Settings, 
+      show: isSuperAdmin,
+      children: [
+        { id: 'team', label: 'Команда', icon: Users, show: true },
+      ]
+    },
   ].filter(item => item.show);
+
+  const toggleCategory = (categoryId: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId],
+    }));
+  };
+
+  const handleMenuItemClick = (item: MenuItem) => {
+    if (item.children) {
+      toggleCategory(item.id);
+    } else {
+      setActivePage(item.id as AdminPage);
+    }
+  };
 
   // Если мы на странице редактора урока, показываем только её
   if (isLessonEditorRoute) {
@@ -153,29 +226,88 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
               {menuItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = activePage === item.id;
+                const isExpanded = expandedCategories[item.id];
+                
                 return (
-                  <motion.button
-                    key={item.id}
-                    onClick={() => setActivePage(item.id as AdminPage)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                      isActive
-                        ? 'bg-white/20 shadow-lg'
-                        : 'hover:bg-white/10'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Icon size={20} />
-                    {sidebarOpen && (
-                      <span className="font-medium text-sm">{item.label}</span>
+                  <div key={item.id}>
+                    {/* Parent Item */}
+                    <motion.button
+                      onClick={() => handleMenuItemClick(item)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
+                        isActive && !item.children
+                          ? 'bg-white/20 shadow-lg'
+                          : 'hover:bg-white/10'
+                      }`}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Icon size={20} />
+                      {sidebarOpen && (
+                        <>
+                          <span className="font-medium text-sm flex-1 text-left">{item.label}</span>
+                          {item.children && (
+                            <motion.div
+                              animate={{ rotate: isExpanded ? 180 : 0 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <ChevronDown size={16} />
+                            </motion.div>
+                          )}
+                        </>
+                      )}
+                      {isActive && !item.children && (
+                        <motion.div
+                          className="ml-auto w-2 h-2 bg-pink-300 rounded-full"
+                          layoutId="activeIndicator"
+                        />
+                      )}
+                    </motion.button>
+
+                    {/* Children Items */}
+                    {item.children && sidebarOpen && (
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-4 mt-2 space-y-1">
+                              {item.children.map((child) => {
+                                const ChildIcon = child.icon;
+                                const isChildActive = activePage === child.id;
+                                
+                                return (
+                                  <motion.button
+                                    key={child.id}
+                                    onClick={() => setActivePage(child.id as AdminPage)}
+                                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all text-sm ${
+                                      isChildActive
+                                        ? 'bg-white/20 shadow-md'
+                                        : 'hover:bg-white/10'
+                                    }`}
+                                    whileHover={{ scale: 1.02, x: 2 }}
+                                    whileTap={{ scale: 0.98 }}
+                                  >
+                                    <ChildIcon size={18} className="opacity-80" />
+                                    <span className="font-medium">{child.label}</span>
+                                    {isChildActive && (
+                                      <motion.div
+                                        className="ml-auto w-1.5 h-1.5 bg-pink-300 rounded-full"
+                                        layoutId="activeIndicator"
+                                      />
+                                    )}
+                                  </motion.button>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     )}
-                    {isActive && (
-                      <motion.div
-                        className="ml-auto w-2 h-2 bg-pink-300 rounded-full"
-                        layoutId="activeIndicator"
-                      />
-                    )}
-                  </motion.button>
+                  </div>
                 );
               })}
             </nav>
@@ -209,16 +341,30 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
               animate={{ opacity: 1, y: 0 }}
             >
               <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2E1065] via-[#7C3AED] to-[#EC4899] bg-clip-text text-transparent mb-2">
-                {menuItems.find(item => item.id === activePage)?.label}
+                {(() => {
+                  // Ищем в основном меню
+                  const mainItem = menuItems.find(item => item.id === activePage);
+                  if (mainItem) return mainItem.label;
+                  
+                  // Ищем в подкатегориях
+                  for (const item of menuItems) {
+                    if (item.children) {
+                      const childItem = item.children.find(child => child.id === activePage);
+                      if (childItem) return childItem.label;
+                    }
+                  }
+                  return '';
+                })()}
               </h1>
               <p className="text-slate-600">
                 {activePage === 'overview' && 'Основная статистика и аналитика'}
                 {activePage === 'users' && 'Управление пользователями платформы'}
-                {activePage === 'content' && 'Создание и редактирование контента'}
+                {activePage === 'learning' && 'Управление контентом обучения'}
+                {activePage === 'tariffs' && 'Настройка тарифных планов'}
                 {activePage === 'logs' && 'История действий пользователей'}
                 {activePage === 'finance' && 'Финансовая аналитика и отчёты'}
                 {activePage === 'emails' && 'Управление email-шаблонами'}
-                {activePage === 'settings' && 'Настройки системы'}
+                {activePage === 'team' && 'Управление командой администраторов'}
               </p>
             </motion.div>
 
@@ -234,11 +380,12 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
                 setShowAddUserModal(true);
               }} />}
               {activePage === 'users' && <UserTable triggerAddUser={showAddUserModal} onAddUserComplete={() => setShowAddUserModal(false)} onOpenAddUser={() => setShowAddUserModal(true)} />}
-              {activePage === 'content' && <ContentManager />}
+              {activePage === 'learning' && <ContentManager />}
+              {activePage === 'tariffs' && <TariffConstructor />}
               {activePage === 'logs' && <ActivityLogs />}
               {activePage === 'finance' && <FinanceDashboard />}
               {activePage === 'emails' && <EmailManagement />}
-              {activePage === 'settings' && <SettingsPage />}
+              {activePage === 'team' && <SettingsPage />}
             </motion.div>
           </div>
         )}
@@ -312,7 +459,7 @@ function OverviewPage({ onNavigate, onOpenAddUser }: { onNavigate: (page: AdminP
           </motion.button>
           <motion.button 
             className="p-4 bg-gradient-to-br from-fuchsia-50 to-pink-50 hover:from-fuchsia-100 hover:to-pink-100 rounded-xl transition-colors text-left"
-            onClick={() => onNavigate('content')}
+            onClick={() => onNavigate('learning')}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -341,15 +488,6 @@ function OverviewPage({ onNavigate, onOpenAddUser }: { onNavigate: (page: AdminP
           )}
         </div>
       </motion.div>
-    </div>
-  );
-}
-
-function SettingsPage() {
-  return (
-    <div className="bg-white rounded-2xl p-8 shadow-lg">
-      <h2 className="text-2xl font-bold text-slate-800 mb-6">Настройки системы</h2>
-      <p className="text-slate-600">Здесь будут настройки платформы...</p>
     </div>
   );
 }

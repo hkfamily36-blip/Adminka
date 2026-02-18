@@ -26,8 +26,35 @@
   font-style: normal;
 }
 
+/* Email Composer Styles */
+.email-editor .ql-toolbar {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 0;
+  padding: 12px;
+}
+
+.email-editor .ql-container {
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  min-height: 250px;
+}
+
+.email-editor .ql-editor {
+  min-height: 250px;
+  padding: 16px;
+}
+
+.email-editor .ql-editor.ql-blank::before {
+  color: #94a3b8;
+  font-style: normal;
+}
+
 /* Кнопки тулбара */
-.quill-editor-wrapper .ql-toolbar button {
+.quill-editor-wrapper .ql-toolbar button,
+.email-editor .ql-toolbar button {
   width: 32px;
   height: 32px;
   display: inline-flex;
@@ -37,43 +64,52 @@
   transition: all 0.2s;
 }
 
-.quill-editor-wrapper .ql-toolbar button:hover {
+.quill-editor-wrapper .ql-toolbar button:hover,
+.email-editor .ql-toolbar button:hover {
   background: rgba(139, 92, 246, 0.2);
 }
 
-.quill-editor-wrapper .ql-toolbar button.ql-active {
+.quill-editor-wrapper .ql-toolbar button.ql-active,
+.email-editor .ql-toolbar button.ql-active {
   background: rgba(139, 92, 246, 0.3);
   color: #7c3aed;
 }
 
-.quill-editor-wrapper .ql-toolbar .ql-stroke {
+.quill-editor-wrapper .ql-toolbar .ql-stroke,
+.email-editor .ql-toolbar .ql-stroke {
   stroke: #475569;
   transition: stroke 0.2s;
 }
 
-.quill-editor-wrapper .ql-toolbar button:hover .ql-stroke {
+.quill-editor-wrapper .ql-toolbar button:hover .ql-stroke,
+.email-editor .ql-toolbar button:hover .ql-stroke {
   stroke: #7c3aed;
 }
 
-.quill-editor-wrapper .ql-toolbar button.ql-active .ql-stroke {
+.quill-editor-wrapper .ql-toolbar button.ql-active .ql-stroke,
+.email-editor .ql-toolbar button.ql-active .ql-stroke {
   stroke: #7c3aed;
 }
 
-.quill-editor-wrapper .ql-toolbar .ql-fill {
+.quill-editor-wrapper .ql-toolbar .ql-fill,
+.email-editor .ql-toolbar .ql-fill {
   fill: #475569;
   transition: fill 0.2s;
 }
 
-.quill-editor-wrapper .ql-toolbar button:hover .ql-fill {
+.quill-editor-wrapper .ql-toolbar button:hover .ql-fill,
+.email-editor .ql-toolbar button:hover .ql-fill {
   fill: #7c3aed;
 }
 
-.quill-editor-wrapper .ql-toolbar button.ql-active .ql-fill {
+.quill-editor-wrapper .ql-toolbar button.ql-active .ql-fill,
+.email-editor .ql-toolbar button.ql-active .ql-fill {
   fill: #7c3aed;
 }
 
 /* Выпадающие списки */
-.quill-editor-wrapper .ql-toolbar select {
+.quill-editor-wrapper .ql-toolbar select,
+.email-editor .ql-toolbar select {
   border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 4px 8px;
@@ -81,51 +117,59 @@
   transition: all 0.2s;
 }
 
-.quill-editor-wrapper .ql-toolbar select:focus {
+.quill-editor-wrapper .ql-toolbar select:focus,
+.email-editor .ql-toolbar select:focus {
   border-color: #7c3aed;
   outline: none;
   box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
 /* Форматирование текста внутри редактора */
-.quill-editor-wrapper .ql-editor h1 {
+.quill-editor-wrapper .ql-editor h1,
+.email-editor .ql-editor h1 {
   font-size: 2em;
   font-weight: bold;
   margin-bottom: 0.5em;
 }
 
-.quill-editor-wrapper .ql-editor h2 {
+.quill-editor-wrapper .ql-editor h2,
+.email-editor .ql-editor h2 {
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 0.5em;
 }
 
-.quill-editor-wrapper .ql-editor h3 {
+.quill-editor-wrapper .ql-editor h3,
+.email-editor .ql-editor h3 {
   font-size: 1.25em;
   font-weight: bold;
   margin-bottom: 0.5em;
 }
 
-.quill-editor-wrapper .ql-editor blockquote {
+.quill-editor-wrapper .ql-editor blockquote,
+.email-editor .ql-editor blockquote {
   border-left: 4px solid #7c3aed;
   padding-left: 16px;
   margin-left: 0;
   color: #64748b;
 }
 
-.quill-editor-wrapper .ql-editor a {
+.quill-editor-wrapper .ql-editor a,
+.email-editor .ql-editor a {
   color: #7c3aed;
   text-decoration: underline;
 }
 
-.quill-editor-wrapper .ql-editor pre {
+.quill-editor-wrapper .ql-editor pre,
+.email-editor .ql-editor pre {
   background: #f1f5f9;
   border-radius: 8px;
   padding: 12px;
   overflow-x: auto;
 }
 
-.quill-editor-wrapper .ql-editor code {
+.quill-editor-wrapper .ql-editor code,
+.email-editor .ql-editor code {
   background: #f1f5f9;
   padding: 2px 6px;
   border-radius: 4px;
@@ -134,11 +178,14 @@
 
 /* Списки */
 .quill-editor-wrapper .ql-editor ul,
-.quill-editor-wrapper .ql-editor ol {
+.quill-editor-wrapper .ql-editor ol,
+.email-editor .ql-editor ul,
+.email-editor .ql-editor ol {
   padding-left: 1.5em;
   margin-bottom: 1em;
 }
 
-.quill-editor-wrapper .ql-editor li {
+.quill-editor-wrapper .ql-editor li,
+.email-editor .ql-editor li {
   margin-bottom: 0.5em;
 }

@@ -42,7 +42,7 @@ interface CourseStructureProps {
 
 const ITEM_TYPE = 'LESSON';
 
-const modules: Module[] = [
+const initialModules: Module[] = [
   { id: 0, name: 'Предобучение', expanded: true },
   { id: 1, name: 'Аутентичность', expanded: true },
   { id: 2, name: 'Ниша', expanded: false },
@@ -105,9 +105,9 @@ function DraggableLesson({
       ref={ref}
       className={`flex items-center gap-3 p-3 rounded-lg transition-all group ${
         isDragging 
-          ? 'opacity-30 bg-violet-100' 
+          ? 'opacity-30 bg-[#D1C4E9]/30' 
           : isOver 
-          ? 'bg-violet-100 border-l-4 border-violet-500' 
+          ? 'bg-[#D1C4E9]/30 border-l-4 border-[#583B8B]' 
           : 'hover:bg-slate-50'
       }`}
       initial={{ opacity: 0, x: -10 }}
@@ -117,7 +117,7 @@ function DraggableLesson({
         <GripVertical size={18} className="text-slate-400" />
       </div>
       <div className={`p-2 rounded-lg ${
-        lesson.type === 'constructor' ? 'bg-violet-100 text-violet-600' :
+        lesson.type === 'constructor' ? 'bg-[#D1C4E9]/30 text-[#583B8B]' :
         'bg-cyan-100 text-cyan-600'
       }`}>
         {lesson.type === 'constructor' ? <Blocks size={16} /> : <ClipboardList size={16} />}
@@ -152,14 +152,14 @@ function DraggableLesson({
         </button>
         <button
           onClick={() => onCopyLesson(lesson)}
-          className="p-2 bg-cyan-100 text-cyan-600 rounded-lg hover:bg-cyan-200 transition-colors"
+          className="p-2 bg-[#D1C4E9]/30 text-[#583B8B] rounded-lg hover:bg-[#D1C4E9]/50 transition-colors"
           title="Копировать урок"
         >
           <Copy size={16} />
         </button>
         <button
           onClick={() => onEdit(lesson)}
-          className="p-2 bg-violet-100 text-violet-600 rounded-lg hover:bg-violet-200 transition-colors"
+          className="p-2 bg-[#D1C4E9]/30 text-[#583B8B] rounded-lg hover:bg-[#D1C4E9]/50 transition-colors"
           title="Редактировать"
         >
           <Edit size={16} />
@@ -172,6 +172,7 @@ function DraggableLesson({
 export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, onCreateLesson, onCopyLesson, onCopyModule }: CourseStructureProps) {
   const [expandedModules, setExpandedModules] = useState<Set<number>>(new Set([0, 1]));
   const [localLessons, setLocalLessons] = useState<Lesson[]>(lessons);
+  const [modules, setModules] = useState<Module[]>(initialModules);
 
   // Синхронизация локального состояния с пропсами
   useEffect(() => {
@@ -240,24 +241,35 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
   };
 
   const copyModule = (moduleId: number) => {
+    const moduleToCopy = modules.find(m => m.id === moduleId);
     const moduleLessons = localLessons.filter(l => l.moduleId === moduleId);
     
-    if (moduleLessons.length === 0) {
+    if (!moduleToCopy || moduleLessons.length === 0) {
       return;
     }
 
-    const maxModuleId = Math.max(...modules.map(m => m.id));
-    const newModuleId = maxModuleId + 1;
+    // Создаем новый модуль с новым ID
+    const newModuleId = Math.max(...modules.map(m => m.id)) + 1;
+    const newModule: Module = {
+      id: newModuleId,
+      name: `${moduleToCopy.name} (копия)`,
+      expanded: true, // Открываем новый модуль по умолчанию
+    };
     
+    // Копируем все уроки в новый модуль
     const copiedLessons = moduleLessons.map((lesson, index) => ({
       ...lesson,
       id: `lesson-${Date.now()}-${index}`,
-      moduleId: newModuleId,
-      title: `${lesson.title} (копия модуля)`,
+      moduleId: newModuleId, // Присваиваем новый ID модуля
+      title: lesson.title, // Оставляем оригинальные названия уроков
       status: 'draft' as const,
-      order: localLessons.length + index + 1,
+      order: index, // Сохраняем порядок уроков
     }));
 
+    // Обновляем модули и уроки
+    setModules([...modules, newModule]);
+    setExpandedModules(new Set([...expandedModules, newModuleId])); // Раскрываем новый модуль
+    
     const updated = [...localLessons, ...copiedLessons];
     setLocalLessons(updated);
     onReorder(updated);
@@ -276,7 +288,7 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
         return (
           <motion.div
             key={module.id}
-            className="bg-gradient-to-r from-violet-50/50 to-purple-50/30 border-2 border-violet-100 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+            className="bg-gradient-to-r from-[#D1C4E9]/20 to-[#FDE4FF]/20 border-2 border-[#D1C4E9]/30 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: module.id * 0.05 }}
@@ -287,11 +299,11 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
                 onClick={() => toggleModule(module.id)}
                 className="flex items-center gap-3 flex-1"
               >
-                {isExpanded ? <ChevronDown size={20} className="text-violet-600" /> : <ChevronRight size={20} className="text-violet-600" />}
+                {isExpanded ? <ChevronDown size={20} className="text-[#583B8B]" /> : <ChevronRight size={20} className="text-[#583B8B]" />}
                 <h3 className="font-bold text-slate-800">
                   Модуль {module.id}: {module.name}
                 </h3>
-                <span className="px-3 py-1 bg-violet-200 text-violet-700 rounded-full text-xs font-semibold">
+                <span className="px-3 py-1 bg-[#D1C4E9] text-[#2E1065] rounded-full text-xs font-semibold">
                   {moduleLessons.length} {moduleLessons.length === 1 ? 'урок' : moduleLessons.length < 5 ? 'урока' : 'уроков'}
                 </span>
               </button>
@@ -299,7 +311,7 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => copyModule(module.id)}
-                  className="px-3 py-2 bg-gradient-to-r from-pink-100 to-purple-100 text-violet-700 rounded-lg hover:from-pink-200 hover:to-purple-200 transition-colors font-semibold text-sm flex items-center gap-2"
+                  className="px-3 py-2 bg-gradient-to-r from-[#FDE4FF]/30 to-[#D1C4E9]/30 text-[#2E1065] rounded-lg hover:from-[#FDE4FF]/50 hover:to-[#D1C4E9]/50 transition-colors font-semibold text-sm flex items-center gap-2"
                   title="Копировать модуль со всеми уроками"
                 >
                   <Folders size={16} />
@@ -337,7 +349,7 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
                 {/* Create Lesson Button */}
                 <button
                   onClick={() => onCreateLesson(module.id)}
-                  className="w-full flex items-center justify-center gap-2 p-3 border-2 border-dashed border-violet-300 rounded-lg text-violet-600 hover:bg-violet-50 hover:border-violet-400 transition-all font-medium"
+                  className="w-full flex items-center justify-center gap-2 p-3 border-2 border-dashed border-[#D1C4E9] rounded-lg text-[#583B8B] hover:bg-[#D1C4E9]/20 hover:border-[#583B8B] transition-all font-medium"
                 >
                   <Plus size={18} />
                   Создать урок в этом модуле

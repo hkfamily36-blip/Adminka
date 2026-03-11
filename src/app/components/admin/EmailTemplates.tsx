@@ -174,7 +174,7 @@ export function EmailTemplates() {
         </div>
         <motion.button
           onClick={() => openEditor()}
-          className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+          className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -199,13 +199,13 @@ export function EmailTemplates() {
             transition={{ delay: idx * 0.1 }}
           >
             {/* Cosmic effects */}
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 rounded-full blur-2xl group-hover:blur-3xl transition-all"></div>
+            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#583B8B]/10 to-[#8C2F5E]/10 rounded-full blur-2xl group-hover:blur-3xl transition-all"></div>
 
             <div className="relative flex flex-col flex-1">
               <div className="flex items-start justify-between mb-3 sm:mb-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  <div className="p-2 sm:p-3 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl flex-shrink-0">
-                    <Mail size={18} className="text-violet-600 sm:w-5 sm:h-5" />
+                  <div className="p-2 sm:p-3 bg-gradient-to-br from-[#D1C4E9]/30 to-[#FDE4FF]/30 rounded-xl flex-shrink-0">
+                    <Mail size={18} className="text-[#583B8B] sm:w-5 sm:h-5" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <h3 className="font-bold text-slate-800 text-sm sm:text-base line-clamp-2">{template.name}</h3>
@@ -228,7 +228,7 @@ export function EmailTemplates() {
               <div className="flex gap-2 items-center mt-auto">
                 <motion.button
                   onClick={() => openEditor(template)}
-                  className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 bg-violet-50 text-violet-600 rounded-lg text-xs sm:text-sm font-semibold hover:bg-violet-100 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 bg-[#D1C4E9]/20 text-[#583B8B] rounded-lg text-xs sm:text-sm font-semibold hover:bg-[#D1C4E9]/30 transition-colors"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -288,8 +288,8 @@ export function EmailTemplates() {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Космические эффекты */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 rounded-full blur-2xl"></div>
+                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#583B8B]/20 to-[#8C2F5E]/20 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#8C2F5E]/20 to-[#583B8B]/20 rounded-full blur-2xl"></div>
 
                 {/* Close Button */}
                 <button
@@ -320,7 +320,7 @@ export function EmailTemplates() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Введите название"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -333,7 +333,7 @@ export function EmailTemplates() {
                       <button
                         type="button"
                         onClick={() => insertVariable('name')}
-                        className="text-xs text-violet-600 hover:text-violet-700 font-semibold"
+                        className="text-xs text-[#583B8B] hover:text-[#2E1065] font-semibold"
                       >
                         + Добавить переменные
                       </button>
@@ -344,7 +344,7 @@ export function EmailTemplates() {
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       placeholder="Подтверждение регистрации"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -357,7 +357,7 @@ export function EmailTemplates() {
                       <button
                         type="button"
                         onClick={() => insertVariableInPreheader('name')}
-                        className="text-xs text-violet-600 hover:text-violet-700 font-semibold"
+                        className="text-xs text-[#583B8B] hover:text-[#2E1065] font-semibold"
                       >
                         + Добавить переменные
                       </button>
@@ -367,7 +367,7 @@ export function EmailTemplates() {
                       value={formData.preheader}
                       onChange={(e) => setFormData({ ...formData, preheader: e.target.value })}
                       placeholder="Введите превьюер"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                     />
                   </div>
 
@@ -380,7 +380,7 @@ export function EmailTemplates() {
                       <button
                         type="button"
                         onClick={() => insertVariableInBody('link')}
-                        className="text-xs text-violet-600 hover:text-violet-700 font-semibold"
+                        className="text-xs text-[#583B8B] hover:text-[#2E1065] font-semibold"
                       >
                         + Добавить переменные
                       </button>
@@ -432,10 +432,10 @@ export function EmailTemplates() {
                       onChange={(e) => setFormData({ ...formData, body: e.target.value })}
                       placeholder="Для того, чтобы подтвердить регистрацию, перейдите, пожалуйста, по ссылке."
                       rows={8}
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 border-t-0 rounded-b-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 border-t-0 rounded-b-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all resize-none"
                     />
                     <p className="text-xs text-slate-500 mt-2">
-                      Для того, чтобы подтвердить регистрацию, перейдите, пожалуйста, по <span className="text-violet-600 font-semibold">ссылке</span>.
+                      Для того, чтобы подтвердить регистрацию, перейдите, пожалуйста, по <span className="text-[#583B8B] font-semibold">ссылке</span>.
                     </p>
                   </div>
 
@@ -443,7 +443,7 @@ export function EmailTemplates() {
                   <div className="pt-4">
                     <button
                       type="button"
-                      className="text-sm text-violet-600 hover:text-violet-700 font-semibold"
+                      className="text-sm text-[#583B8B] hover:text-[#2E1065] font-semibold"
                     >
                       Создать текстовую версию
                     </button>
@@ -462,7 +462,7 @@ export function EmailTemplates() {
                     <motion.button
                       type="button"
                       onClick={() => setShowTestEmail(true)}
-                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-fuchsia-500 to-pink-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                      className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#8C2F5E] to-[#583B8B] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

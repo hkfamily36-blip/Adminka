@@ -101,7 +101,7 @@ export function ChatWindow({ user, onClose }: ChatWindowProps) {
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-purple-600 to-violet-600 px-5 py-4 flex items-center justify-between relative overflow-hidden">
+        <div className="bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] px-5 py-4 flex items-center justify-between relative overflow-hidden">
           {/* Cosmic Background Effect */}
           <div className="absolute inset-0 opacity-30">
             <div className="absolute top-2 left-4 w-1 h-1 bg-white rounded-full animate-pulse"></div>
@@ -170,7 +170,7 @@ export function ChatWindow({ user, onClose }: ChatWindowProps) {
                     <div
                       className={`px-4 py-3 rounded-2xl ${
                         message.sender === 'admin'
-                          ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-br-md'
+                          ? 'bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-br-md'
                           : 'bg-white text-slate-800 rounded-bl-md border border-slate-200'
                       }`}
                     >
@@ -265,7 +265,7 @@ export function ChatWindow({ user, onClose }: ChatWindowProps) {
                   disabled={!newMessage.trim()}
                   className={`p-3 rounded-xl transition-all relative overflow-hidden ${
                     newMessage.trim()
-                      ? 'bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 shadow-lg hover:shadow-purple-500/50'
+                      ? 'bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] hover:from-[#3B1A7E] hover:to-[#9C3F6E] shadow-lg hover:shadow-[#8C2F5E]/50'
                       : 'bg-slate-200'
                   }`}
                   whileHover={newMessage.trim() ? { scale: 1.05 } : {}}

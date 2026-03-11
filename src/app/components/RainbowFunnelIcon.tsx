@@ -1,4 +1,4 @@
-import rainbowImage from 'figma:asset/ac1c5a427d26fc75f5dda47cd357767f9a63f9f6.png';
+import hourglassImage from 'figma:asset/b9036d18ab4e5e8ec25e4c039803ebeca15eec78.png';
 
 interface IconProps {
   size?: number;
@@ -6,19 +6,22 @@ interface IconProps {
 }
 
 // ============================================
-// ВОРОНКА — 3D Радуга
+// ВОРОНКА — 3D Песочные часы с аметистами
 // ============================================
-export const FunnelIcon = ({ size = 24, className = "" }: IconProps) => (
-  <img 
-    src={rainbowImage} 
-    alt="Rainbow Funnel"
-    width={size}
-    height={size}
-    className={className}
-    style={{ 
-      width: size, 
-      height: size,
-      objectFit: 'contain'
-    }}
-  />
-);
+export const FunnelIcon = ({ size = 24, className = "" }: IconProps) => {
+  const s = size * 1.15;
+  return (
+    <img 
+      src={hourglassImage} 
+      alt="Hourglass Funnel"
+      width={s}
+      height={s}
+      className={className}
+      style={{ 
+        width: s, 
+        height: s,
+        objectFit: 'contain',
+      }}
+    />
+  );
+};

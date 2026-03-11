@@ -204,7 +204,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-violet-500 to-purple-500 p-6 text-white relative overflow-hidden">
+          <div className="bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] p-6 text-white relative overflow-hidden">
             <div className="absolute inset-0 opacity-20">
               {[...Array(20)].map((_, i) => (
                 <motion.div
@@ -232,7 +232,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                 <h2 className="text-2xl font-bold">
                   {funnel ? 'Редактировать воронку' : 'Создать воронку'}
                 </h2>
-                <p className="text-violet-100 mt-1">Настройте последовательность писем с условиями</p>
+                <p className="text-[#D1C4E9] mt-1">Настройте последовательность писем с условиями</p>
               </div>
               <button
                 onClick={onClose}
@@ -246,9 +246,9 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
           {/* Content - Scrollable */}
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Basic Info */}
-            <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border-2 border-violet-200">
+            <div className="bg-gradient-to-br from-[#D1C4E9]/20 to-[#FDE4FF]/20 rounded-2xl p-6 border-2 border-[#D1C4E9]">
               <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <Info size={20} className="text-violet-600" />
+                <Info size={20} className="text-[#583B8B]" />
                 Основная информация
               </h3>
               
@@ -263,7 +263,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Онбординг новых пользователей"
-                    className="w-full px-4 py-3 bg-white border-2 border-violet-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-white border-2 border-[#D1C4E9] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                   />
                 </div>
 
@@ -276,17 +276,17 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Описание воронки и её целей"
                     rows={3}
-                    className="w-full px-4 py-3 bg-white border-2 border-violet-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
+                    className="w-full px-4 py-3 bg-white border-2 border-[#D1C4E9] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all resize-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Email Recipients */}
-            <div className="bg-gradient-to-br from-fuchsia-50 to-pink-50 rounded-2xl p-6 border-2 border-fuchsia-200">
+            <div className="bg-gradient-to-br from-[#FDE4FF]/20 to-[#D1C4E9]/20 rounded-2xl p-6 border-2 border-[#D1C4E9]">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                  <Mail size={20} className="text-fuchsia-600" />
+                  <Mail size={20} className="text-[#8C2F5E]" />
                   Получатели воронки *
                   <span className="text-sm font-normal text-slate-600">
                     ({recipientEmails.length} выбрано)
@@ -294,7 +294,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                 </h3>
                 <button
                   onClick={() => setShowEmailSelector(!showEmailSelector)}
-                  className="flex items-center gap-2 px-4 py-2 bg-fuchsia-500 text-white rounded-lg hover:bg-fuchsia-600 transition-colors font-semibold text-sm"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#8C2F5E] text-white rounded-lg hover:bg-[#2E1065] transition-colors font-semibold text-sm"
                 >
                   {showEmailSelector ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                   {showEmailSelector ? 'Скрыть' : 'Выбрать'}
@@ -309,7 +309,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                     return (
                       <span
                         key={email}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg text-sm border border-fuchsia-200"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-white rounded-lg text-sm border border-[#D1C4E9]"
                       >
                         <span className="font-medium text-slate-800">{user?.name}</span>
                         <button
@@ -338,12 +338,12 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                     value={emailSearch}
                     onChange={(e) => setEmailSearch(e.target.value)}
                     placeholder="Поиск по имени, email или тарифу..."
-                    className="w-full px-4 py-2.5 bg-white border-2 border-fuchsia-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent"
+                    className="w-full px-4 py-2.5 bg-white border-2 border-[#D1C4E9] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8C2F5E] focus:border-transparent"
                   />
 
                   {/* Email List */}
-                  <div className="max-h-60 overflow-y-auto space-y-2 bg-white rounded-xl p-3 border border-fuchsia-200">
-                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-fuchsia-100">
+                  <div className="max-h-60 overflow-y-auto space-y-2 bg-white rounded-xl p-3 border border-[#D1C4E9]">
+                    <div className="flex items-center gap-2 mb-2 pb-2 border-b border-[#FDE4FF]">
                       <input
                         type="checkbox"
                         checked={recipientEmails.length === MOCK_USER_EMAILS.length}
@@ -354,7 +354,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                             setRecipientEmails(MOCK_USER_EMAILS.map(u => u.email));
                           }
                         }}
-                        className="w-4 h-4 rounded border-fuchsia-300 text-fuchsia-600 focus:ring-fuchsia-500"
+                        className="w-4 h-4 rounded border-[#D1C4E9] text-[#8C2F5E] focus:ring-[#8C2F5E]"
                       />
                       <span className="font-semibold text-sm text-slate-700">Выбрать всех</span>
                     </div>
@@ -362,19 +362,19 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                     {filteredEmails.map(user => (
                       <label
                         key={user.email}
-                        className="flex items-center gap-3 p-3 hover:bg-fuchsia-50 rounded-lg cursor-pointer transition-colors"
+                        className="flex items-center gap-3 p-3 hover:bg-[#FDE4FF]/20 rounded-lg cursor-pointer transition-colors"
                       >
                         <input
                           type="checkbox"
                           checked={recipientEmails.includes(user.email)}
                           onChange={() => toggleEmailSelection(user.email)}
-                          className="w-4 h-4 rounded border-fuchsia-300 text-fuchsia-600 focus:ring-fuchsia-500"
+                          className="w-4 h-4 rounded border-[#D1C4E9] text-[#8C2F5E] focus:ring-[#8C2F5E]"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-sm text-slate-800">{user.name}</p>
                           <p className="text-xs text-slate-600">{user.email}</p>
                         </div>
-                        <span className="px-2 py-1 bg-violet-100 text-violet-700 rounded text-xs font-semibold">
+                        <span className="px-2 py-1 bg-[#D1C4E9]/30 text-[#2E1065] rounded text-xs font-semibold">
                           {user.tariff}
                         </span>
                       </label>
@@ -393,7 +393,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
             {/* Steps */}
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <Settings size={20} className="text-violet-600" />
+                <Settings size={20} className="text-[#583B8B]" />
                 Шаги воронки
                 {steps.length > 0 && (
                   <span className="text-sm font-normal text-slate-600">
@@ -408,7 +408,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                   <p className="text-slate-500 mb-4">Воронка пуста</p>
                   <button
                     onClick={addStep}
-                    className="px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                    className="px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold hover:shadow-lg transition-all"
                   >
                     Добавить первый шаг
                   </button>
@@ -418,13 +418,13 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                   <div key={step.id} className="relative">
                     {/* Connector */}
                     {stepIdx > 0 && (
-                      <div className="absolute left-8 -top-4 w-0.5 h-4 bg-gradient-to-b from-violet-200 to-violet-400"></div>
+                      <div className="absolute left-8 -top-4 w-0.5 h-4 bg-gradient-to-b from-[#D1C4E9] to-[#583B8B]"></div>
                     )}
 
                     <div className="bg-slate-50 rounded-2xl p-6 border-2 border-slate-200">
                       {/* Step Header */}
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        <div className="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-[#2E1065] to-[#8C2F5E] flex items-center justify-center text-white font-bold text-xl shadow-lg">
                           {stepIdx + 1}
                         </div>
                         
@@ -441,7 +441,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                 templateName: template?.name || ''
                               });
                             }}
-                            className="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500"
+                            className="w-full px-4 py-3 bg-white border-2 border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                           >
                             {MOCK_TEMPLATES.map(template => (
                               <option key={template.id} value={template.id}>
@@ -464,7 +464,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                           </button>
                           <button
                             onClick={() => setExpandedStep(expandedStep === step.id ? null : step.id)}
-                            className="p-2 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 transition-colors"
+                            className="p-2 bg-[#D1C4E9]/20 text-[#583B8B] rounded-lg hover:bg-[#D1C4E9]/30 transition-colors"
                           >
                             {expandedStep === step.id ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
                           </button>
@@ -490,7 +490,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                               <h4 className="font-semibold text-slate-700">Условия отправки:</h4>
                               <button
                                 onClick={() => addCondition(step.id)}
-                                className="flex items-center gap-1 px-3 py-1.5 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 text-sm font-semibold transition-colors"
+                                className="flex items-center gap-1 px-3 py-1.5 bg-[#D1C4E9]/20 text-[#583B8B] rounded-lg hover:bg-[#D1C4E9]/30 text-sm font-semibold transition-colors"
                               >
                                 <Plus size={14} />
                                 Добавить условие
@@ -506,7 +506,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                     <select
                                       value={condition.operator || 'AND'}
                                       onChange={(e) => updateCondition(step.id, condition.id, { operator: e.target.value as 'AND' | 'OR' })}
-                                      className="px-3 py-1 bg-violet-100 text-violet-700 rounded-lg font-bold text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                      className="px-3 py-1 bg-[#D1C4E9]/30 text-[#2E1065] rounded-lg font-bold text-sm focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                     >
                                       <option value="AND">И (AND)</option>
                                       <option value="OR">ИЛИ (OR)</option>
@@ -520,7 +520,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                   <div className="flex items-start gap-4">
                                     {/* Icon */}
                                     <div className="flex-shrink-0 mt-1">
-                                      {condition.type === 'delay' && <Clock className="text-violet-500" size={20} />}
+                                      {condition.type === 'delay' && <Clock className="text-[#583B8B]" size={20} />}
                                       {condition.type === 'time_window' && <Clock className="text-blue-500" size={20} />}
                                       {condition.type === 'specific_date' && <Calendar className="text-green-500" size={20} />}
                                       {condition.type === 'not_opened' && <Eye className="text-orange-500" size={20} />}
@@ -532,7 +532,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                       <select
                                         value={condition.type}
                                         onChange={(e) => updateCondition(step.id, condition.id, { type: e.target.value as any })}
-                                        className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500 font-semibold text-sm"
+                                        className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B] font-semibold text-sm"
                                       >
                                         <option value="delay">⏱️ Тайм-аут (Delay)</option>
                                         <option value="time_window">🕐 Временное окно</option>
@@ -549,13 +549,13 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                             min="0"
                                             value={condition.delayValue || 0}
                                             onChange={(e) => updateCondition(step.id, condition.id, { delayValue: parseInt(e.target.value) })}
-                                            className="flex-1 px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                            className="flex-1 px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                             placeholder="0"
                                           />
                                           <select
                                             value={condition.delayUnit || 'days'}
                                             onChange={(e) => updateCondition(step.id, condition.id, { delayUnit: e.target.value as any })}
-                                            className="px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                            className="px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                           >
                                             <option value="minutes">минут</option>
                                             <option value="hours">часов</option>
@@ -574,7 +574,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                                 type="time"
                                                 value={condition.startTime || '09:00'}
                                                 onChange={(e) => updateCondition(step.id, condition.id, { startTime: e.target.value })}
-                                                className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                                className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                               />
                                             </div>
                                             <div className="flex-1">
@@ -583,7 +583,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                                 type="time"
                                                 value={condition.endTime || '18:00'}
                                                 onChange={(e) => updateCondition(step.id, condition.id, { endTime: e.target.value })}
-                                                className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                                className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                               />
                                             </div>
                                           </div>
@@ -600,7 +600,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                             type="date"
                                             value={condition.specificDate || ''}
                                             onChange={(e) => updateCondition(step.id, condition.id, { specificDate: e.target.value })}
-                                            className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                            className="w-full px-4 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                           />
                                         </div>
                                       )}
@@ -615,7 +615,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                               min="1"
                                               value={condition.notOpenedDays || 3}
                                               onChange={(e) => updateCondition(step.id, condition.id, { notOpenedDays: parseInt(e.target.value) })}
-                                              className="w-20 px-3 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                              className="w-20 px-3 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                             />
                                             <span className="text-sm text-slate-600">дней</span>
                                           </div>
@@ -635,7 +635,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
                                               min="1"
                                               value={condition.noLoginDays || 7}
                                               onChange={(e) => updateCondition(step.id, condition.id, { noLoginDays: parseInt(e.target.value) })}
-                                              className="w-20 px-3 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
+                                              className="w-20 px-3 py-2 bg-slate-50 border-2 border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#583B8B]"
                                             />
                                             <span className="text-sm text-slate-600">дней</span>
                                           </div>
@@ -670,7 +670,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
               {steps.length > 0 && (
                 <button
                   onClick={addStep}
-                  className="w-full py-4 border-2 border-dashed border-violet-300 rounded-2xl text-violet-600 font-semibold hover:bg-violet-50 transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-4 border-2 border-dashed border-[#D1C4E9] rounded-2xl text-[#583B8B] font-semibold hover:bg-[#D1C4E9]/20 transition-colors flex items-center justify-center gap-2"
                 >
                   <Plus size={20} />
                   Добавить следующий шаг
@@ -689,7 +689,7 @@ export function FunnelEditor({ funnel, onSave, onClose }: FunnelEditorProps) {
             </button>
             <button
               onClick={handleSave}
-              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+              className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
             >
               <Save size={20} />
               Сохранить воронку

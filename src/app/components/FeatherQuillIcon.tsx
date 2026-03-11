@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import featherImage from "figma:asset/6a9a167a920bdef19d786e74fe62f15c110d4d8c.png";
+import featherImage from "figma:asset/3348e0e9b353ff340e5a03462996bcbc933273c5.png";
 
 interface IconProps {
   size?: number;
@@ -7,7 +7,7 @@ interface IconProps {
 }
 
 // ============================================
-// БЛОГ — 3D Перо с прозрачным фоном
+// БЛОГ — 3D Перо с чернильницей
 // ============================================
 export const BlogIcon = ({ size = 24, className = "" }: IconProps) => {
   return (
@@ -57,7 +57,7 @@ export const BlogIcon = ({ size = 24, className = "" }: IconProps) => {
         const distance = size * (0.35 + Math.random() * 0.15);
         const x = size / 2 + Math.cos(angle) * distance;
         const y = size / 2 + Math.sin(angle) * distance;
-        const colors = ['#e879f9', '#c084fc', '#a855f7', '#fde68a', '#fbbf24'];
+        const colors = ['#8C2F5E', '#D1C4E9', '#583B8B', '#fde68a', '#C9A96E'];
         const color = colors[i % colors.length];
         
         return (

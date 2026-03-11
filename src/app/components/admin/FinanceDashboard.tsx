@@ -14,8 +14,8 @@ const revenueData = [
 const tariffDistribution = [
   { name: 'Бесплатный', value: 45, color: '#64748b' },
   { name: 'Стандарт', value: 120, color: '#3b82f6' },
-  { name: 'Куратор', value: 85, color: '#a855f7' },
-  { name: 'Наставник', value: 42, color: '#ec4899' },
+  { name: 'Куратор', value: 85, color: '#583B8B' },
+  { name: 'Наставник', value: 42, color: '#8C2F5E' },
 ];
 
 export function FinanceDashboard() {
@@ -29,7 +29,7 @@ export function FinanceDashboard() {
           animate={{ opacity: 1, y: 0 }}
         >
           <div className="flex items-start justify-between mb-4">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-violet-500 to-purple-500 shadow-lg">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-[#2E1065] to-[#8C2F5E] shadow-lg">
               <DollarSign size={24} className="text-white" />
             </div>
             <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
@@ -48,7 +48,7 @@ export function FinanceDashboard() {
           transition={{ delay: 0.1 }}
         >
           <div className="flex items-start justify-between mb-4">
-            <div className="p-3 rounded-xl bg-gradient-to-br from-fuchsia-500 to-pink-500 shadow-lg">
+            <div className="p-3 rounded-xl bg-gradient-to-br from-[#8C2F5E] to-[#583B8B] shadow-lg">
               <Users size={24} className="text-white" />
             </div>
             <span className="text-sm font-semibold text-green-600 flex items-center gap-1">
@@ -120,13 +120,13 @@ export function FinanceDashboard() {
               dataKey="revenue"
               stroke="url(#revenueGradient)"
               strokeWidth={3}
-              dot={{ fill: '#7c3aed', strokeWidth: 2, r: 5 }}
+              dot={{ fill: '#2E1065', strokeWidth: 2, r: 5 }}
               activeDot={{ r: 8 }}
             />
             <defs>
               <linearGradient id="revenueGradient" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#7c3aed" />
-                <stop offset="100%" stopColor="#ec4899" />
+                <stop offset="0%" stopColor="#2E1065" />
+                <stop offset="100%" stopColor="#8C2F5E" />
               </linearGradient>
             </defs>
           </LineChart>
@@ -155,7 +155,7 @@ export function FinanceDashboard() {
                   padding: '12px',
                 }}
               />
-              <Bar dataKey="value" fill="#7c3aed" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="value" fill="#583B8B" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </motion.div>
@@ -176,11 +176,11 @@ export function FinanceDashboard() {
               <div key={idx} className="space-y-2">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-semibold text-slate-700">{item.name}</span>
-                  <span className="text-sm font-bold text-violet-600">₽{item.revenue.toLocaleString()}</span>
+                  <span className="text-sm font-bold text-[#583B8B]">₽{item.revenue.toLocaleString()}</span>
                 </div>
                 <div className="relative w-full bg-slate-100 rounded-full h-3 overflow-hidden">
                   <motion.div
-                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full"
+                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${item.percent}%` }}
                     transition={{ duration: 1, delay: 0.6 + idx * 0.1 }}
@@ -209,7 +209,7 @@ export function FinanceDashboard() {
           ].map((tx, idx) => (
             <motion.div
               key={idx}
-              className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-violet-50 transition-colors"
+              className="flex items-center justify-between p-4 bg-slate-50 rounded-xl hover:bg-[#D1C4E9]/20 transition-colors"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.7 + idx * 0.05 }}

@@ -19,7 +19,7 @@ export function EmailManagement() {
           onClick={() => setActiveTab('templates')}
           className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all ${
             activeTab === 'templates'
-              ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg'
+              ? 'bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white shadow-lg'
               : 'text-slate-600 hover:bg-slate-50'
           }`}
         >
@@ -31,7 +31,7 @@ export function EmailManagement() {
           onClick={() => setActiveTab('funnels')}
           className={`flex-1 flex items-center justify-center gap-2 px-4 sm:px-6 py-3 rounded-xl font-semibold transition-all ${
             activeTab === 'funnels'
-              ? 'bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg'
+              ? 'bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white shadow-lg'
               : 'text-slate-600 hover:bg-slate-50'
           }`}
         >

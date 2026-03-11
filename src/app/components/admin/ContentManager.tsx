@@ -2,12 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { Plus, Save, X, Edit, Video, Headphones, FileText, Eye, EyeOff, Blocks, ClipboardList, List, FolderTree, MessageSquare, Star, BookOpen, ArrowLeft, Copy } from 'lucide-react';
-import { ContentBlockEditor, ContentBlock } from './ContentBlockEditor';
+import { ContentBlockEditor, ContentBlock, ContainerSettings } from './ContentBlockEditor';
 import { TestBuilder, Question } from './TestBuilder';
 import { CourseStructure } from './CourseStructure';
 import { ReviewsSection, Review } from './ReviewsSection';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
 
 interface Course {
   id: string;
@@ -43,6 +41,16 @@ export function ContentManager() {
   const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([]);
   const [testQuestions, setTestQuestions] = useState<Question[]>([]);
   
+  // Настройки контейнера блоков
+  const [containerSettings, setContainerSettings] = useState<ContainerSettings>({
+    gap: '0.75rem',
+    background: '#ffffff',
+    borderColor: '#e2e8f0',
+    borderWidth: '2px',
+    borderRadius: '0.75rem',
+    padding: '1rem',
+  });
+
   const [moduleFormData, setModuleFormData] = useState({
     title: '',
     description: '',
@@ -250,7 +258,7 @@ export function ContentManager() {
   const handleModuleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingModule) {
-      // Обновление существующего модуля
+      // Обновление существующего модул��
       // Здесь можно добавить логику обновления модуля, если это необходимо
     } else {
       // Создание нового модуля
@@ -389,372 +397,371 @@ export function ContentManager() {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="space-y-6">
-        {/* Header with Add Button */}
+    <div className="space-y-6">
+      {/* Header with Add Button */}
+      <motion.div
+        className="flex items-center justify-between"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <div>
+          <h2 className="text-2xl font-bold text-slate-800">Управление контентом</h2>
+          <p className="text-slate-600 mt-1">
+            Создание и редактирование модулей
+          </p>
+        </div>
+        
+        {/* Кнопки действий */}
+        <div className="flex items-center gap-3">
+          {/* Кнопка "Добавить модуль" */}
+          <motion.button
+            onClick={() => {
+              if (showModuleForm) {
+                handleCancelModule();
+              } else {
+                setEditingModule(null);
+                setShowModuleForm(true);
+              }
+            }}
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {showModuleForm ? <X size={20} /> : <Plus size={20} />}
+            {showModuleForm ? 'Закрыть' : 'Добавить модуль'}
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Форма создания/редактирования модуля */}
+      {showModuleForm && (
         <motion.div
-          className="flex items-center justify-between"
+          className="bg-white rounded-2xl p-8 shadow-lg"
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+        >
+          <div className="mb-6">
+            <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+              {editingModule ? (
+                <>
+                  <Edit size={24} className="text-[#583B8B]" />
+                  Редактировать модуль
+                </>
+              ) : (
+                <>
+                  <Plus size={24} className="text-[#583B8B]" />
+                  Создать новый модуль
+                </>
+              )}
+            </h3>
+            <p className="text-slate-500 text-sm mt-1">
+              {editingModule ? 'Внесите изменения и сохраните' : 'Заполните информацию о модуле'}
+            </p>
+          </div>
+          <form onSubmit={handleModuleSubmit} className="space-y-6">
+            {/* Навание модуля */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Название модуля *
+              </label>
+              <input
+                type="text"
+                required
+                value={moduleFormData.title}
+                onChange={(e) => setModuleFormData({ ...moduleFormData, title: e.target.value })}
+                placeholder="Например: Предобучение"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
+              />
+            </div>
+
+            {/* Описание модуля */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
+                Описание модуля *
+              </label>
+              <textarea
+                required
+                value={moduleFormData.description}
+                onChange={(e) => setModuleFormData({ ...moduleFormData, description: e.target.value })}
+                placeholder="раткое описание модуля..."
+                rows={4}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all resize-none"
+              />
+            </div>
+
+            {/* Действия */}
+            <div className="flex gap-4 pt-4">
+              <motion.button
+                type="submit"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Save size={20} />
+                Сохранить модуль
+              </motion.button>
+              <button
+                type="button"
+                onClick={handleCancelModule}
+                className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
+              >
+                Отмена
+              </button>
+            </div>
+          </form>
+        </motion.div>
+      )}
+
+      {/* Форма создания/редактирования урока */}
+      {(showLessonForm || editingLesson) && currentCourse && (
+        <motion.div
+          className="bg-white rounded-2xl shadow-lg p-8 mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div>
-            <h2 className="text-2xl font-bold text-slate-800">Управление контентом</h2>
-            <p className="text-slate-600 mt-1">
-              Создание и редактирование модулей
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold text-slate-800">
+              {editingLesson ? (
+                <>
+                  <Edit size={24} className="inline mr-2 text-[#583B8B]" />
+                  Редактировать урок
+                </>
+              ) : (
+                <>
+                  <Plus size={24} className="inline mr-2 text-[#583B8B]" />
+                  Создать новый урок
+                </>
+              )}
+            </h3>
+            <p className="text-slate-500 text-sm mt-1">
+              Курс: {currentCourse.title}
             </p>
           </div>
-          
-          {/* Кнопки действий */}
-          <div className="flex items-center gap-3">
-            {/* Кнопка "Добавить модуль" */}
-            <motion.button
-              onClick={() => {
-                if (showModuleForm) {
-                  handleCancelModule();
-                } else {
-                  setEditingModule(null);
-                  setShowModuleForm(true);
-                }
-              }}
-              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {showModuleForm ? <X size={20} /> : <Plus size={20} />}
-              {showModuleForm ? 'Закрыть' : 'Добавить модуль'}
-            </motion.button>
-          </div>
-        </motion.div>
-
-        {/* Форма создания/редактирования модуля */}
-        {showModuleForm && (
-          <motion.div
-            className="bg-white rounded-2xl p-8 shadow-lg"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <div className="mb-6">
-              <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                {editingModule ? (
-                  <>
-                    <Edit size={24} className="text-violet-600" />
-                    Редактировать модуль
-                  </>
-                ) : (
-                  <>
-                    <Plus size={24} className="text-violet-600" />
-                    Создать новый модуль
-                  </>
-                )}
-              </h3>
-              <p className="text-slate-500 text-sm mt-1">
-                {editingModule ? 'Внесите изменения и сохраните' : 'Заполните информацию о модуле'}
-              </p>
-            </div>
-            <form onSubmit={handleModuleSubmit} className="space-y-6">
-              {/* Навание модуля */}
-              <div>
+          <form onSubmit={handleLessonSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Title */}
+              <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Название модуля *
+                  Название урока *
                 </label>
                 <input
                   type="text"
                   required
-                  value={moduleFormData.title}
-                  onChange={(e) => setModuleFormData({ ...moduleFormData, title: e.target.value })}
-                  placeholder="Например: Предобучение"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                  value={lessonFormData.title}
+                  onChange={(e) => setLessonFormData({ ...lessonFormData, title: e.target.value })}
+                  placeholder="Например: Введение в аутентичный маркетинг"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                 />
               </div>
 
-              {/* Описание модуля */}
+              {/* Type */}
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                  Описание модуля *
+                  Тип урока *
+                </label>
+                <select
+                  value={lessonFormData.type}
+                  onChange={(e) => setLessonFormData({ ...lessonFormData, type: e.target.value as any })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
+                >
+                  <option value="constructor">✨ Конструктор</option>
+                  <option value="test">✅ Тест</option>
+                </select>
+              </div>
+
+              {/* Module */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Модуль *
+                </label>
+                <select
+                  value={lessonFormData.moduleId}
+                  onChange={(e) => setLessonFormData({ ...lessonFormData, moduleId: Number(e.target.value) })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
+                >
+                  <option value={0}>0. Предобучение</option>
+                  <option value={1}>1. Аутентичность</option>
+                  <option value={2}>2. Ниша</option>
+                  <option value={3}>3. Маркетинг</option>
+                  <option value={4}>4. Продажи</option>
+                  <option value={5}>5. AI-агенты</option>
+                  <option value={6}>6. Автоворонки</option>
+                  <option value={7}>7. Масштабирование</option>
+                </select>
+              </div>
+
+              {/* Tariff */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Доступ *
+                </label>
+                <select
+                  value={lessonFormData.tariff}
+                  onChange={(e) => setLessonFormData({ ...lessonFormData, tariff: e.target.value })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
+                >
+                  <option value="standard">Самостоятельный</option>
+                  <option value="curator">С куратором</option>
+                  <option value="mentor">С наставником</option>
+                </select>
+              </div>
+
+              {/* Status */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Статус публикации *
+                </label>
+                <select
+                  value={lessonFormData.status}
+                  onChange={(e) => setLessonFormData({ ...lessonFormData, status: e.target.value as 'published' | 'draft' })}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
+                >
+                  <option value="draft">📝 Черновик (не виден пользователям)</option>
+                  <option value="published">👁️ Опубликовано (виден пользователям)</option>
+                </select>
+              </div>
+
+              {/* Description */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Описание
                 </label>
                 <textarea
-                  required
-                  value={moduleFormData.description}
-                  onChange={(e) => setModuleFormData({ ...moduleFormData, description: e.target.value })}
-                  placeholder="раткое описание модуля..."
+                  value={lessonFormData.description}
+                  onChange={(e) => setLessonFormData({ ...lessonFormData, description: e.target.value })}
+                  placeholder="Краткое описание урока..."
                   rows={4}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all resize-none"
                 />
               </div>
 
-              {/* Действия */}
-              <div className="flex gap-4 pt-4">
-                <motion.button
-                  type="submit"
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Save size={20} />
-                  Сохранить модуль
-                </motion.button>
-                <button
-                  type="button"
-                  onClick={handleCancelModule}
-                  className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
-                >
-                  Отмена
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        )}
-
-        {/* Форма создания/редактирования урока */}
-        {showLessonForm && (
-          <motion.div
-            className="bg-white rounded-2xl p-8 shadow-lg"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-          >
-            <div className="mb-6">
-              <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-                {editingLesson ? (
+              {/* Content Blocks or Test Questions */}
+              <div className="md:col-span-2">
+                {lessonFormData.type === 'constructor' ? (
                   <>
-                    <Edit size={24} className="text-violet-600" />
-                    Редактировать урок
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      Блоки контента
+                    </label>
+                    <div className="mb-4 p-4 bg-[#D1C4E9]/20 border border-[#D1C4E9] rounded-xl">
+                      <p className="text-sm text-[#2E1065]">
+                        ✨ <strong>Конструктор урока:</strong> Добавьте текстовые блоки с форматированием, видео, аудио и изображения. 
+                        <br />
+                        🎯 <strong>Управление блоками:</strong> Перетаскивайте блоки мышью, используйте стрелки ⬆️⬇️ для перемещения, 
+                        копируйте блоки 📋 одним кликом и удаляйте ненужные 🗑️.
+                      </p>
+                    </div>
+                    <ContentBlockEditor
+                      blocks={contentBlocks}
+                      onChange={setContentBlocks}
+                      containerSettings={containerSettings}
+                      onContainerSettingsChange={setContainerSettings}
+                    />
                   </>
                 ) : (
                   <>
-                    <Plus size={24} className="text-violet-600" />
-                    Создать новый урок
+                    <label className="block text-sm font-semibold text-slate-700 mb-2">
+                      Вопросы теста
+                    </label>
+                    <div className="mb-4 p-4 bg-cyan-50 border border-cyan-200 rounded-xl">
+                      <p className="text-sm text-cyan-800">
+                        ✅ <strong>Конструктор теста:</strong> Создайте вопросы с различными типами ответов (один вариант, несколько, текст, шкала и др.).
+                        <br />
+                        🎯 <strong>Управление вопросами:</strong> Перетаскивайте вопросы для изменения порядка, копируйте и удаляйте ненужные.
+                      </p>
+                    </div>
+                    <TestBuilder
+                      questions={testQuestions}
+                      onChange={setTestQuestions}
+                    />
                   </>
                 )}
-              </h3>
-              <p className="text-slate-500 text-sm mt-1">
-                Курс: {currentCourse.title}
-              </p>
+              </div>
             </div>
-            <form onSubmit={handleLessonSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Title */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
-                    Название урока *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={lessonFormData.title}
-                    onChange={(e) => setLessonFormData({ ...lessonFormData, title: e.target.value })}
-                    placeholder="Например: Введение в аутентичный маркетинг"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                  />
-                </div>
 
-                {/* Type */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
-                    Тип урока *
-                  </label>
-                  <select
-                    value={lessonFormData.type}
-                    onChange={(e) => setLessonFormData({ ...lessonFormData, type: e.target.value as any })}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                  >
-                    <option value="constructor">✨ Конструктор</option>
-                    <option value="test">✅ Тест</option>
-                  </select>
-                </div>
-
-                {/* Module */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
-                    Модуль *
-                  </label>
-                  <select
-                    value={lessonFormData.moduleId}
-                    onChange={(e) => setLessonFormData({ ...lessonFormData, moduleId: Number(e.target.value) })}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                  >
-                    <option value={0}>0. Предобучение</option>
-                    <option value={1}>1. Аутентичность</option>
-                    <option value={2}>2. Ниша</option>
-                    <option value={3}>3. Маркетинг</option>
-                    <option value={4}>4. Продажи</option>
-                    <option value={5}>5. AI-агенты</option>
-                    <option value={6}>6. Автоворонки</option>
-                    <option value={7}>7. Масштабирование</option>
-                  </select>
-                </div>
-
-                {/* Tariff */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
-                    Доступ *
-                  </label>
-                  <select
-                    value={lessonFormData.tariff}
-                    onChange={(e) => setLessonFormData({ ...lessonFormData, tariff: e.target.value })}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                  >
-                    <option value="standard">Самостоятельный</option>
-                    <option value="curator">С куратором</option>
-                    <option value="mentor">С наставником</option>
-                  </select>
-                </div>
-
-                {/* Status */}
-                <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
-                    Статус публикации *
-                  </label>
-                  <select
-                    value={lessonFormData.status}
-                    onChange={(e) => setLessonFormData({ ...lessonFormData, status: e.target.value as 'published' | 'draft' })}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                  >
-                    <option value="draft">📝 Черновик (не виден пользователям)</option>
-                    <option value="published">👁️ Опубликовано (виден пользователям)</option>
-                  </select>
-                </div>
-
-                {/* Description */}
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
-                    Описание
-                  </label>
-                  <textarea
-                    value={lessonFormData.description}
-                    onChange={(e) => setLessonFormData({ ...lessonFormData, description: e.target.value })}
-                    placeholder="Краткое описание урока..."
-                    rows={4}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all resize-none"
-                  />
-                </div>
-
-                {/* Content Blocks or Test Questions */}
-                <div className="md:col-span-2">
-                  {lessonFormData.type === 'constructor' ? (
-                    <>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
-                        Блоки контента
-                      </label>
-                      <div className="mb-4 p-4 bg-violet-50 border border-violet-200 rounded-xl">
-                        <p className="text-sm text-violet-800">
-                          ✨ <strong>Конструктор урока:</strong> Добавьте текстовые блоки с форматированием, видео, аудио и изображения. 
-                          <br />
-                          🎯 <strong>Управление блоками:</strong> Перетаскивайте блоки мышью, используйте стрелки ⬆️⬇️ для перемещения, 
-                          копируйте блоки 📋 одним кликом и удаляйте ненужные 🗑️.
-                        </p>
-                      </div>
-                      <ContentBlockEditor
-                        blocks={contentBlocks}
-                        onChange={setContentBlocks}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">
-                        Вопросы теста
-                      </label>
-                      <div className="mb-4 p-4 bg-cyan-50 border border-cyan-200 rounded-xl">
-                        <p className="text-sm text-cyan-800">
-                          ✅ <strong>Конструктор теста:</strong> Создайте вопросы с различными типами ответов (один вариант, несколько, текст, шкала и др.).
-                          <br />
-                          🎯 <strong>Управление вопросами:</strong> Перетаскивайте вопросы для изменения порядка, копируйте и удаляйте ненужные.
-                        </p>
-                      </div>
-                      <TestBuilder
-                        questions={testQuestions}
-                        onChange={setTestQuestions}
-                      />
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-4 pt-4">
-                <motion.button
-                  type="submit"
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Save size={20} />
-                  Сохранить урок
-                </motion.button>
-                <button
-                  type="button"
-                  onClick={handleCancelLesson}
-                  className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
-                >
-                  Отмена
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        )}
-
-        {/* Tabs and Content */}
-        <motion.div
-          className="bg-white rounded-2xl shadow-lg overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          {/* Tabs */}
-          <div className="flex border-b border-slate-200">
-            <button
-              onClick={() => setActiveTab('structure')}
-              className={`flex items-center gap-2 px-6 py-4 font-semibold transition-all ${
-                activeTab === 'structure'
-                  ? 'text-violet-600 border-b-2 border-violet-600 bg-violet-50'
-                  : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
-              }`}
-            >
-              <FolderTree size={18} />
-              Список модулей
-            </button>
-            <button
-              onClick={() => setActiveTab('reviews')}
-              className={`flex items-center gap-2 px-6 py-4 font-semibold transition-all relative ${
-                activeTab === 'reviews'
-                  ? 'text-violet-600 border-b-2 border-violet-600 bg-violet-50'
-                  : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
-              }`}
-            >
-              <Star size={18} />
-              Оценки и отзывы
-              <span className="px-2 py-0.5 bg-violet-500 text-white rounded-full text-xs font-semibold">{reviews.length}</span>
-              {unreadReviewsCount > 0 && activeTab !== 'reviews' && (
-                <span className="absolute top-2 right-2 w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
-              )}
-            </button>
-          </div>
-
-          {/* Tab Content */}
-          <div className="p-8">
-            {activeTab === 'structure' && (
-              <CourseStructure
-                lessons={courseLessons}
-                onEdit={handleEditLesson}
-                onToggleStatus={toggleStatus}
-                onReorder={setLessons}
-                onCreateLesson={handleCreateLessonInModule}
-                onCopyLesson={copyLesson}
-                onCopyModule={copyModule}
-              />
-            )}
-
-            {activeTab === 'reviews' && (
-              <ReviewsSection
-                reviews={reviews}
-                onMarkAsRead={handleMarkAsRead}
-                onMarkAllAsRead={handleMarkAllAsRead}
-              />
-            )}
-          </div>
+            {/* Actions */}
+            <div className="flex gap-4 pt-4">
+              <motion.button
+                type="submit"
+                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Save size={20} />
+                Сохранить урок
+              </motion.button>
+              <button
+                type="button"
+                onClick={handleCancelLesson}
+                className="px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
+              >
+                Отмена
+              </button>
+            </div>
+          </form>
         </motion.div>
-      </div>
-    </DndProvider>
+      )}
+
+      {/* Tabs and Content */}
+      <motion.div
+        className="bg-white rounded-2xl shadow-lg overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        {/* Tabs */}
+        <div className="flex border-b border-slate-200">
+          <button
+            onClick={() => setActiveTab('structure')}
+            className={`flex items-center gap-2 px-6 py-4 font-semibold transition-all ${
+              activeTab === 'structure'
+                ? 'text-[#583B8B] border-b-2 border-[#583B8B] bg-[#D1C4E9]/20'
+                : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+            }`}
+          >
+            <FolderTree size={18} />
+            Список модулей
+          </button>
+          <button
+            onClick={() => setActiveTab('reviews')}
+            className={`flex items-center gap-2 px-6 py-4 font-semibold transition-all relative ${
+              activeTab === 'reviews'
+                ? 'text-[#583B8B] border-b-2 border-[#583B8B] bg-[#D1C4E9]/20'
+                : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+            }`}
+          >
+            <Star size={18} />
+            Оценки и отзывы
+            <span className="px-2 py-0.5 bg-[#583B8B] text-white rounded-full text-xs font-semibold">{reviews.length}</span>
+            {unreadReviewsCount > 0 && activeTab !== 'reviews' && (
+              <span className="absolute top-2 right-2 w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
+            )}
+          </button>
+        </div>
+
+        {/* Tab Content */}
+        <div className="p-8">
+          {activeTab === 'structure' && (
+            <CourseStructure
+              lessons={courseLessons}
+              onEdit={handleEditLesson}
+              onToggleStatus={toggleStatus}
+              onReorder={setLessons}
+              onCreateLesson={handleCreateLessonInModule}
+              onCopyLesson={copyLesson}
+              onCopyModule={copyModule}
+            />
+          )}
+
+          {activeTab === 'reviews' && (
+            <ReviewsSection
+              reviews={reviews}
+              onMarkAsRead={handleMarkAsRead}
+              onMarkAllAsRead={handleMarkAllAsRead}
+            />
+          )}
+        </div>
+      </motion.div>
+    </div>
   );
 }

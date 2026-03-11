@@ -212,7 +212,7 @@ export function EmailFunnels() {
         </div>
         <motion.button
           onClick={() => openEditor()}
-          className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
+          className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto justify-center"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -237,12 +237,12 @@ export function EmailFunnels() {
             transition={{ delay: idx * 0.1 }}
           >
             {/* Funnel Header */}
-            <div className="p-4 sm:p-6 bg-gradient-to-r from-violet-50 to-purple-50">
+            <div className="p-4 sm:p-6 bg-gradient-to-r from-[#D1C4E9]/20 to-[#FDE4FF]/20">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="p-2 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl">
-                      <GitBranch size={20} className="text-violet-600" />
+                    <div className="p-2 bg-gradient-to-br from-[#D1C4E9]/30 to-[#FDE4FF]/30 rounded-xl">
+                      <GitBranch size={20} className="text-[#583B8B]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-slate-800 text-base sm:text-lg line-clamp-1">{funnel.name}</h3>
@@ -279,7 +279,7 @@ export function EmailFunnels() {
 
                   <motion.button
                     onClick={() => openEditor(funnel)}
-                    className="p-2 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 transition-colors"
+                    className="p-2 bg-[#D1C4E9]/20 text-[#583B8B] rounded-lg hover:bg-[#D1C4E9]/30 transition-colors"
                     title="Редактировать"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -325,7 +325,7 @@ export function EmailFunnels() {
                         <p className="mb-2">Шаги воронки не настроены</p>
                         <button
                           onClick={() => openEditor(funnel)}
-                          className="mt-4 px-6 py-2.5 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all"
+                          className="mt-4 px-6 py-2.5 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold hover:shadow-lg transition-all"
                         >
                           Настроить шаги воронки
                         </button>
@@ -336,12 +336,12 @@ export function EmailFunnels() {
                           <div key={step.id} className="relative">
                             {/* Connector Line */}
                             {stepIdx > 0 && (
-                              <div className="absolute left-6 -top-4 w-0.5 h-4 bg-gradient-to-b from-violet-200 to-violet-400"></div>
+                              <div className="absolute left-6 -top-4 w-0.5 h-4 bg-gradient-to-b from-[#D1C4E9] to-[#583B8B]"></div>
                             )}
 
                             <div className="flex items-start gap-4">
                               {/* Step Number */}
-                              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-purple-500 flex items-center justify-center text-white font-bold shadow-lg">
+                              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-[#2E1065] to-[#8C2F5E] flex items-center justify-center text-white font-bold shadow-lg">
                                 {stepIdx + 1}
                               </div>
 
@@ -358,14 +358,14 @@ export function EmailFunnels() {
                                           {condIdx > 0 && condition.operator && (
                                             <div className="flex items-center gap-2 my-1">
                                               <div className="h-px flex-1 bg-slate-200"></div>
-                                              <span className="px-2 py-0.5 bg-violet-100 text-violet-700 text-xs font-bold rounded">
+                                              <span className="px-2 py-0.5 bg-[#D1C4E9]/30 text-[#2E1065] text-xs font-bold rounded">
                                                 {condition.operator}
                                               </span>
                                               <div className="h-px flex-1 bg-slate-200"></div>
                                             </div>
                                           )}
                                           <div className="flex items-center gap-2 text-xs sm:text-sm text-slate-600">
-                                            {condition.type === 'delay' && <Clock size={14} className="text-violet-500" />}
+                                            {condition.type === 'delay' && <Clock size={14} className="text-[#583B8B]" />}
                                             {condition.type === 'time_window' && <Clock size={14} className="text-blue-500" />}
                                             {condition.type === 'specific_date' && <Calendar size={14} className="text-green-500" />}
                                             {condition.type === 'not_opened' && <Eye size={14} className="text-orange-500" />}

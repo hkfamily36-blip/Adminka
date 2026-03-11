@@ -197,10 +197,10 @@ export function EmailComposerModal({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-violet-50 to-purple-50">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-gradient-to-r from-[#D1C4E9]/20 to-[#FDE4FF]/20">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-violet-100 rounded-lg">
-                <Mail className="text-violet-600" size={24} />
+              <div className="p-2 bg-[#D1C4E9]/30 rounded-lg">
+                <Mail className="text-[#583B8B]" size={24} />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-slate-800">Отправить письмо</h3>
@@ -222,7 +222,7 @@ export function EmailComposerModal({
           <div className="px-6 py-3 bg-slate-50 border-b border-slate-200">
             <button
               onClick={() => setShowTemplates(!showTemplates)}
-              className="flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-semibold transition-colors"
+              className="flex items-center gap-2 text-sm text-[#583B8B] hover:text-[#2E1065] font-semibold transition-colors"
             >
               <FileText size={16} />
               {showTemplates ? 'Скрыть шаблоны' : 'Выбрать шаблон'}
@@ -245,14 +245,14 @@ export function EmailComposerModal({
                       onClick={() => handleTemplateSelect(template)}
                       className={`p-3 rounded-xl border-2 text-left transition-all hover:shadow-md ${
                         selectedTemplate === template.id
-                          ? 'border-violet-500 bg-violet-50'
-                          : 'border-slate-200 bg-white hover:border-violet-300'
+                          ? 'border-[#583B8B] bg-[#D1C4E9]/20'
+                          : 'border-slate-200 bg-white hover:border-[#D1C4E9]'
                       }`}
                     >
                       <div className="flex items-start gap-2">
                         <Sparkles
                           size={16}
-                          className={selectedTemplate === template.id ? 'text-violet-600' : 'text-slate-400'}
+                          className={selectedTemplate === template.id ? 'text-[#583B8B]' : 'text-slate-400'}
                         />
                         <div className="flex-1 min-w-0">
                           <p className="font-semibold text-sm text-slate-800 truncate">{template.name}</p>
@@ -276,7 +276,7 @@ export function EmailComposerModal({
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 placeholder="Введите тему письма"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent"
                 disabled={isSending}
               />
             </div>
@@ -307,7 +307,7 @@ export function EmailComposerModal({
               <button
                 onClick={handleSend}
                 disabled={isSending}
-                className="flex items-center gap-2 px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-6 py-2 bg-[#583B8B] text-white rounded-lg hover:bg-[#2E1065] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSending ? (
                   <>

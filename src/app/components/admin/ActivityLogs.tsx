@@ -190,7 +190,7 @@ export function ActivityLogs() {
       case 'module_start':
         return <TrendingUp size={20} className="text-cyan-600" />;
       case 'registration':
-        return <UsersIcon size={20} className="text-violet-600" />;
+        return <UsersIcon size={20} className="text-[#583B8B]" />;
       default:
         return <Activity size={20} className="text-slate-600" />;
     }
@@ -209,7 +209,7 @@ export function ActivityLogs() {
       case 'module_start':
         return 'bg-cyan-50 border-cyan-200';
       case 'registration':
-        return 'bg-violet-50 border-violet-200';
+        return 'bg-[#D1C4E9]/20 border-[#D1C4E9]';
       default:
         return 'bg-slate-50 border-slate-200';
     }
@@ -228,7 +228,7 @@ export function ActivityLogs() {
       case 'module_start':
         return 'bg-cyan-100';
       case 'registration':
-        return 'bg-violet-100';
+        return 'bg-[#D1C4E9]/30';
       default:
         return 'bg-slate-100';
     }
@@ -276,7 +276,7 @@ export function ActivityLogs() {
             <select
               value={actionFilter}
               onChange={(e) => setActionFilter(e.target.value as ActionFilter)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
             >
               <option value="all">Все действия</option>
               <option value="lesson_view">Просмотр урока</option>
@@ -295,7 +295,7 @@ export function ActivityLogs() {
             <select
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
             >
               <option value="all">Всё время</option>
               <option value="today">Сегодня</option>
@@ -311,7 +311,7 @@ export function ActivityLogs() {
             <select
               value={selectedUser}
               onChange={(e) => setSelectedUser(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
             >
               <option value="all">Все пользователи</option>
               {uniqueUsers.map(user => (
@@ -329,14 +329,14 @@ export function ActivityLogs() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Поиск по ресурсу или пользователю"
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
             />
           </div>
         </div>
 
         <div className="mt-4 flex items-center gap-2 text-sm text-slate-600">
           <Activity size={16} />
-          <span>Всего событий: <strong className="text-violet-600">{filteredLogs.length}</strong></span>
+          <span>Всего событий: <strong className="text-[#583B8B]">{filteredLogs.length}</strong></span>
         </div>
       </motion.div>
 
@@ -367,7 +367,7 @@ export function ActivityLogs() {
                 <div className="flex items-start justify-between gap-4 mb-2">
                   <div>
                     <p className="font-semibold text-slate-800">
-                      <span className="text-violet-600">{log.userName}</span>{' '}
+                      <span className="text-[#583B8B]">{log.userName}</span>{' '}
                       <span className="text-slate-600 font-normal">{log.action.toLowerCase()}</span>
                     </p>
                     <p className="text-sm text-slate-600 mt-1">

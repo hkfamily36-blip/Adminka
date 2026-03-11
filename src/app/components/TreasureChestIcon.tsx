@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import treasureImage from "figma:asset/4a71424f0e630cabf62cf95ab710a75a9236809e.png";
+import scalesImage from "figma:asset/02aeb3195ab0bcd3d204ed239de56cc227eedcca.png";
 
 interface IconProps {
   size?: number;
@@ -7,15 +7,16 @@ interface IconProps {
 }
 
 // ============================================
-// ПРОДАЖИ — 3D Сундук с сокровищами
+// ТЕХНОЛОГИЯ ПРОДАЖ — Весы с аметистами и шестерёнками
 // ============================================
 export const SalesIcon = ({ size = 24, className = "" }: IconProps) => {
+  const s = size * 1.15;
   return (
     <div 
       className={className}
       style={{
-        width: size,
-        height: size,
+        width: s,
+        height: s,
         position: 'relative',
         display: 'flex',
         alignItems: 'center',
@@ -23,10 +24,10 @@ export const SalesIcon = ({ size = 24, className = "" }: IconProps) => {
         background: 'transparent',
       }}
     >
-      {/* Сундук с сокровищами - основное изображение с прозрачным фоном */}
+      {/* Весы - основное изображение */}
       <motion.img
-        src={treasureImage}
-        alt="Treasure chest"
+        src={scalesImage}
+        alt="Scales with crystals"
         style={{
           width: size * 0.9,
           height: size * 0.9,
@@ -51,13 +52,13 @@ export const SalesIcon = ({ size = 24, className = "" }: IconProps) => {
         }}
       />
       
-      {/* Звездная пыль вокруг сундука */}
+      {/* Звездная пыль вокруг */}
       {[...Array(30)].map((_, i) => {
         const angle = (i * 12 * Math.PI) / 180;
         const distance = size * (0.35 + Math.random() * 0.15);
         const x = size / 2 + Math.cos(angle) * distance;
         const y = size / 2 + Math.sin(angle) * distance;
-        const colors = ['#fbbf24', '#fde68a', '#f59e0b', '#a855f7', '#c084fc'];
+        const colors = ['#C9A96E', '#fde68a', '#f59e0b', '#583B8B', '#D1C4E9'];
         const color = colors[i % colors.length];
         
         return (
@@ -86,7 +87,7 @@ export const SalesIcon = ({ size = 24, className = "" }: IconProps) => {
         );
       })}
       
-      {/* Крупные магические искры (золотые монеты) */}
+      {/* Крупные магические искры */}
       {[...Array(8)].map((_, i) => {
         const angle = (i * 45 * Math.PI) / 180;
         const distance = size * 0.45;
@@ -117,7 +118,7 @@ export const SalesIcon = ({ size = 24, className = "" }: IconProps) => {
             <svg width="100%" height="100%" viewBox="0 0 10 10">
               <path
                 d="M5 0 L5.5 4.5 L10 5 L5.5 5.5 L5 10 L4.5 5.5 L0 5 L4.5 4.5 Z"
-                fill={i % 2 === 0 ? '#fbbf24' : '#a855f7'}
+                fill={i % 2 === 0 ? '#C9A96E' : '#583B8B'}
               />
             </svg>
           </motion.div>

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import teamHandsImage from "figma:asset/9949951b3af652cc456e998677edf543f4307a69.png";
+import sacredImage from "figma:asset/2f0a8f8c46085bd197587f5abc471d01a488ec1e.png";
 
 interface IconProps {
   size?: number;
@@ -7,12 +7,12 @@ interface IconProps {
 }
 
 // ============================================
-// КОМАНДА — Золотые руки с аметистовым трикветром (3D изображение)
+// ПРОДУКТЫ И МЕТОД — Цветок Жизни с аметистами (3D изображение)
 // Стиль идентичен TreasureChestIcon (весы):
 //   контейнер size × size, изображение 0.9×,
 //   30 частиц пыли, 8 искр, 2 слоя свечения
 // ============================================
-export const TeamIcon = ({ size = 24, className = "" }: IconProps) => {
+export const SacredGeometryIcon = ({ size = 24, className = "" }: IconProps) => {
   return (
     <div 
       className={className}
@@ -26,10 +26,10 @@ export const TeamIcon = ({ size = 24, className = "" }: IconProps) => {
         background: 'transparent',
       }}
     >
-      {/* Руки — основное изображение */}
+      {/* Цветок Жизни — основное изображение */}
       <motion.img
-        src={teamHandsImage}
-        alt="Golden hands triquetra with amethysts"
+        src={sacredImage}
+        alt="Sacred Geometry - Flower of Life"
         style={{
           width: size * 0.9,
           height: size * 0.9,

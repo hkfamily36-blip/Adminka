@@ -43,7 +43,7 @@ export const LearningIcon = ({ size = 24, className = "" }: IconProps) => (
     <defs>
       <linearGradient id="book-grad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#A78BFA" />
-        <stop offset="100%" stopColor="#7C3AED" />
+        <stop offset="100%" stopColor="#583B8B" />
       </linearGradient>
       <linearGradient id="star-gold" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#FDE68A" />
@@ -504,8 +504,8 @@ export const FunnelIcon = ({ size = 24, className = "" }: IconProps) => (
     <defs>
       <linearGradient id="funnel-grad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stopColor="#F472B6" />
-        <stop offset="50%" stopColor="#EC4899" />
-        <stop offset="100%" stopColor="#DB2777" />
+        <stop offset="50%" stopColor="#8C2F5E" />
+        <stop offset="100%" stopColor="#8C2F5E" />
       </linearGradient>
       <radialGradient id="funnel-glow">
         <stop offset="0%" stopColor="#FBCFE8" stopOpacity="0.5" />

@@ -23,14 +23,14 @@ export const IconShowcase = () => {
       title: "Обучение",
       description: "Открытая книга с магической звездой",
       energy: "Знание и подготовка",
-      colors: "from-[#2E1065] to-[#5B21B6]"
+      colors: "from-[#2E1065] via-[#583B8B] to-[#583B8B]"
     },
     {
       Component: AuthenticityIcon,
       title: "Аутентичность",
       description: "Кристалл с внутренним светом и гранями",
       energy: "Уникальность и чистота",
-      colors: "from-[#4C1D95] via-[#6D28D9] to-[#7C3AED]"
+      colors: "from-[#2E1065] via-[#583B8B] to-[#583B8B]"
     },
     {
       Component: AudienceIcon,
@@ -44,14 +44,14 @@ export const IconShowcase = () => {
       title: "Продукты и Метод",
       description: "Священная геометрия - цветок жизни",
       energy: "Гармония и целостность",
-      colors: "from-[#701a75] to-[#c026d3]"
+      colors: "from-[#2E1065] to-[#8C2F5E]"
     },
     {
       Component: FunnelIcon,
       title: "Воронка",
       description: "Космическая воронка с потоком энергии",
       energy: "Фокус и магнетизм",
-      colors: "from-[#4a044e] to-[#db2777]"
+      colors: "from-[#2E1065] to-[#8C2F5E]"
     },
     {
       Component: SalesIcon,

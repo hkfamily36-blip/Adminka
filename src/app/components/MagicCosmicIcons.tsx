@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import eyeImage from 'figma:asset/7323af24a6c904a3eb3df57f59983efbebedd7c3.png';
+import eyeImage from 'figma:asset/ea64c47598b85cf6fd1e83ce49d98f9a65b5dad2.png';
 
 interface IconProps {
   size?: number;
@@ -12,6 +12,8 @@ export { FunnelIcon } from "./RainbowFunnelIcon";
 export { BlogIcon } from "./FeatherQuillIcon";
 export { BonusIcon } from "./GiftBonusIcon";
 export { SalesIcon } from "./TreasureChestIcon";
+export { HeartIcon } from "./HeartCrystalIcon";
+export { SacredGeometryIcon } from "./SacredGeometryIcon";
 
 // ============================================
 // 1. АУТЕНТИЧНОСТЬ — Космический глаз с галактикой (3D изображение)
@@ -193,9 +195,9 @@ export const LoveIcon = ({ size = 24, className = "" }: IconProps) => (
 );
 
 // ============================================
-// 3. ПРОДУКТ — Сакральная геометрия
+// 3. ПРОДУКТ — Сакральная геометрия (legacy SVG)
 // ============================================
-export const ProductIcon = ({ size = 24, className = "" }: IconProps) => (
+const ProductIconSVG = ({ size = 24, className = "" }: IconProps) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
     <defs>
       {/* Золотой градиент */}
@@ -485,7 +487,7 @@ export const SalesFunnelIcon = ({ size = 24, className = "" }: IconProps) => (
         const startY = 6 + (i % 3) * 0.5;
         const endY = 18;
         const x = 11 + Math.random() * 2;
-        const colors = ['#ef4444', '#fbbf24', '#22c55e', '#06b6d4', '#6366f1', '#a855f7'];
+        const colors = ['#ef4444', '#fbbf24', '#22c55e', '#06b6d4', '#6366f1', '#583B8B'];
         
         return (
           <motion.circle
@@ -1012,9 +1014,16 @@ export const AIAgentsIcon = ({ size = 24, className = "" }: IconProps) => (
 // Импортируем 3D версию книги
 import Book3DIcon from './Book3DIcon';
 
+// Импортируем 3D сердце для ЦА
+import { HeartIcon } from './HeartCrystalIcon';
+
+// Импортируем 3D Цветок Жизни для Продукта
+import { SacredGeometryIcon } from './SacredGeometryIcon';
+
 // Используем 3D версию для LearningIcon
 export const LearningIcon = Book3DIcon;        // 0. Обучение = 3D книга
 
-export const AudienceIcon = LoveIcon;          // 2. Своя ЦА = Любовь к людям
+export const AudienceIcon = HeartIcon;          // 2. Своя ЦА = Золотое сердце с аметистом
+export const ProductIcon = SacredGeometryIcon;  // 3. Продукты и Метод = Цветок Жизни с аметистами
 // SalesIcon импортируется из TreasureChestIcon.tsx выше
 // BonusIcon импортируется из GiftBonusIcon.tsx выше

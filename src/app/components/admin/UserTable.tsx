@@ -250,10 +250,10 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
       return <ArrowUpDown size={16} className="text-slate-400" />;
     }
     if (sortDirection === 'asc') {
-      return <ArrowUp size={16} className="text-violet-500" />;
+      return <ArrowUp size={16} className="text-[#583B8B]" />;
     }
     if (sortDirection === 'desc') {
-      return <ArrowDown size={16} className="text-violet-500" />;
+      return <ArrowDown size={16} className="text-[#583B8B]" />;
     }
     return <ArrowUpDown size={16} className="text-slate-400" />;
   };
@@ -377,7 +377,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
       free: 'bg-slate-100 text-slate-700',
       standard: 'bg-blue-100 text-blue-700',
       curator: 'bg-purple-100 text-purple-700',
-      mentor: 'bg-pink-100 text-pink-700',
+      mentor: 'bg-[#FDE4FF] text-[#8C2F5E]',
     };
     return (
       <span className={`px-3 py-1 rounded-full text-xs font-semibold ${styles[tariff as keyof typeof styles]}`}>
@@ -387,7 +387,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
   };
 
   const getRoleBadge = (role: string) => {
-    if (role === 'super_admin') return <span className="px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-violet-500 to-purple-500 text-white">Super Admin</span>;
+    if (role === 'super_admin') return <span className="px-3 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white">Super Admin</span>;
     return null;
   };
 
@@ -472,7 +472,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="flex items-center gap-2 text-sm text-slate-600">
-          <span>Всего пользователей: <strong className="text-violet-600">{users.length}</strong></span>
+          <span>Всего пользователей: <strong className="text-[#583B8B]">{users.length}</strong></span>
         </div>
         
         <div className="flex items-center gap-3 flex-wrap">
@@ -488,17 +488,17 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
             
             <motion.button
               onClick={() => setShowImportExportMenu(!showImportExportMenu)}
-              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-pink-50 to-purple-50 border-2 border-violet-200 hover:border-violet-300 text-violet-700 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all"
+              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-[#FDE4FF]/30 to-[#D1C4E9]/30 border-2 border-[#D1C4E9] hover:border-[#583B8B] text-[#2E1065] rounded-xl font-semibold shadow-md hover:shadow-lg transition-all"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <FileSpreadsheet size={18} className="text-violet-600" />
+              <FileSpreadsheet size={18} className="text-[#583B8B]" />
               <span className="hidden sm:inline">Excel</span>
               <motion.div
                 animate={{ rotate: showImportExportMenu ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-violet-600">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="text-[#583B8B]">
                   <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </motion.div>
@@ -515,7 +515,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                   />
                   
                   <motion.div
-                    className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border-2 border-violet-100 overflow-hidden z-20"
+                    className="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-xl border-2 border-[#D1C4E9] overflow-hidden z-20"
                     initial={{ opacity: 0, y: -10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -526,7 +526,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                         fileInputRef.current?.click();
                         setShowImportExportMenu(false);
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gradient-to-r hover:from-[#FDE4FF]/20 hover:to-[#D1C4E9]/20 transition-colors"
                       whileHover={{ x: 4 }}
                     >
                       <div className="p-2 bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg">
@@ -538,14 +538,14 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                       </div>
                     </motion.button>
 
-                    <div className="h-px bg-gradient-to-r from-transparent via-violet-200 to-transparent" />
+                    <div className="h-px bg-gradient-to-r from-transparent via-[#D1C4E9] to-transparent" />
 
                     <motion.button
                       onClick={() => {
                         exportToExcel();
                         setShowImportExportMenu(false);
                       }}
-                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gradient-to-r hover:from-[#FDE4FF]/20 hover:to-[#D1C4E9]/20 transition-colors"
                       whileHover={{ x: 4 }}
                     >
                       <div className="p-2 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg">
@@ -564,7 +564,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
 
           <motion.button
             onClick={() => onOpenAddUser && onOpenAddUser()}
-            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -590,7 +590,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
               placeholder="Поиск по имени или email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
             />
           </div>
 
@@ -599,7 +599,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
             <select
               value={tariffFilter}
               onChange={(e) => setTariffFilter(e.target.value as TariffFilter)}
-              className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all min-w-[180px]"
+              className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all min-w-[180px]"
             >
               <option value="all">Все тарифы</option>
               <option value="free">{getTariffLabel('free')}</option>
@@ -611,7 +611,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-              className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all min-w-[180px]"
+              className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all min-w-[180px]"
             >
               <option value="all">Все статусы</option>
               <option value="active">Активные</option>
@@ -624,7 +624,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
         <div className="mt-6 flex gap-6 text-sm">
           <div>
             <span className="text-slate-600">Найдено:</span>
-            <span className="ml-2 font-bold text-violet-600">{filteredUsers.length}</span>
+            <span className="ml-2 font-bold text-[#583B8B]">{filteredUsers.length}</span>
           </div>
           <div>
             <span className="text-slate-600">Активных:</span>
@@ -655,7 +655,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 <th className="px-6 py-4 text-left">
                   <button
                     onClick={() => handleSort('name')}
-                    className="flex items-center gap-2 hover:text-pink-200 transition-colors"
+                    className="flex items-center gap-2 hover:text-[#D1C4E9] transition-colors"
                   >
                     <span className="text-sm font-semibold">Пользователь</span>
                     <SortIcon field="name" />
@@ -664,7 +664,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 <th className="px-6 py-4 text-left">
                   <button
                     onClick={() => handleSort('tariff')}
-                    className="flex items-center gap-2 hover:text-pink-200 transition-colors"
+                    className="flex items-center gap-2 hover:text-[#D1C4E9] transition-colors"
                   >
                     <span className="text-sm font-semibold">Тариф</span>
                     <SortIcon field="tariff" />
@@ -673,7 +673,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 <th className="px-6 py-4 text-left">
                   <button
                     onClick={() => handleSort('status')}
-                    className="flex items-center gap-2 hover:text-pink-200 transition-colors"
+                    className="flex items-center gap-2 hover:text-[#D1C4E9] transition-colors"
                   >
                     <span className="text-sm font-semibold">Статус</span>
                     <SortIcon field="status" />
@@ -682,7 +682,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 <th className="px-6 py-4 text-left">
                   <button
                     onClick={() => handleSort('completedLessons')}
-                    className="flex items-center gap-2 hover:text-pink-200 transition-colors"
+                    className="flex items-center gap-2 hover:text-[#D1C4E9] transition-colors"
                   >
                     <span className="text-sm font-semibold">Прогресс</span>
                     <SortIcon field="completedLessons" />
@@ -692,7 +692,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                   <th className="px-6 py-4 text-left">
                     <button
                       onClick={() => handleSort('revenue')}
-                      className="flex items-center gap-2 hover:text-pink-200 transition-colors"
+                      className="flex items-center gap-2 hover:text-[#D1C4E9] transition-colors"
                     >
                       <span className="text-sm font-semibold">Выручка</span>
                       <SortIcon field="revenue" />
@@ -702,7 +702,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 <th className="px-6 py-4 text-left">
                   <button
                     onClick={() => handleSort('registeredAt')}
-                    className="flex items-center gap-2 hover:text-pink-200 transition-colors"
+                    className="flex items-center gap-2 hover:text-[#D1C4E9] transition-colors"
                   >
                     <span className="text-sm font-semibold">Регистрация</span>
                     <SortIcon field="registeredAt" />
@@ -717,7 +717,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                   <motion.tr
                     key={user.id}
                     onClick={() => setSelectedUser(user)}
-                    className="hover:bg-violet-50 transition-colors cursor-pointer"
+                    className="hover:bg-[#D1C4E9]/20 transition-colors cursor-pointer"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
@@ -769,7 +769,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                       <div className="flex items-center gap-2">
                         <div className="flex-1 bg-slate-200 rounded-full h-2 max-w-[100px]">
                           <div
-                            className="bg-gradient-to-r from-violet-500 to-purple-500 h-2 rounded-full transition-all duration-500"
+                            className="bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] h-2 rounded-full transition-all duration-500"
                             style={{ width: `${Math.min(100, (user.completedLessons || 0) * 5)}%` }}
                           ></div>
                         </div>
@@ -879,7 +879,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
               layout
             >
               {/* Cosmic effect */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 rounded-full blur-2xl"></div>
+              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#583B8B]/10 to-[#8C2F5E]/10 rounded-full blur-2xl"></div>
 
               <div className="relative">
                 {/* Header */}
@@ -930,7 +930,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                     <div className="flex items-center gap-2">
                       <div className="flex-1 bg-slate-200 rounded-full h-2">
                         <div
-                          className="bg-gradient-to-r from-violet-500 to-purple-500 h-2 rounded-full transition-all duration-500"
+                          className="bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] h-2 rounded-full transition-all duration-500"
                           style={{ width: `${Math.min(100, (user.completedLessons || 0) * 5)}%` }}
                         ></div>
                       </div>
@@ -1007,7 +1007,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                       e.stopPropagation();
                       setSelectedUser(user);
                     }}
-                    className="px-3 py-2 bg-violet-50 text-violet-600 rounded-lg hover:bg-violet-100 transition-colors"
+                    className="px-3 py-2 bg-[#D1C4E9]/20 text-[#583B8B] rounded-lg hover:bg-[#D1C4E9]/30 transition-colors"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     title="Подробнее"
@@ -1057,8 +1057,8 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Космические эффекты */}
-                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 rounded-full blur-3xl pointer-events-none"></div>
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 rounded-full blur-2xl pointer-events-none"></div>
+                <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#583B8B]/20 to-[#8C2F5E]/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#8C2F5E]/20 to-[#583B8B]/20 rounded-full blur-2xl pointer-events-none"></div>
 
                 {/* Close Button */}
                 <button
@@ -1072,7 +1072,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                 <div className="relative overflow-y-auto p-4 sm:p-8">
                   {/* Header */}
                   <div className="relative mb-6">
-                    <h2 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E1065] via-[#583B8B] to-[#8C2F5E] bg-clip-text text-transparent">
                       Добавить пользователя
                     </h2>
                     <p className="text-slate-600 mt-1">Заполните данные нового пользователя</p>
@@ -1090,7 +1090,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                         value={newUser.firstName}
                         onChange={(e) => setNewUser({ ...newUser, firstName: e.target.value })}
                         placeholder="Александр"
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                       />
                     </div>
 
@@ -1104,7 +1104,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                         value={newUser.lastName}
                         onChange={(e) => setNewUser({ ...newUser, lastName: e.target.value })}
                         placeholder="Иванов"
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                       />
                     </div>
 
@@ -1118,7 +1118,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                         value={newUser.email}
                         onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                         placeholder="alexander@example.com"
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                       />
                     </div>
 
@@ -1129,7 +1129,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                       <select
                         value={newUser.tariff}
                         onChange={(e) => setNewUser({ ...newUser, tariff: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                       >
                         <option value="free">{getTariffLabel('free')}</option>
                         <option value="standard">{getTariffLabel('standard')}</option>
@@ -1147,7 +1147,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                         required
                         value={newUser.accessUntil}
                         onChange={(e) => setNewUser({ ...newUser, accessUntil: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                       />
                       <motion.button
                         type="button"
@@ -1175,7 +1175,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                         <select
                           value={newUser.manager}
                           onChange={(e) => setNewUser({ ...newUser, manager: e.target.value })}
-                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                         >
                           <option value="">Выберите менеджера</option>
                           {managers.map((manager) => (
@@ -1191,7 +1191,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                     {newUser.tariff !== 'free' && (
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
-                          <Briefcase size={16} className="text-violet-600" />
+                          <Briefcase size={16} className="text-[#583B8B]" />
                           Профессия
                         </label>
                         <input
@@ -1199,14 +1199,14 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                           value={newUser.profession}
                           onChange={(e) => setNewUser({ ...newUser, profession: e.target.value })}
                           placeholder="Психолог, коуч, бизнес-тренер..."
-                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                         />
                       </div>
                     )}
 
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
-                        <MessageCircle size={16} className="text-violet-600" />
+                        <MessageCircle size={16} className="text-[#583B8B]" />
                         Ник в Telegram
                       </label>
                       <div className="relative">
@@ -1216,23 +1216,23 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                           value={newUser.telegramNick}
                           onChange={(e) => setNewUser({ ...newUser, telegramNick: e.target.value })}
                           placeholder="username"
-                          className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                          className="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
                         />
                       </div>
                     </div>
 
                     {/* Чекбокс "Менеджер" только для тарифа "Работник" */}
                     {newUser.tariff === 'free' && (
-                      <div className="flex items-center gap-3 p-4 bg-violet-50 rounded-xl border-2 border-violet-200">
+                      <div className="flex items-center gap-3 p-4 bg-[#D1C4E9]/20 rounded-xl border-2 border-[#D1C4E9]">
                         <input
                           type="checkbox"
                           id="isManagerAdd"
                           checked={newUser.isManager}
                           onChange={(e) => setNewUser({ ...newUser, isManager: e.target.checked })}
-                          className="w-5 h-5 text-violet-600 bg-white border-violet-300 rounded focus:ring-2 focus:ring-violet-500 cursor-pointer"
+                          className="w-5 h-5 text-[#583B8B] bg-white border-[#D1C4E9] rounded focus:ring-2 focus:ring-[#583B8B] cursor-pointer"
                         />
                         <label htmlFor="isManagerAdd" className="text-sm font-semibold text-slate-700 cursor-pointer flex items-center gap-2">
-                          <UserCog size={18} className="text-violet-600" />
+                          <UserCog size={18} className="text-[#583B8B]" />
                           Менеджер
                         </label>
                       </div>
@@ -1243,7 +1243,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
                       <div className="flex gap-3">
                         <motion.button
                           type="submit"
-                          className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-500 to-purple-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                          className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                         >
@@ -1299,6 +1299,7 @@ export function UserTable({ triggerAddUser, onAddUserComplete, onOpenAddUser }: 
             // Закрываем панель деталей
             setSelectedUser(null);
           }}
+          allUsers={users}
         />
       )}
     </div>

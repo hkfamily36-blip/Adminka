@@ -109,7 +109,7 @@ export const Icon3DShowcase: React.FC = () => {
         "Перспективное искажение страниц",
         "Объемная звезда с 8 лучами"
       ],
-      colors: "from-[#2E1065] to-[#5B21B6]",
+      colors: "from-[#2E1065] via-[#583B8B] to-[#583B8B]",
       currentIcon: Book3DIcon,
       isReady: true
     },
@@ -124,7 +124,7 @@ export const Icon3DShowcase: React.FC = () => {
         "Объемный зрачок с глубиной",
         "Реалистичные блики света"
       ],
-      colors: "from-[#4C1D95] via-[#6D28D9] to-[#7C3AED]",
+      colors: "from-[#2E1065] via-[#583B8B] to-[#583B8B]",
       currentIcon: AuthenticityIcon,
       isReady: false
     },
@@ -154,7 +154,7 @@ export const Icon3DShowcase: React.FC = () => {
         "Мерцающие точки на вершинах",
         "Объемные пересечения геометрии"
       ],
-      colors: "from-[#701a75] to-[#c026d3]",
+      colors: "from-[#2E1065] to-[#8C2F5E]",
       currentIcon: ProductIcon,
       isReady: false
     },
@@ -169,7 +169,7 @@ export const Icon3DShowcase: React.FC = () => {
         "Частицы с траекториями",
         "Градиенты глубины (темнее в центре)"
       ],
-      colors: "from-[#4a044e] to-[#db2777]",
+      colors: "from-[#2E1065] to-[#8C2F5E]",
       currentIcon: FunnelIcon,
       isReady: false
     },

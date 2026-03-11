@@ -22,7 +22,7 @@ export const AnimatedIconsPreview = () => {
     {
       Icon: LearningIcon,
       name: 'Обучение',
-      gradient: 'from-[#2E1065] to-[#5B21B6]',
+      gradient: 'from-[#2E1065] via-[#583B8B] to-[#583B8B]',
       description: 'Открытая книга с вращающейся магической звездой',
       features: ['Пульсирующее свечение', 'Вращающаяся звезда', 'Мерцающие частицы'],
     },

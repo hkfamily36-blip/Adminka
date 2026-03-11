@@ -319,7 +319,7 @@ export function TariffConstructor() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E1065] via-[#7C3AED] to-[#EC4899] bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-[#2E1065] via-[#583B8B] to-[#8C2F5E] bg-clip-text text-transparent">
             Конструктор тарифов
           </h2>
           <p className="text-slate-600 mt-1">Управление тарифными планами и доступом к контенту</p>

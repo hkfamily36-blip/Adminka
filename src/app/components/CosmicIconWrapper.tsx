@@ -27,7 +27,7 @@ export function CosmicIconWrapper({
         const y = Math.sin(angle) * randomDistance;
         const colors = isCompleted 
           ? ['#fbbf24', '#f59e0b', '#fcd34d'] 
-          : ['#ec4899', '#f472b6', '#f9a8d4', '#a855f7', '#c084fc'];
+          : ['#8C2F5E', '#B54D7D', '#D1C4E9', '#583B8B', '#D1C4E9'];
         const color = colors[i % colors.length];
         
         return (

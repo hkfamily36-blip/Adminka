@@ -139,7 +139,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
     
     if (location.pathname === '/admin/lessons/create') {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-fuchsia-50">
+        <div className="min-h-screen bg-gradient-to-br from-[#F5F5F7] via-[#D1C4E9]/20 to-[#FDE4FF]/20">
           <CreateLessonPage />
         </div>
       );
@@ -147,7 +147,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
     
     if (location.pathname.match(/^\/admin\/lessons\/[^/]+\/edit$/)) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-fuchsia-50">
+        <div className="min-h-screen bg-gradient-to-br from-[#F5F5F7] via-[#D1C4E9]/20 to-[#FDE4FF]/20">
           <EditLessonPage />
         </div>
       );
@@ -155,7 +155,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-slate-50 via-violet-50 to-fuchsia-50 overflow-hidden">
+    <div className="flex h-screen bg-gradient-to-br from-[#F5F5F7] via-[#D1C4E9]/20 to-[#FDE4FF]/20 overflow-hidden">
       {/* Sidebar - скрываем для Helpdesk */}
       {activePage !== 'helpdesk' && (
         <motion.aside
@@ -193,7 +193,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
             <div className="p-6 border-b border-white/10">
               <div className="flex items-center justify-between mb-4">
                 {sidebarOpen && (
-                  <h2 className="text-xl font-bold bg-gradient-to-r from-pink-200 to-violet-200 bg-clip-text text-transparent">
+                  <h2 className="text-xl font-bold bg-gradient-to-r from-[#D1C4E9] to-[#6D5BA0] bg-clip-text text-transparent">
                     Админ-панель
                   </h2>
                 )}
@@ -209,11 +209,11 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
                   <img 
                     src={currentUser.avatar} 
                     alt={currentUser.name}
-                    className="w-10 h-10 rounded-full border-2 border-pink-300"
+                    className="w-10 h-10 rounded-full border-2 border-[#D1C4E9]"
                   />
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-sm truncate">{currentUser.name}</p>
-                    <p className="text-xs text-violet-200">{
+                    <p className="text-xs text-[#D1C4E9]">{
                       currentUser.role === 'super_admin' ? 'Super Admin' : 'Менеджер'
                     }</p>
                   </div>
@@ -257,7 +257,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
                       )}
                       {isActive && !item.children && (
                         <motion.div
-                          className="ml-auto w-2 h-2 bg-pink-300 rounded-full"
+                          className="ml-auto w-2 h-2 bg-[#C9A96E] rounded-full"
                           layoutId="activeIndicator"
                         />
                       )}
@@ -295,7 +295,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
                                     <span className="font-medium">{child.label}</span>
                                     {isChildActive && (
                                       <motion.div
-                                        className="ml-auto w-1.5 h-1.5 bg-pink-300 rounded-full"
+                                        className="ml-auto w-1.5 h-1.5 bg-[#C9A96E] rounded-full"
                                         layoutId="activeIndicator"
                                       />
                                     )}
@@ -340,7 +340,7 @@ export function AdminDashboard({ onExit }: { onExit: () => void }) {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2E1065] via-[#7C3AED] to-[#EC4899] bg-clip-text text-transparent mb-2">
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-[#2E1065] via-[#583B8B] to-[#8C2F5E] bg-clip-text text-transparent mb-2">
                 {(() => {
                   // Ищем в основном меню
                   const mainItem = menuItems.find(item => item.id === activePage);
@@ -399,8 +399,8 @@ function OverviewPage({ onNavigate, onOpenAddUser }: { onNavigate: (page: AdminP
   const { isSuperAdmin } = useAuth();
   
   const stats = [
-    { label: 'Всего пользователей', value: '1,234', change: '+12%', icon: Users, color: 'from-violet-500 to-purple-500' },
-    { label: 'Активных студентов', value: '892', change: '+8%', icon: Activity, color: 'from-fuchsia-500 to-pink-500' },
+    { label: 'Всего пользователей', value: '1,234', change: '+12%', icon: Users, color: 'from-[#2E1065] to-[#8C2F5E]' },
+    { label: 'Активных студентов', value: '892', change: '+8%', icon: Activity, color: 'from-[#8C2F5E] to-[#583B8B]' },
     { label: 'Уроков создано', value: '156', change: '+5', icon: BookOpen, color: 'from-cyan-500 to-blue-500' },
     ...(isSuperAdmin ? [{ label: 'Выручка за месяц', value: '₽485,200', change: '+23%', icon: DollarSign, color: 'from-amber-500 to-orange-500' }] : []),
   ];
@@ -446,7 +446,7 @@ function OverviewPage({ onNavigate, onOpenAddUser }: { onNavigate: (page: AdminP
         <h2 className="text-xl font-bold text-slate-800 mb-4">Быстрые действия</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <motion.button 
-            className="p-4 bg-gradient-to-br from-violet-50 to-purple-50 hover:from-violet-100 hover:to-purple-100 rounded-xl transition-colors text-left" 
+            className="p-4 bg-gradient-to-br from-[#D1C4E9]/20 to-[#6D5BA0]/10 hover:from-[#D1C4E9]/30 hover:to-[#6D5BA0]/20 rounded-xl transition-colors text-left" 
             onClick={() => {
               onNavigate('users');
               onOpenAddUser();
@@ -454,16 +454,16 @@ function OverviewPage({ onNavigate, onOpenAddUser }: { onNavigate: (page: AdminP
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Users className="mb-2 text-violet-600" size={24} />
+            <Users className="mb-2 text-[#583B8B]" size={24} />
             <p className="font-semibold text-sm text-slate-800">Добавить пользователя</p>
           </motion.button>
           <motion.button 
-            className="p-4 bg-gradient-to-br from-fuchsia-50 to-pink-50 hover:from-fuchsia-100 hover:to-pink-100 rounded-xl transition-colors text-left"
+            className="p-4 bg-gradient-to-br from-[#FDE4FF]/30 to-[#D1C4E9]/20 hover:from-[#FDE4FF]/50 hover:to-[#D1C4E9]/30 rounded-xl transition-colors text-left"
             onClick={() => onNavigate('learning')}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <BookOpen className="mb-2 text-fuchsia-600" size={24} />
+            <BookOpen className="mb-2 text-[#8C2F5E]" size={24} />
             <p className="font-semibold text-sm text-slate-800">Создать урок</p>
           </motion.button>
           <motion.button 

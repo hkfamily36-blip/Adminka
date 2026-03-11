@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import teamHandsImage from "figma:asset/9949951b3af652cc456e998677edf543f4307a69.png";
+import heartImage from "figma:asset/b6d293409bc27281cdcd8fcabb95b9c6425d3fc4.png";
 
 interface IconProps {
   size?: number;
@@ -7,12 +7,12 @@ interface IconProps {
 }
 
 // ============================================
-// КОМАНДА — Золотые руки с аметистовым трикветром (3D изображение)
+// СВОЯ ЦА — Золотое сердце с аметистом (3D изображение)
 // Стиль идентичен TreasureChestIcon (весы):
 //   контейнер size × size, изображение 0.9×,
 //   30 частиц пыли, 8 искр, 2 слоя свечения
 // ============================================
-export const TeamIcon = ({ size = 24, className = "" }: IconProps) => {
+export const HeartIcon = ({ size = 24, className = "" }: IconProps) => {
   return (
     <div 
       className={className}
@@ -26,10 +26,10 @@ export const TeamIcon = ({ size = 24, className = "" }: IconProps) => {
         background: 'transparent',
       }}
     >
-      {/* Руки — основное изображение */}
+      {/* Сердце — основное изображение */}
       <motion.img
-        src={teamHandsImage}
-        alt="Golden hands triquetra with amethysts"
+        src={heartImage}
+        alt="Golden heart with amethyst"
         style={{
           width: size * 0.9,
           height: size * 0.9,

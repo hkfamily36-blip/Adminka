@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router';
 import { motion } from 'motion/react';
 import { ArrowLeft, Save, Eye, FileText, ClipboardList, X, Blocks, Settings, Monitor, Tablet, Smartphone } from 'lucide-react';
-import { ContentBlockEditor, ContentBlock } from '../components/admin/ContentBlockEditor';
+import { ContentBlockEditor, ContentBlock, ContainerSettings } from '../components/admin/ContentBlockEditor';
 import { TestBuilder, Question } from '../components/admin/TestBuilder';
 import { LessonPreview } from '../components/admin/LessonPreview';
+import { AddElementButton } from '../components/admin/AddElementButton';
 
 interface LessonFormData {
   title: string;
@@ -73,6 +74,16 @@ export function LessonEditorPage({ mode }: LessonEditorPageProps) {
   const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([]);
   const [testQuestions, setTestQuestions] = useState<Question[]>([]);
 
+  // Настройки контейнера блоков
+  const [containerSettings, setContainerSettings] = useState<ContainerSettings>({
+    gap: '0.75rem',
+    background: '#ffffff',
+    borderColor: '#e2e8f0',
+    borderWidth: '2px',
+    borderRadius: '0.75rem',
+    padding: '1rem',
+  });
+
   // Проверка заполненности настроек
   const isSettingsValid = formData.title.trim() !== '';
   
@@ -119,6 +130,16 @@ export function LessonEditorPage({ mode }: LessonEditorPageProps) {
   const handleCancel = () => {
     console.log('Cancel clicked, navigating back to home');
     navigate('/', { replace: true });
+  };
+
+  const handleAddBlock = (type: ContentBlock['type']) => {
+    const newBlock: ContentBlock = {
+      id: `block-${Date.now()}`,
+      type,
+      content: '',
+      order: contentBlocks.length,
+    };
+    setContentBlocks([...contentBlocks, newBlock]);
   };
 
   return (
@@ -388,6 +409,14 @@ export function LessonEditorPage({ mode }: LessonEditorPageProps) {
 
                   {/* Device Selector - всегда показывается */}
                   <div className="flex items-center gap-3">
+                    {/* Add Element Button - только для конструктора и не в режиме предпросмотра */}
+                    {formData.type === 'constructor' && !isPreviewMode && (
+                      <AddElementButton 
+                        onAddBlock={handleAddBlock}
+                        deviceType={deviceType}
+                      />
+                    )}
+
                     {/* Preview Toggle */}
                     <button
                       onClick={() => setIsPreviewMode(!isPreviewMode)}
@@ -484,6 +513,8 @@ export function LessonEditorPage({ mode }: LessonEditorPageProps) {
                             blocks={contentBlocks}
                             onChange={setContentBlocks}
                             deviceType={deviceType}
+                            containerSettings={containerSettings}
+                            onContainerSettingsChange={setContainerSettings}
                           />
                         ) : (
                           <TestBuilder

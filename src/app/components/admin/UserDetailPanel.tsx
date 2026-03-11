@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -37,6 +38,7 @@ import { ChatWindow } from './ChatWindow';
 import { USER_ACTIVITIES } from '../../data/mockActivityData';
 import { toast } from 'sonner';
 import { EmailComposerModal, type EmailLogEntry } from './EmailComposerModal';
+import { MergeContactModal } from './MergeContactModal';
 
 interface User {
   id: string;
@@ -63,15 +65,18 @@ interface UserDetailPanelProps {
   onClose: () => void;
   onUpdate?: (userId: string, updatedData: Partial<User>) => void;
   onDelete?: (userId: string) => void;
+  allUsers?: User[];
 }
 
-export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetailPanelProps) {
+export function UserDetailPanel({ user, onClose, onUpdate, onDelete, allUsers = [] }: UserDetailPanelProps) {
+  const navigate = useNavigate();
   const [showActionsMenu, setShowActionsMenu] = useState(false);
   const [showSubscriptions, setShowSubscriptions] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showEmailComposer, setShowEmailComposer] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showMergeModal, setShowMergeModal] = useState(false);
   const [emailLogs, setEmailLogs] = useState<EmailLogEntry[]>([]);
   const [isManager, setIsManager] = useState(user?.role === 'manager');
   const [activityTab, setActivityTab] = useState<'log' | 'checklist'>('log');
@@ -245,6 +250,13 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
 
   const handleAction = (action: string) => {
     setShowActionsMenu(false);
+    
+    if (action === 'Войти в кабинет как пользователь' && user) {
+      // Переход в студенческий кабинет от имени пользователя
+      navigate(`/student/${user.id}`);
+    } else if (action === 'Объединить с другим контактом') {
+      setShowMergeModal(true);
+    }
   };
 
   const handleSave = () => {
@@ -281,6 +293,24 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
     }
     
     setShowActionsMenu(false);
+  };
+
+  const handleMergeContacts = (sourceUserId: string, targetUserId: string) => {
+    const sourceUser = allUsers.find(u => u.id === sourceUserId);
+    const targetUser = allUsers.find(u => u.id === targetUserId);
+
+    if (!sourceUser || !targetUser) return;
+
+    // Логика объединения контактов:
+    // 1. Все данные из sourceUser переносятся в targetUser
+    // 2. sourceUser помечается как удалённый или архивный
+    
+    toast.success('Контакты объединены', {
+      description: `${sourceUser.name} был успешно объединён с ${targetUser.name}. История активности и подписки перенесены.`,
+    });
+
+    // Закрываем текущую панель, так как пользователь был объединён
+    onClose();
   };
 
   // История активности - сортируем от новых к старым
@@ -455,12 +485,12 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleAction('Войти в школу как пользователь');
+                            handleAction('Войти в кабинет как пользователь');
                           }}
-                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 transition-colors text-left"
+                          className="w-full flex items-center gap-3 px-4 py-3 hover:bg-violet-50 transition-colors text-left"
                         >
                           <LogIn size={18} className="text-violet-600" />
-                          <span className="text-sm text-slate-700">Войти в школу как пользователь</span>
+                          <span className="text-sm text-slate-700 font-semibold">Войти в кабинет как пользователь</span>
                         </button>
                         <button
                           onClick={(e) => {
@@ -1478,6 +1508,15 @@ export function UserDetailPanel({ user, onClose, onUpdate, onDelete }: UserDetai
             duration: 5000,
           });
         }}
+      />
+
+      {/* Merge Contact Modal */}
+      <MergeContactModal
+        isOpen={showMergeModal}
+        onClose={() => setShowMergeModal(false)}
+        currentUser={user}
+        allUsers={allUsers}
+        onMerge={handleMergeContacts}
       />
 
       {/* Chat Window - Outside main AnimatePresence to avoid conflicts */}

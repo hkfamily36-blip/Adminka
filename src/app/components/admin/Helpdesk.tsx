@@ -327,14 +327,14 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
             onClick={() => onBack?.()}
             className="flex items-center gap-2 px-3 py-2 mb-6 hover:bg-slate-100 rounded-lg transition-colors group w-full"
           >
-            <ArrowLeft size={18} className="text-slate-600 group-hover:text-violet-600 transition-colors" />
-            <span className="text-sm text-slate-600 group-hover:text-violet-600 font-medium transition-colors">
+            <ArrowLeft size={18} className="text-slate-600 group-hover:text-[#583B8B] transition-colors" />
+            <span className="text-sm text-slate-600 group-hover:text-[#583B8B] font-medium transition-colors">
               Выйти в панель
             </span>
           </button>
 
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2E1065] to-[#8C2F5E] flex items-center justify-center">
               <MessageCircle size={20} className="text-white" />
             </div>
             <div>
@@ -351,7 +351,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Поиск обращений..."
-              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all"
             />
           </div>
         </div>
@@ -368,7 +368,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
               onClick={() => setStatusFilter('all')}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
                 statusFilter === 'all'
-                  ? 'bg-violet-50 text-violet-700 font-semibold'
+                  ? 'bg-[#D1C4E9]/20 text-[#2E1065] font-semibold'
                   : 'text-slate-600 hover:bg-slate-50'
               }`}
             >
@@ -385,7 +385,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                   onClick={() => setStatusFilter(status)}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${
                     statusFilter === status
-                      ? 'bg-violet-50 text-violet-700 font-semibold'
+                      ? 'bg-[#D1C4E9]/20 text-[#2E1065] font-semibold'
                       : 'text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -402,9 +402,9 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
 
         {/* Статистика */}
         <div className="p-4 mt-auto">
-          <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl p-4 border border-violet-100">
+          <div className="bg-gradient-to-br from-[#D1C4E9]/20 to-[#FDE4FF]/20 rounded-xl p-4 border border-[#D1C4E9]">
             <div className="text-xs text-slate-600 mb-2">Сегодня обработано</div>
-            <div className="text-2xl font-bold text-violet-700">12</div>
+            <div className="text-2xl font-bold text-[#2E1065]">12</div>
             <div className="text-xs text-slate-500 mt-1">обращений</div>
           </div>
         </div>
@@ -450,7 +450,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                     >
                       <div className="flex items-start gap-3">
                         {/* Аватар */}
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#583B8B] to-[#8C2F5E] flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                           {ticket.userAvatar}
                         </div>
 
@@ -486,7 +486,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
 
                             {/* Непрочитанные */}
                             {ticket.unreadCount > 0 && (
-                              <div className="w-5 h-5 rounded-full bg-violet-600 text-white text-xs font-bold flex items-center justify-center">
+                              <div className="w-5 h-5 rounded-full bg-[#583B8B] text-white text-xs font-bold flex items-center justify-center">
                                 {ticket.unreadCount}
                               </div>
                             )}
@@ -508,7 +508,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
           {/* Основная зона чата */}
           <div className="flex-1 flex flex-col bg-white">
             {/* Заголовок чата с кнопкой "Назад" */}
-            <div className="p-4 border-b border-slate-200 bg-gradient-to-r from-violet-50 to-purple-50">
+            <div className="p-4 border-b border-slate-200 bg-gradient-to-r from-[#D1C4E9]/20 to-[#FDE4FF]/20">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <button
@@ -520,7 +520,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                   >
                     <ArrowLeft size={20} className="text-slate-600" />
                   </button>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#583B8B] to-[#8C2F5E] flex items-center justify-center text-white font-bold">
                     {selectedTicket.userAvatar}
                   </div>
                   <div>
@@ -533,7 +533,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                   onClick={() => setShowContextPanel(!showContextPanel)}
                   className={`p-2 rounded-lg transition-colors ${
                     showContextPanel
-                      ? 'bg-violet-100 text-violet-700'
+                      ? 'bg-[#D1C4E9]/30 text-[#2E1065]'
                       : 'hover:bg-white/50 text-slate-600'
                   }`}
                 >
@@ -575,7 +575,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                     {isUser && (
                       <div className="flex justify-end">
                         <div className="max-w-lg">
-                          <div className="bg-violet-600 text-white rounded-2xl rounded-tr-sm px-4 py-3">
+                          <div className="bg-[#583B8B] text-white rounded-2xl rounded-tr-sm px-4 py-3">
                             <p className="text-sm leading-relaxed">{message.text}</p>
                           </div>
                           <div className="flex items-center justify-end gap-2 mt-1 px-2">
@@ -613,7 +613,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                       <div className="flex justify-start">
                         <div className="max-w-lg">
                           <div className="flex items-start gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center flex-shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#583B8B] to-[#8C2F5E] flex items-center justify-center flex-shrink-0">
                               <UserCog size={16} className="text-white" />
                             </div>
                             <div>
@@ -621,7 +621,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                                 <p className="text-sm leading-relaxed text-slate-700">{message.text}</p>
                               </div>
                               <div className="flex items-center gap-2 mt-1 px-2">
-                                <span className="text-xs text-violet-600 font-medium">
+                                <span className="text-xs text-[#583B8B] font-medium">
                                   {message.operatorName}
                                 </span>
                                 <span className="text-xs text-slate-400">·</span>
@@ -656,7 +656,7 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                   </div>
                   <button
                     onClick={handleTakeOver}
-                    className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-lg font-semibold text-sm transition-colors flex items-center gap-2"
+                    className="px-4 py-2 bg-[#583B8B] hover:bg-[#2E1065] text-white rounded-lg font-semibold text-sm transition-colors flex items-center gap-2"
                   >
                     <UserCog size={16} />
                     Перехватить управление
@@ -674,20 +674,20 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                         onChange={(e) => setMessageText(e.target.value)}
                         placeholder="Введите сообщение..."
                         rows={3}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all text-sm"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[#583B8B] focus:border-transparent transition-all text-sm"
                       />
                     </div>
                     <button
                       onClick={handleSendMessage}
                       disabled={!messageText.trim()}
-                      className="p-3 bg-violet-600 hover:bg-violet-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                      className="p-3 bg-[#583B8B] hover:bg-[#2E1065] disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
                     >
                       <Send size={20} />
                     </button>
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <button className="text-xs text-slate-600 hover:text-violet-600 font-medium transition-colors">
+                    <button className="text-xs text-slate-600 hover:text-[#583B8B] font-medium transition-colors">
                       + Внутренняя заметка
                     </button>
                   </div>
@@ -793,15 +793,15 @@ export function Helpdesk({ onBack }: { onBack?: () => void }) {
                 <div className="p-4 border-t border-slate-200">
                   <h3 className="text-sm font-bold text-slate-800 mb-3">Быстрые действия</h3>
                   <div className="space-y-2">
-                    <button className="w-full flex items-center gap-2 px-3 py-2 bg-white hover:bg-violet-50 border border-slate-200 rounded-lg text-sm text-slate-700 hover:text-violet-700 font-medium transition-colors">
+                    <button className="w-full flex items-center gap-2 px-3 py-2 bg-white hover:bg-[#D1C4E9]/20 border border-slate-200 rounded-lg text-sm text-slate-700 hover:text-[#2E1065] font-medium transition-colors">
                       <FileText size={16} />
                       Открыть профиль
                     </button>
-                    <button className="w-full flex items-center gap-2 px-3 py-2 bg-white hover:bg-violet-50 border border-slate-200 rounded-lg text-sm text-slate-700 hover:text-violet-700 font-medium transition-colors">
+                    <button className="w-full flex items-center gap-2 px-3 py-2 bg-white hover:bg-[#D1C4E9]/20 border border-slate-200 rounded-lg text-sm text-slate-700 hover:text-[#2E1065] font-medium transition-colors">
                       <Mail size={16} />
                       Отправить Email
                     </button>
-                    <button className="w-full flex items-center gap-2 px-3 py-2 bg-white hover:bg-violet-50 border border-slate-200 rounded-lg text-sm text-slate-700 hover:text-violet-700 font-medium transition-colors">
+                    <button className="w-full flex items-center gap-2 px-3 py-2 bg-white hover:bg-[#D1C4E9]/20 border border-slate-200 rounded-lg text-sm text-slate-700 hover:text-[#2E1065] font-medium transition-colors">
                       <CheckCircle size={16} />
                       Закрыть обращение
                     </button>

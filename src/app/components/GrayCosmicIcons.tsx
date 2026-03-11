@@ -1,11 +1,14 @@
 import { motion } from "motion/react";
-import eyeImage from 'figma:asset/7323af24a6c904a3eb3df57f59983efbebedd7c3.png';
-import bookImage from "figma:asset/6fdd90e994be276ebad53420f00ef1757e0c6356.png";
-import rainbowImage from 'figma:asset/ac1c5a427d26fc75f5dda47cd357767f9a63f9f6.png';
+import eyeImage from 'figma:asset/ea64c47598b85cf6fd1e83ce49d98f9a65b5dad2.png';
+import bookImage from "figma:asset/18f2ea4ee7928176c0ae5b9d2287a11511085513.png";
+import rainbowImage from 'figma:asset/b9036d18ab4e5e8ec25e4c039803ebeca15eec78.png';
 import treasureImage from "figma:asset/4a71424f0e630cabf62cf95ab710a75a9236809e.png";
-import featherImage from "figma:asset/6a9a167a920bdef19d786e74fe62f15c110d4d8c.png";
-import giftImage from "figma:asset/08dbcace03843f3d60f9be03865be6b5ef368abe.png";
-import teamImage from 'figma:asset/3f9bd6f66df2e72e5389dc9e9dd8607f8e5da1ef.png';
+import scalesImage from "figma:asset/02aeb3195ab0bcd3d204ed239de56cc227eedcca.png";
+import featherImage from "figma:asset/3348e0e9b353ff340e5a03462996bcbc933273c5.png";
+import giftImage from "figma:asset/d588091c9c2323d4d39714814a6797311b9937d4.png";
+import teamImage from 'figma:asset/9949951b3af652cc456e998677edf543f4307a69.png';
+import heartImage from 'figma:asset/b6d293409bc27281cdcd8fcabb95b9c6425d3fc4.png';
+import sacredImage from 'figma:asset/2f0a8f8c46085bd197587f5abc471d01a488ec1e.png';
 
 interface IconProps {
   size?: number;
@@ -17,22 +20,25 @@ interface IconProps {
 // ============================================
 
 // 0. ОБУЧЕНИЕ — Серая книга
-export const GrayLearningIcon = ({ size = 120, className = "" }: IconProps) => (
-  <img 
-    src={bookImage} 
-    alt="Learning Book"
-    width={size}
-    height={size}
-    className={className}
-    style={{ 
-      width: size, 
-      height: size,
-      objectFit: 'contain',
-      filter: 'grayscale(100%) brightness(0.7)',
-      opacity: 0.7
-    }}
-  />
-);
+export const GrayLearningIcon = ({ size = 120, className = "" }: IconProps) => {
+  const s = size * 1.35;
+  return (
+    <img 
+      src={bookImage} 
+      alt="Learning Book"
+      width={s}
+      height={s}
+      className={className}
+      style={{ 
+        width: s, 
+        height: s,
+        objectFit: 'contain',
+        filter: 'grayscale(100%) brightness(0.7)',
+        opacity: 0.7
+      }}
+    />
+  );
+};
 
 // 1. АУТЕНТИЧНОСТЬ — Серый глаз
 export const GrayAuthenticityIcon = ({ size = 24, className = "" }: IconProps) => (
@@ -62,105 +68,9 @@ export const GrayAuthenticityIcon = ({ size = 24, className = "" }: IconProps) =
 
 // 2. ЛЮБОВЬ К ЛЮДЯМ — Серое сердце
 export const GrayLoveIcon = ({ size = 24, className = "" }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
-    <defs>
-      <linearGradient id="heart-gray" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#94a3b8" />
-        <stop offset="50%" stopColor="#64748b" />
-        <stop offset="100%" stopColor="#475569" />
-      </linearGradient>
-    </defs>
-    
-    <path
-      d="M12 20.5 C12 20.5 4 15 4 9.5 C4 6 6.5 3.5 9 3.5 C10.5 3.5 11.5 4.5 12 6 C12.5 4.5 13.5 3.5 15 3.5 C17.5 3.5 20 6 20 9.5 C20 15 12 20.5 12 20.5 Z"
-      fill="url(#heart-gray)"
-      stroke="#cbd5e1"
-      strokeWidth="1"
-      opacity="0.7"
-    />
-  </svg>
-);
-
-// 3. ПРОДУКТ — Серая сакральная геометрия
-export const GrayProductIcon = ({ size = 24, className = "" }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
-    <defs>
-      <linearGradient id="sacred-gray" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#94a3b8" />
-        <stop offset="50%" stopColor="#64748b" />
-        <stop offset="100%" stopColor="#475569" />
-      </linearGradient>
-    </defs>
-    
-    {/* Центральный круг */}
-    <circle
-      cx="12" cy="12" r="4.5"
-      fill="none"
-      stroke="url(#sacred-gray)"
-      strokeWidth="0.8"
-      opacity="0.7"
-    />
-    
-    {/* 6 внешних кругов */}
-    {[0, 60, 120, 180, 240, 300].map((angle, i) => {
-      const rad = (angle * Math.PI) / 180;
-      const x = 12 + Math.cos(rad) * 4.5;
-      const y = 12 + Math.sin(rad) * 4.5;
-      
-      return (
-        <circle
-          key={`seed${i}`}
-          cx={x}
-          cy={y}
-          r="4.5"
-          fill="none"
-          stroke="url(#sacred-gray)"
-          strokeWidth="0.8"
-          opacity="0.6"
-        />
-      );
-    })}
-    
-    {/* Центральная точка */}
-    <circle
-      cx="12" cy="12" r="1.2"
-      fill="url(#sacred-gray)"
-      opacity="0.7"
-    />
-    
-    {/* Треугольник вверх */}
-    <path
-      d="M12 3.5 L20.5 18 L3.5 18 Z"
-      fill="none"
-      stroke="url(#sacred-gray)"
-      strokeWidth="1.2"
-      opacity="0.6"
-    />
-    
-    {/* Треугольник вниз */}
-    <path
-      d="M12 20.5 L3.5 6 L20.5 6 Z"
-      fill="none"
-      stroke="url(#sacred-gray)"
-      strokeWidth="1.2"
-      opacity="0.6"
-    />
-    
-    {/* Горизонтальная линия */}
-    <line
-      x1="3" y1="12" x2="21" y2="12"
-      stroke="url(#sacred-gray)"
-      strokeWidth="0.6"
-      opacity="0.5"
-    />
-  </svg>
-);
-
-// 4. ВОРОНКА ПРОДАЖ — Серая радуга
-export const GraySalesFunnelIcon = ({ size = 24, className = "" }: IconProps) => (
   <img 
-    src={rainbowImage} 
-    alt="Rainbow Funnel"
+    src={heartImage} 
+    alt="Heart"
     width={size}
     height={size}
     className={className}
@@ -174,23 +84,65 @@ export const GraySalesFunnelIcon = ({ size = 24, className = "" }: IconProps) =>
   />
 );
 
-// 5. ТЕХНОЛОГИЯ ПРОДАЖ — Серый сундук (3D изображение)
-export const GraySalesTechIcon = ({ size = 24, className = "" }: IconProps) => (
+// 3. ПРОДУКТ — Серая сакральная геометрия
+export const GrayProductIcon = ({ size = 24, className = "" }: IconProps) => (
   <img 
-    src={treasureImage} 
-    alt="Treasure Chest"
+    src={sacredImage} 
+    alt="Sacred Geometry"
     width={size}
     height={size}
     className={className}
     style={{ 
-      width: size * 0.9, 
-      height: size * 0.9,
+      width: size, 
+      height: size,
       objectFit: 'contain',
       filter: 'grayscale(100%) brightness(0.7)',
       opacity: 0.7
     }}
   />
 );
+
+// 4. ВОРОНКА ПРОДАЖ — Серые песочные часы
+export const GraySalesFunnelIcon = ({ size = 24, className = "" }: IconProps) => {
+  const s = size * 1.15;
+  return (
+    <img 
+      src={rainbowImage} 
+      alt="Hourglass Funnel"
+      width={s}
+      height={s}
+      className={className}
+      style={{ 
+        width: s, 
+        height: s,
+        objectFit: 'contain',
+        filter: 'grayscale(100%) brightness(0.7)',
+        opacity: 0.7
+      }}
+    />
+  );
+};
+
+// 5. ТЕХНОЛОГИЯ ПРОДАЖ — Серые весы (3D изображение)
+export const GraySalesTechIcon = ({ size = 24, className = "" }: IconProps) => {
+  const s = size * 1.15;
+  return (
+    <img 
+      src={scalesImage} 
+      alt="Scales"
+      width={s}
+      height={s}
+      className={className}
+      style={{ 
+        width: s, 
+        height: s,
+        objectFit: 'contain',
+        filter: 'grayscale(100%) brightness(0.7)',
+        opacity: 0.7
+      }}
+    />
+  );
+};
 
 // 6. БЛОГ — Серое перо (3D изображение)
 export const GrayBlogIcon = ({ size = 24, className = "" }: IconProps) => (
@@ -201,8 +153,8 @@ export const GrayBlogIcon = ({ size = 24, className = "" }: IconProps) => (
     height={size}
     className={className}
     style={{ 
-      width: size * 0.85, 
-      height: size * 0.85,
+      width: size, 
+      height: size,
       objectFit: 'contain',
       filter: 'grayscale(100%) brightness(0.7)',
       opacity: 0.7
@@ -293,23 +245,26 @@ export const GrayAIAgentsIcon = ({ size = 24, className = "" }: IconProps) => (
   </svg>
 );
 
-// 9. ПОДАРОК/БОНУС — Серый подарок (3D изображение)
-export const GrayBonusIcon = ({ size = 24, className = "" }: IconProps) => (
-  <img 
-    src={giftImage} 
-    alt="Gift Box"
-    width={size}
-    height={size}
-    className={className}
-    style={{ 
-      width: size * 0.9, 
-      height: size * 0.9,
-      objectFit: 'contain',
-      filter: 'grayscale(100%) brightness(0.7)',
-      opacity: 0.7
-    }}
-  />
-);
+// 9. ПОДАРОК/БОНУС — Серый подарок (3D изображение, 1.15× для визуального баланса)
+export const GrayBonusIcon = ({ size = 24, className = "" }: IconProps) => {
+  const s = size * 1.35;
+  return (
+    <img 
+      src={giftImage} 
+      alt="Gift Box"
+      width={s}
+      height={s}
+      className={className}
+      style={{ 
+        width: s, 
+        height: s,
+        objectFit: 'contain',
+        filter: 'grayscale(100%) brightness(0.7)',
+        opacity: 0.7
+      }}
+    />
+  );
+};
 
 // Экспорт алиасов
 export const GrayAudienceIcon = GrayLoveIcon;

@@ -17,10 +17,10 @@ import {
 export const IconPreview = () => {
   const icons = [
     { Icon: LearningIcon, name: 'Обучение', color: 'from-[#2E1065] to-[#5B21B6]' },
-    { Icon: AuthenticityIcon, name: 'Аутентичность', color: 'from-[#4C1D95] via-[#6D28D9] to-[#7C3AED]' },
+    { Icon: AuthenticityIcon, name: 'Аутентичность', color: 'from-[#2E1065] via-[#583B8B] to-[#583B8B]' },
     { Icon: AudienceIcon, name: 'ЦА', color: 'from-[#5B21B6] to-[#3B82F6]' },
-    { Icon: ProductIcon, name: 'Продукты', color: 'from-[#701a75] to-[#c026d3]' },
-    { Icon: FunnelIcon, name: 'Воронка', color: 'from-[#4a044e] to-[#db2777]' },
+    { Icon: ProductIcon, name: 'Продукты', color: 'from-[#2E1065] to-[#8C2F5E]' },
+    { Icon: FunnelIcon, name: 'Воронка', color: 'from-[#2E1065] to-[#8C2F5E]' },
     { Icon: SalesIcon, name: 'Продажи', color: 'from-[#1e1b4b] to-[#4338ca]' },
     { Icon: BlogIcon, name: 'Блог', color: 'from-[#312e81] to-[#6366f1]' },
     { Icon: TeamIcon, name: 'Команда', color: 'from-[#0f172a] to-[#581c87]' },

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import bookImage from "figma:asset/6fdd90e994be276ebad53420f00ef1757e0c6356.png";
+import bookImage from "figma:asset/18f2ea4ee7928176c0ae5b9d2287a11511085513.png";
 
 /**
  * 📚 3D КОСМИЧЕСКАЯ КНИГА
@@ -12,19 +12,22 @@ interface IconProps {
   className?: string;
 }
 
-export const Book3DIcon = ({ size = 120, className = "" }: IconProps) => (
-  <motion.img 
-    src={bookImage} 
-    alt="Cosmic Learning Book"
-    width={size}
-    height={size}
-    className={className}
-    style={{ 
-      width: size, 
-      height: size,
-      objectFit: 'contain'
-    }}
-  />
-);
+export const Book3DIcon = ({ size = 120, className = "" }: IconProps) => {
+  const s = size * 1.35;
+  return (
+    <motion.img 
+      src={bookImage} 
+      alt="Cosmic Learning Book"
+      width={s}
+      height={s}
+      className={className}
+      style={{ 
+        width: s, 
+        height: s,
+        objectFit: 'contain'
+      }}
+    />
+  );
+};
 
 export default Book3DIcon;

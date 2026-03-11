@@ -1,42 +1,90 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { 
-  Plus, 
-  Video, 
-  FileText, 
-  Image as ImageIcon, 
-  Headphones,
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  FileText,
   Type,
   MousePointer,
   Columns,
+  Image as ImageIcon,
   FileImage,
-  Smile,
-  ChevronDown,
+  Video,
+  Headphones,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 import { DraggableBlock } from './DraggableBlock';
-import { motion, AnimatePresence } from 'motion/react';
+import { TextBlockSettings } from './TextBlockSettings';
+import { HeadingSettings } from './HeadingSettings';
+import { ButtonSettings } from './ButtonSettings';
+import { ImageSettings } from './ImageSettings';
+import { ContainerSettings as ContainerSettingsPanel } from './ContainerSettings';
 
 export interface ContentBlock {
   id: string;
   type: 'text' | 'video' | 'audio' | 'image' | 'heading' | 'button' | 'columns' | 'text-image' | 'icon';
   content: string;
   order: number;
+  // Настройки стилизации
+  style?: {
+    color?: string;
+    fontFamily?: string;
+    fontWeight?: string;
+    fontSize?: string;
+    lineHeight?: string;
+    textAlign?: 'left' | 'center' | 'right' | 'justify';
+    // Для кнопки
+    backgroundColor?: string;
+    borderRadius?: string;
+    padding?: string;
+    // Для изображения
+    width?: string;
+    height?: string;
+    objectFit?: string;
+    imageAlign?: 'left' | 'center' | 'right';
+    boxShadow?: string;
+  };
+}
+
+export interface ContainerSettings {
+  gap?: string; // расстояние между блоками
+  background?: string; // фон блоков
+  borderColor?: string; // цвет обводки
+  borderWidth?: string; // толщина обводки
+  borderRadius?: string; // скругление углов
+  padding?: string; // внутренние отступы блоков
 }
 
 interface ContentBlockEditorProps {
   blocks: ContentBlock[];
   onChange: (blocks: ContentBlock[]) => void;
   deviceType?: 'desktop' | 'tablet' | 'mobile';
+  onAddBlock?: (type: ContentBlock['type']) => void;
+  showAddButton?: boolean;
+  containerSettings?: ContainerSettings;
+  onContainerSettingsChange?: (settings: ContainerSettings) => void;
 }
 
-export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }: ContentBlockEditorProps) {
+export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop', onAddBlock, showAddButton = true, containerSettings, onContainerSettingsChange }: ContentBlockEditorProps) {
   const [localBlocks, setLocalBlocks] = useState<ContentBlock[]>(blocks);
   const [showElementMenu, setShowElementMenu] = useState(false);
+  const [activeSettingsBlockId, setActiveSettingsBlockId] = useState<string | null>(null);
+  const [showContainerSettings, setShowContainerSettings] = useState(false);
+  const isInternalUpdate = useRef(false);
 
+  // Синхронизация с родительским компонентом только при внешних изменениях
   useEffect(() => {
-    onChange(localBlocks);
-  }, [localBlocks]);
+    if (!isInternalUpdate.current) {
+      setLocalBlocks(blocks);
+    }
+    isInternalUpdate.current = false;
+  }, [blocks]);
+
+  const updateAndNotify = (updatedBlocks: ContentBlock[]) => {
+    isInternalUpdate.current = true;
+    setLocalBlocks(updatedBlocks);
+    onChange(updatedBlocks);
+  };
 
   const addBlock = (type: ContentBlock['type']) => {
     const newBlock: ContentBlock = {
@@ -45,18 +93,31 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
       content: '',
       order: localBlocks.length,
     };
-    setLocalBlocks([...localBlocks, newBlock]);
+    const updatedBlocks = [...localBlocks, newBlock];
+    updateAndNotify(updatedBlocks);
     setShowElementMenu(false);
+    if (onAddBlock) {
+      onAddBlock(type);
+    }
   };
 
   const updateBlock = (id: string, content: string) => {
-    setLocalBlocks(localBlocks.map(block => 
+    const updatedBlocks = localBlocks.map(block => 
       block.id === id ? { ...block, content } : block
-    ));
+    );
+    updateAndNotify(updatedBlocks);
+  };
+
+  const updateBlockStyle = (id: string, style: ContentBlock['style']) => {
+    const updatedBlocks = localBlocks.map(block => 
+      block.id === id ? { ...block, style } : block
+    );
+    updateAndNotify(updatedBlocks);
   };
 
   const deleteBlock = (id: string) => {
-    setLocalBlocks(localBlocks.filter(block => block.id !== id));
+    const updatedBlocks = localBlocks.filter(block => block.id !== id);
+    updateAndNotify(updatedBlocks);
   };
 
   const moveBlock = (id: string, direction: 'up' | 'down') => {
@@ -77,7 +138,7 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
       block.order = idx;
     });
     
-    setLocalBlocks(newBlocks);
+    updateAndNotify(newBlocks);
   };
 
   const copyBlock = (id: string) => {
@@ -89,7 +150,8 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
       id: `block-${Date.now()}`,
       order: localBlocks.length,
     };
-    setLocalBlocks([...localBlocks, newBlock]);
+    const updatedBlocks = [...localBlocks, newBlock];
+    updateAndNotify(updatedBlocks);
   };
 
   const moveBlockDnd = (dragIndex: number, hoverIndex: number) => {
@@ -103,7 +165,7 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
       block.order = idx;
     });
     
-    setLocalBlocks(newBlocks);
+    updateAndNotify(newBlocks);
   };
 
   // Массив доступных элементов
@@ -114,7 +176,6 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
     { type: 'columns' as const, label: 'Колонки', icon: Columns, color: 'text-slate-700' },
     { type: 'image' as const, label: 'Картинка', icon: ImageIcon, color: 'text-slate-700' },
     { type: 'text-image' as const, label: 'Текст + Картинка', icon: FileImage, color: 'text-slate-700' },
-    { type: 'icon' as const, label: 'Иконка', icon: Smile, color: 'text-slate-700' },
     { type: 'video' as const, label: 'Видео', icon: Video, color: 'text-slate-700' },
     { type: 'audio' as const, label: 'Аудио', icon: Headphones, color: 'text-slate-700' },
   ];
@@ -122,77 +183,30 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="space-y-4">
-        {/* Добавление блоков */}
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="relative">
+        {/* Кнопка общих настроек */}
+        {containerSettings && onContainerSettingsChange && (
+          <div className="flex justify-end">
             <button
-              type="button"
-              onClick={() => setShowElementMenu(!showElementMenu)}
-              className={`flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all ${
-                deviceType === 'mobile' ? 'text-sm px-4 py-2' : ''
-              }`}
+              onClick={() => setShowContainerSettings(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#2E1065] to-[#8C2F5E] text-white rounded-lg hover:from-[#3B1A7E] hover:to-[#9C3F6E] transition-all shadow-md hover:shadow-lg"
             >
-              <Plus size={deviceType === 'mobile' ? 16 : 20} />
-              {deviceType === 'mobile' ? 'Добавить' : 'Добавить элемент'}
-              <ChevronDown size={deviceType === 'mobile' ? 14 : 18} className={`transition-transform ${showElementMenu ? 'rotate-180' : ''}`} />
+              <SettingsIcon size={18} />
+              <span className="font-semibold">Общие настройки</span>
             </button>
-
-            {/* Выпадающее меню элементов */}
-            <AnimatePresence>
-              {showElementMenu && (
-                <>
-                  {/* Overlay для закрытия меню */}
-                  <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setShowElementMenu(false)}
-                  />
-                  
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className={`absolute top-full left-0 mt-2 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-50 max-h-96 overflow-y-auto ${
-                      deviceType === 'mobile' ? 'w-64' : 'w-80'
-                    }`}
-                  >
-                    {elementTypes.map((element) => {
-                      const Icon = element.icon;
-                      return (
-                        <button
-                          key={element.type}
-                          type="button"
-                          onClick={() => addBlock(element.type)}
-                          className={`w-full flex items-center gap-3 hover:bg-blue-50 transition-colors text-left border-b border-dashed border-slate-200 last:border-b-0 ${
-                            deviceType === 'mobile' ? 'px-3 py-2' : 'px-4 py-3'
-                          }`}
-                        >
-                          <Icon size={deviceType === 'mobile' ? 16 : 20} className={element.color} />
-                          <span className={`text-slate-700 font-medium ${deviceType === 'mobile' ? 'text-sm' : ''}`}>{element.label}</span>
-                        </button>
-                      );
-                    })}
-                  </motion.div>
-                </>
-              )}
-            </AnimatePresence>
           </div>
-
-          {localBlocks.length > 0 && (
-            <div className={`px-4 py-2 bg-slate-100 text-slate-700 rounded-lg font-semibold ${
-              deviceType === 'mobile' ? 'text-xs' : 'text-sm'
-            }`}>
-              📦 Блоков: {localBlocks.length}
-            </div>
-          )}
-        </div>
+        )}
 
         {/* Список блоков */}
-        <div className="space-y-3">
+        <div 
+          className="space-y-3"
+          style={{
+            gap: containerSettings?.gap,
+          }}
+        >
           {localBlocks.length === 0 ? (
-            <div className="text-center py-12 bg-gradient-to-br from-violet-50 to-purple-50 rounded-xl border-2 border-dashed border-violet-200">
-              <FileText size={48} className="mx-auto mb-3 text-violet-400" />
-              <p className="text-violet-700 font-semibold mb-1">Начните создавать урок</p>
+            <div className="text-center py-12 bg-gradient-to-br from-[#D1C4E9]/20 to-[#FDE4FF]/20 rounded-xl border-2 border-dashed border-[#D1C4E9]">
+              <FileText size={48} className="mx-auto mb-3 text-[#583B8B]" />
+              <p className="text-[#2E1065] font-semibold mb-1">Начните создавать урок</p>
               <p className="text-slate-500 text-sm">Добавьте первый блок контента выше 👆</p>
             </div>
           ) : (
@@ -218,12 +232,104 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop' }:
                     quillModules={{}}
                     quillFormats={[]}
                     deviceType={deviceType}
+                    onUpdateBlockStyle={updateBlockStyle}
+                    onOpenSettings={(id) => setActiveSettingsBlockId(id)}
+                    containerSettings={containerSettings}
                   />
                 </motion.div>
               ))}
             </AnimatePresence>
           )}
         </div>
+
+        {/* Кнопка добавления нового блока */}
+        {showAddButton && !activeSettingsBlockId && (
+          <div className="mt-8 mb-4 relative">
+            <motion.button
+              className="absolute top-0 left-0 right-0 bottom-0 bg-white/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+            <button
+              className="block w-full bg-[#583B8B] text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-[#2E1065] focus:outline-none focus:ring-2 focus:ring-[#D1C4E9] focus:ring-opacity-50"
+              onClick={() => setShowElementMenu(!showElementMenu)}
+            >
+              Добавить блок
+            </button>
+            {showElementMenu && (
+              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                <div className="grid grid-cols-3 gap-2 p-2">
+                  {elementTypes.map(type => (
+                    <button
+                      key={type.type}
+                      className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-gray-100"
+                      onClick={() => addBlock(type.type)}
+                    >
+                      <type.icon size={24} className={type.color} />
+                      <p className="text-xs text-gray-500 mt-1">{type.label}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Панель настроек (фиксированная) */}
+        {activeSettingsBlockId && (() => {
+          const activeBlock = localBlocks.find(b => b.id === activeSettingsBlockId);
+          if (!activeBlock) return null;
+          
+          if (activeBlock.type === 'heading') {
+            return (
+              <HeadingSettings
+                isOpen={true}
+                onClose={() => setActiveSettingsBlockId(null)}
+                block={activeBlock}
+                onUpdateBlockStyle={updateBlockStyle}
+              />
+            );
+          } else if (activeBlock.type === 'text') {
+            return (
+              <TextBlockSettings
+                isOpen={true}
+                onClose={() => setActiveSettingsBlockId(null)}
+                block={activeBlock}
+                onUpdateBlockStyle={updateBlockStyle}
+              />
+            );
+          } else if (activeBlock.type === 'button') {
+            return (
+              <ButtonSettings
+                isOpen={true}
+                onClose={() => setActiveSettingsBlockId(null)}
+                block={activeBlock}
+                onUpdateBlockStyle={updateBlockStyle}
+              />
+            );
+          } else if (activeBlock.type === 'image') {
+            return (
+              <ImageSettings
+                isOpen={true}
+                onClose={() => setActiveSettingsBlockId(null)}
+                block={activeBlock}
+                onUpdateBlockStyle={updateBlockStyle}
+              />
+            );
+          }
+          return null;
+        })()}
+
+        {/* Панель настроек контейнера */}
+        {containerSettings && onContainerSettingsChange && (
+          <ContainerSettingsPanel
+            isOpen={showContainerSettings}
+            onClose={() => setShowContainerSettings(false)}
+            settings={containerSettings}
+            onUpdate={onContainerSettingsChange}
+          />
+        )}
       </div>
     </DndProvider>
   );

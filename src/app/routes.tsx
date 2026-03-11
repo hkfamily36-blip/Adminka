@@ -3,6 +3,7 @@ import { Root } from './Root';
 import { HomePage } from './pages/HomePage';
 import { CreateLessonPage } from './pages/CreateLessonPage';
 import { EditLessonPage } from './pages/EditLessonPage';
+import { StudentDashboardPage } from './pages/StudentDashboardPage';
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "admin/lessons/:lessonId/edit",
         Component: EditLessonPage,
+      },
+      {
+        path: "student/:userId",
+        Component: StudentDashboardPage,
       },
     ],
   },

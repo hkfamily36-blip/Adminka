@@ -38,6 +38,11 @@ export const VisionIcon = ({ size = 24, className = "" }: IconProps) => (
         <stop offset="100%" stopColor="#e9d5ff" stopOpacity="0.1" />
       </linearGradient>
       
+      <linearGradient id="galaxy-ring" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="#67e8f9" />
+        <stop offset="100%" stopColor="#583B8B" />
+      </linearGradient>
+      
       {/* Фильтр свечения */}
       <filter id="glow">
         <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>

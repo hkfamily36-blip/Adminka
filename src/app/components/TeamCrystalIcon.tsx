@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import teamHandsImage from "figma:asset/9949951b3af652cc456e998677edf543f4307a69.png";
+import teamHandsImage from "@/assets/9949951b3af652cc456e998677edf543f4307a69.png";
 
 interface IconProps {
   size?: number;

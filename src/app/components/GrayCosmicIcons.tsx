@@ -1,14 +1,14 @@
 import { motion } from "motion/react";
-import eyeImage from 'figma:asset/ea64c47598b85cf6fd1e83ce49d98f9a65b5dad2.png';
-import bookImage from "figma:asset/18f2ea4ee7928176c0ae5b9d2287a11511085513.png";
-import rainbowImage from 'figma:asset/b9036d18ab4e5e8ec25e4c039803ebeca15eec78.png';
-import treasureImage from "figma:asset/4a71424f0e630cabf62cf95ab710a75a9236809e.png";
-import scalesImage from "figma:asset/02aeb3195ab0bcd3d204ed239de56cc227eedcca.png";
-import featherImage from "figma:asset/3348e0e9b353ff340e5a03462996bcbc933273c5.png";
-import giftImage from "figma:asset/d588091c9c2323d4d39714814a6797311b9937d4.png";
-import teamImage from 'figma:asset/9949951b3af652cc456e998677edf543f4307a69.png';
-import heartImage from 'figma:asset/b6d293409bc27281cdcd8fcabb95b9c6425d3fc4.png';
-import sacredImage from 'figma:asset/2f0a8f8c46085bd197587f5abc471d01a488ec1e.png';
+import eyeImage from '@/assets/ea64c47598b85cf6fd1e83ce49d98f9a65b5dad2.png';
+import bookImage from "@/assets/18f2ea4ee7928176c0ae5b9d2287a11511085513.png";
+import rainbowImage from '@/assets/b9036d18ab4e5e8ec25e4c039803ebeca15eec78.png';
+import treasureImage from "@/assets/4a71424f0e630cabf62cf95ab710a75a9236809e.png";
+import scalesImage from "@/assets/02aeb3195ab0bcd3d204ed239de56cc227eedcca.png";
+import featherImage from "@/assets/3348e0e9b353ff340e5a03462996bcbc933273c5.png";
+import giftImage from "@/assets/d588091c9c2323d4d39714814a6797311b9937d4.png";
+import teamImage from '@/assets/9949951b3af652cc456e998677edf543f4307a69.png';
+import heartImage from '@/assets/b6d293409bc27281cdcd8fcabb95b9c6425d3fc4.png';
+import sacredImage from '@/assets/2f0a8f8c46085bd197587f5abc471d01a488ec1e.png';
 
 interface IconProps {
   size?: number;

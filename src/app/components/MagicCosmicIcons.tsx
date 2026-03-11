@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import eyeImage from 'figma:asset/ea64c47598b85cf6fd1e83ce49d98f9a65b5dad2.png';
+import eyeImage from '@/assets/ea64c47598b85cf6fd1e83ce49d98f9a65b5dad2.png';
 
 interface IconProps {
   size?: number;

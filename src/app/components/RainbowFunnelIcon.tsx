@@ -1,4 +1,4 @@
-import hourglassImage from 'figma:asset/b9036d18ab4e5e8ec25e4c039803ebeca15eec78.png';
+import hourglassImage from '@/assets/b9036d18ab4e5e8ec25e4c039803ebeca15eec78.png';
 
 interface IconProps {
   size?: number;

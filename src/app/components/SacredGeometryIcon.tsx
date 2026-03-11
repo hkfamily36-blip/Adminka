@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import sacredImage from "figma:asset/2f0a8f8c46085bd197587f5abc471d01a488ec1e.png";
+import sacredImage from "@/assets/2f0a8f8c46085bd197587f5abc471d01a488ec1e.png";
 
 interface IconProps {
   size?: number;

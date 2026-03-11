@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import featherImage from "figma:asset/3348e0e9b353ff340e5a03462996bcbc933273c5.png";
+import featherImage from "@/assets/3348e0e9b353ff340e5a03462996bcbc933273c5.png";
 
 interface IconProps {
   size?: number;

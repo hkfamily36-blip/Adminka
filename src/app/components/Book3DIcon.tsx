@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import bookImage from "figma:asset/18f2ea4ee7928176c0ae5b9d2287a11511085513.png";
+import bookImage from "@/assets/18f2ea4ee7928176c0ae5b9d2287a11511085513.png";
 
 /**
  * 📚 3D КОСМИЧЕСКАЯ КНИГА

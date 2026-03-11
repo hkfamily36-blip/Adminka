@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import scalesImage from "figma:asset/02aeb3195ab0bcd3d204ed239de56cc227eedcca.png";
+import scalesImage from "@/assets/02aeb3195ab0bcd3d204ed239de56cc227eedcca.png";
 
 interface IconProps {
   size?: number;

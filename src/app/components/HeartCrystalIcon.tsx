@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import heartImage from "figma:asset/b6d293409bc27281cdcd8fcabb95b9c6425d3fc4.png";
+import heartImage from "@/assets/b6d293409bc27281cdcd8fcabb95b9c6425d3fc4.png";
 
 interface IconProps {
   size?: number;

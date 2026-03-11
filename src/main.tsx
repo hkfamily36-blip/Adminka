@@ -3,8 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { RouterProvider } from 'react-router';
 import { router } from './app/routes';
 import { AuthProvider } from './app/contexts/AuthContext';
-import './styles/theme.css';
-import './styles/fonts.css';
+import './styles/index.css';
 import './styles/tiptap.css';
 
 const root = document.getElementById('root');

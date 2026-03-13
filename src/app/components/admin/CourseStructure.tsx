@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { useDrag, useDrop } from 'react-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -280,6 +281,7 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
   };
 
   return (
+    <DndProvider backend={HTML5Backend}>
     <div className="space-y-4">
       {modules.map((module) => {
         const moduleLessons = getLessonsForModule(module.id);
@@ -360,5 +362,6 @@ export function CourseStructure({ lessons, onEdit, onToggleStatus, onReorder, on
         );
       })}
     </div>
+    </DndProvider>
   );
 }

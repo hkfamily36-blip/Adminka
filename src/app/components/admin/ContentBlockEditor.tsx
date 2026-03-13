@@ -252,16 +252,16 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop', o
               Добавить блок
             </button>
             {showElementMenu && (
-              <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                <div className="grid grid-cols-3 gap-2 p-2">
+              <div className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-xl z-50">
+                <div className="grid grid-cols-3 gap-2 p-3">
                   {elementTypes.map(type => (
                     <button
                       key={type.type}
-                      className="flex flex-col items-center justify-center p-2 rounded-lg hover:bg-gray-100"
+                      className="flex flex-col items-center justify-center p-3 rounded-lg hover:bg-purple-50 hover:border-[#583B8B] border border-transparent transition-all"
                       onClick={() => addBlock(type.type)}
                     >
-                      <type.icon size={24} className={type.color} />
-                      <p className="text-xs text-gray-500 mt-1">{type.label}</p>
+                      <type.icon size={28} className="text-[#583B8B]" />
+                      <p className="text-xs text-gray-700 font-medium mt-1.5 text-center leading-tight">{type.label}</p>
                     </button>
                   ))}
                 </div>

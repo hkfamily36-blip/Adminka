@@ -245,12 +245,6 @@ export function ContentBlockEditor({ blocks, onChange, deviceType = 'desktop', o
         {/* Кнопка добавления нового блока */}
         {showAddButton && !activeSettingsBlockId && (
           <div className="mt-8 mb-4 relative">
-            <motion.button
-              className="absolute top-0 left-0 right-0 bottom-0 bg-white/50"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
             <button
               className="block w-full bg-[#583B8B] text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-[#2E1065] focus:outline-none focus:ring-2 focus:ring-[#D1C4E9] focus:ring-opacity-50"
               onClick={() => setShowElementMenu(!showElementMenu)}

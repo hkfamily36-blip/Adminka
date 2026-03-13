@@ -143,7 +143,7 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
 
   // Применяем стили из настроек напрямую к DOM-элементу ProseMirror
   useEffect(() => {
-    if (!editor) return;
+    if (!editor || !editor.view || !editor.view.dom) return;
     const dom = editor.view.dom as HTMLElement;
     dom.style.color      = style?.color      || '';
     dom.style.fontFamily = (style?.fontFamily && style.fontFamily !== 'inherit') ? style.fontFamily : '';

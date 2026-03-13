@@ -24,7 +24,7 @@ import {
   Table as TableIcon,
   Palette,
 } from 'lucide-react';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import { TextAlign } from '@tiptap/extension-text-align';

@@ -64,8 +64,9 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
   const [imageUrl, setImageUrl] = useState('');
   const [youtubeUrl, setYoutubeUrl] = useState('');
 
-  // Генерируем уникальный ID для этого редактора, если не передан
-  const uniqueId = editorId || `editor-${Math.random().toString(36).substr(2, 9)}`;
+  // Генерируем уникальный ID для этого редактора, если не передан (стабильный между рендерами)
+  const uniqueIdRef = useRef(editorId || `editor-${Math.random().toString(36).substr(2, 9)}`);
+  const uniqueId = uniqueIdRef.current;
 
   const editor = useEditor(
     {
@@ -141,17 +142,6 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
     }
   }, [content, editor]);
 
-  // Применяем стили из настроек напрямую к DOM-элементу ProseMirror
-  useEffect(() => {
-    if (!editor || !editor.view || !editor.view.dom) return;
-    const dom = editor.view.dom as HTMLElement;
-    dom.style.color      = style?.color      || '';
-    dom.style.fontFamily = (style?.fontFamily && style.fontFamily !== 'inherit') ? style.fontFamily : '';
-    dom.style.fontWeight = style?.fontWeight || '';
-    dom.style.fontSize   = style?.fontSize   || '';
-    dom.style.lineHeight = style?.lineHeight || '';
-    dom.style.textAlign  = style?.textAlign  || '';
-  }, [editor, style]);
 
   // Уничтожаем редактор при размонтировании компонента
   useEffect(() => {
@@ -196,8 +186,19 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
     );
   }
 
+  const scopedStyles = style ? `
+    #${uniqueId} .ProseMirror {
+      ${style.color ? `color: ${style.color} !important;` : ''}
+      ${style.fontFamily && style.fontFamily !== 'inherit' ? `font-family: ${style.fontFamily} !important;` : ''}
+      ${style.fontWeight ? `font-weight: ${style.fontWeight} !important;` : ''}
+      ${style.fontSize ? `font-size: ${style.fontSize} !important;` : ''}
+      ${style.lineHeight ? `line-height: ${style.lineHeight} !important;` : ''}
+      ${style.textAlign ? `text-align: ${style.textAlign} !important;` : ''}
+    }
+  ` : '';
+
   return (
-    <div className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
+    <div id={uniqueId} className="border border-slate-200 rounded-xl overflow-hidden bg-white shadow-sm">
       {/* Toolbar */}
       <div className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200 p-2 flex flex-wrap gap-1 items-center sticky top-0 z-10">
         {/* Text Formatting */}
@@ -501,6 +502,9 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
           </button>
         </div>
       </div>
+
+      {/* Scoped styles for text block settings */}
+      {scopedStyles && <style>{scopedStyles}</style>}
 
       {/* Editor Content */}
       <EditorContent editor={editor} className="prose-editor" />

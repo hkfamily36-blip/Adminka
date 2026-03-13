@@ -141,6 +141,18 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
     }
   }, [content, editor]);
 
+  // Применяем стили из настроек напрямую к DOM-элементу ProseMirror
+  useEffect(() => {
+    if (!editor) return;
+    const dom = editor.view.dom as HTMLElement;
+    dom.style.color      = style?.color      || '';
+    dom.style.fontFamily = (style?.fontFamily && style.fontFamily !== 'inherit') ? style.fontFamily : '';
+    dom.style.fontWeight = style?.fontWeight || '';
+    dom.style.fontSize   = style?.fontSize   || '';
+    dom.style.lineHeight = style?.lineHeight || '';
+    dom.style.textAlign  = style?.textAlign  || '';
+  }, [editor, style]);
+
   // Уничтожаем редактор при размонтировании компонента
   useEffect(() => {
     return () => {
@@ -491,18 +503,7 @@ export function TiptapEditor({ content, onChange, placeholder = 'Начните 
       </div>
 
       {/* Editor Content */}
-      <div
-        style={{
-          color: style?.color,
-          fontFamily: style?.fontFamily !== 'inherit' ? style?.fontFamily : undefined,
-          fontWeight: style?.fontWeight,
-          fontSize: style?.fontSize,
-          lineHeight: style?.lineHeight,
-          textAlign: style?.textAlign,
-        }}
-      >
-        <EditorContent editor={editor} className="prose-editor" />
-      </div>
+      <EditorContent editor={editor} className="prose-editor" />
     </div>
   );
 }
